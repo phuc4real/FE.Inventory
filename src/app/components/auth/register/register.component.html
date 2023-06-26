@@ -1,21 +1,33 @@
-<div class="register-form">
+<form class="register-form" [formGroup]="registrationForm" (ngSubmit)="registerUser()">
   <h2>Register</h2>
-  <form (ngSubmit)="registerUser()">
-    <div class="form-group">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" [(ngModel)]="username" required>
-    </div>
+  <mat-form-field class="form-group">
+    <mat-label>Username</mat-label>
+    <input matInput formControlName="username" required>
+    <mat-error *ngIf="registrationForm.controls['username'].hasError('required')">
+      Username is required.
+    </mat-error>
+  </mat-form-field>
 
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" [(ngModel)]="email" required>
-    </div>
+  <mat-form-field class="form-group">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" required>
+    <mat-error *ngIf="registrationForm.controls['email'].hasError('required')">
+      Email is required.
+    </mat-error>
+    <mat-error *ngIf="registrationForm.controls['email'].hasError('email')">
+      Invalid email format.
+    </mat-error>
+  </mat-form-field>
 
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" [(ngModel)]="password" required>
-    </div>
+  <mat-form-field class="form-group">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" formControlName="password" required>
+    <mat-error *ngIf="registrationForm.controls['password'].hasError('required')">
+      Password is required.
+    </mat-error>
+  </mat-form-field>
 
-    <button type="submit">Register</button>
-  </form>
-</div>
+  <button mat-raised-button color="primary" type="submit">Register</button>
+
+  <div class="error-message" *ngIf="registrationError">{{ registrationError }}</div>
+</form>

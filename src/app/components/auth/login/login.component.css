@@ -1,0 +1,48 @@
+.login-form {
+  width: 300px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  overflow: hidden;
+}
+
+/* Rest of the CSS code remains the same */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.forgot-password {
+  margin-left: auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.create-account-group {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.create-account-group a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.create-account-group a:hover {
+  text-decoration: underline;
+}

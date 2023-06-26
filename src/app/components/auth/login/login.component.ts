@@ -1,25 +1,41 @@
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-   username!: string;
-   password!: string;
+  loginForm: FormGroup;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {
+    this.loginForm = new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+    });
+  }
 
   login(): void {
-    this.authService.login(this.username, this.password).subscribe(
-      response => {
-        console.log(response);
+    if (this.loginForm.invalid) {
+      return;
+    }
 
+    const { username, password } = this.loginForm.value;
+
+    this.authService.login(username, password).subscribe(
+      (response) => {
+        this.toastr.success('Login successful!', 'Success');
+        const accessToken = response.accessToken;
+        this.authService.saveToken(accessToken);
+        // // TODO
+        // this.router.navigate(['/login']);
       },
-      error => {
-        console.log(error);
+      (error) => {
+        this.toastr.error(error, 'Error');
       }
     );
   }

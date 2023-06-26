@@ -1,3 +1,11 @@
 {
-    "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "vetur.format.enable": true,
+  "editor.formatOnType": false,
+  "gitlens.graph.dateFormat": "",
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "all",
+  "editor.defaultFormatter": null,
+  "editor.formatOnPaste": true,
+  "notebook.formatOnSave.enabled": true
 }

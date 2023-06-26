@@ -1,3 +1,4 @@
+import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
@@ -6,37 +7,36 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://127.0.0.1:5001/api/auth';
+  private apiUrl = environment.apiUrl;
   isAuthenticated: boolean = false;
+  authTokenKey = 'auth_token';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getIsAuthenticated(): boolean {
     return this.isAuthenticated;
   }
 
   register(payload: any): Observable<any> {
-    const headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Origin': 'http://localhost:4200'
-    });
-    debugger;
-    return this.http.post(`${this.apiUrl}/register`, payload,{headers});
+    return this.http.post(`${this.apiUrl}/auth/register`, payload);
   }
 
   login(username: string, password: string): Observable<any> {
-    this.http.post(`${this.apiUrl}/login`, { username, password });
+    return this.http.post(`${this.apiUrl}/auth/login`, { username, password });
+  }
+
+  saveToken(token: string): void {
+    localStorage.setItem(this.authTokenKey, token);
     this.isAuthenticated = true;
-    return of({ success: true });
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(this.authTokenKey);
   }
 
   logout(): Observable<any> {
-    // Gửi yêu cầu đăng xuất đến API backend
-    return this.http.post(`${this.apiUrl}/logout`, {});
+    localStorage.removeItem(this.authTokenKey);
+    this.isAuthenticated = false;
+    return this.http.post(`${this.apiUrl}/auth/logout`, {});
   }
-
-
-  // Các phương thức khác trong AuthService
-
-
 }
