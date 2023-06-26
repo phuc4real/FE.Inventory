@@ -10,6 +10,9 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { ExportComponent } from './components/export/export.component';
 import { ItemComponent } from './components/item/item.component';
 import { OrderComponent } from './components/order/order.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { FormsModule } from '@angular/forms';
+import { RegisterComponent } from './components/auth/register/register.component';
 
 @NgModule({
   declarations: [
@@ -20,8 +23,10 @@ import { OrderComponent } from './components/order/order.component';
     ExportComponent,
     ItemComponent,
     OrderComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule,FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
