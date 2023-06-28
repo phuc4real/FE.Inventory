@@ -28,6 +28,8 @@
   </mat-form-field>
 
   <button mat-raised-button color="primary" type="submit">Register</button>
-
+    <div class="form-group create-account-group">
+      <p>Already have an account? <a routerLink="/login">Login now</a></p>
+    </div>
   <div class="error-message" *ngIf="registrationError">{{ registrationError }}</div>
 </form>

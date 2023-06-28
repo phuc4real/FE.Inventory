@@ -12,7 +12,11 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
@@ -28,14 +32,25 @@ export class LoginComponent {
 
     this.authService.login(username, password).subscribe(
       (response) => {
+        this.router.navigate(['/dashboard']);
         this.toastr.success('Login successful!', 'Success');
-        const accessToken = response.accessToken;
-        this.authService.saveToken(accessToken);
+        this.authService.saveToken(response);
         // // TODO
-        // this.router.navigate(['/login']);
       },
-      (error) => {
-        this.toastr.error(error, 'Error');
+      (error: any) => {
+        if (
+          error.status === 400 &&
+          Array.isArray(error.error) &&
+          error.error.length > 0
+        ) {
+          const errorMessage = error.error[0].value;
+          this.toastr.error(errorMessage, 'Login failed');
+        } else {
+          this.toastr.error(
+            'Something went wrong. Please try again.',
+            'Login failed'
+          );
+        }
       }
     );
   }
