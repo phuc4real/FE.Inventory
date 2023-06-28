@@ -18,6 +18,8 @@ import { MaterialModule } from './share/material/material.module';
 import { TokenInterceptor } from './share/helpers/token-interceptor.interceptor';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     RegisterComponent,
     DashboardComponent,
     NotFoundComponent,
+    NavbarComponent,
+    SidebarComponent,
   ],
   imports: [
     BrowserModule,

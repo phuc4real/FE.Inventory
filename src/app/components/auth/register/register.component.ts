@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { Observer } from 'rxjs';
-import { AuthService } from './../../../services/auth/auth.service';
+import { AuthService } from './../../../services';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';

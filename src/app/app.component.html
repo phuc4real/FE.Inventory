@@ -1,1 +1,25 @@
-<router-outlet></router-outlet>
+
+<div class="container">
+  <mat-sidenav-container class="sidenav-container">
+    <!-- <app-sidebar></app-sidebar> -->
+    <mat-sidenav mode="side" opened class="sidenav">
+      <mat-nav-list>
+        <mat-list-item routerLink="/" routerLinkActive="active">
+          <mat-icon>home</mat-icon>
+          <span>Home</span>
+        </mat-list-item>
+        <mat-list-item routerLink="/item" routerLinkActive="active">
+          <mat-icon>list</mat-icon>
+          <span>Item</span>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <app-navbar></app-navbar>
+
+      <router-outlet class="router-outlet-custom"></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
