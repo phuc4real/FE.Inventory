@@ -1,7 +1,7 @@
 import { environment } from '../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { TokenModel } from 'src/app/models/token-model';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  getIsAuthenticated(): boolean {
+  async getIsAuthenticated(): Promise<boolean> {
     const token = this.getToken();
     if (token) {
       let expireTime = Date.parse(token!.expireTime.toString());
@@ -21,13 +21,16 @@ export class AuthService {
       if (expireTime > curDate) {
         return true;
       } else {
-        // let isSuccess = await this.tryRefreshToken();
-        // return isSuccess;
-        return this.tryRefreshToken();
+        let isSuccess = await this.tryRefreshToken();
+        return isSuccess;
       }
     } else {
       return false;
     }
+  }
+
+  getIsLogged(): boolean {
+    return this.getToken != null ? true : false;
   }
 
   register(payload: any): Observable<any> {
@@ -52,39 +55,59 @@ export class AuthService {
     localStorage.removeItem(this.authTokenKey);
   }
 
-  refreshToken(): Observable<any> {
+  refreshToken(): Observable<TokenModel> {
     const refreshToken = this.getToken()?.refreshToken;
-    return this.http.post(`${this.apiUrl}/auth/refresh`, null, {
+    return this.http.post<TokenModel>(`${this.apiUrl}/auth/refresh`, null, {
       headers: {
         RefreshToken: refreshToken!,
       },
     });
   }
-
-  tryRefreshToken(): boolean {
-    var isSuccess: boolean = false;
-    this.refreshToken().subscribe(
-      (response) => {
-        this.saveToken(response);
-        isSuccess = true;
-      },
-      (error: any) => {
-        if (
-          error.status === 400 &&
-          Array.isArray(error.error) &&
-          error.error.length > 0
-        ) {
-          const errorMessage = error.error[0].value;
-          console.log(errorMessage);
-        } else {
-          console.log('Something went wrong. Please try again.');
-        }
+  async tryRefreshToken(): Promise<boolean> {
+    console.log('Trying to refresh token');
+    try {
+      const response = await this.refreshToken().toPromise();
+      this.saveToken(response!);
+      console.log('Token refreshed successfully');
+      return true;
+    } catch (error: any) {
+      if (
+        error.status === 400 &&
+        Array.isArray(error.error) &&
+        error.error.length > 0
+      ) {
+        const errorMessage = error.error[0].value;
+        console.log(errorMessage);
+      } else {
+        console.log('Something went wrong. Please try again.');
       }
-    );
-    console.log(isSuccess);
-
-    return isSuccess;
+      return false;
+    }
   }
+
+  // tryRefreshToken(): boolean {
+  //   var isSuccess: boolean = false;
+  //   this.refreshToken().subscribe(
+  //     (response) => {
+  //       this.saveToken(response);
+  //       isSuccess = true;
+  //       console.log('Refresh token successfully!');
+  //     },
+  //     (error: any) => {
+  //       if (
+  //         error.status === 400 &&
+  //         Array.isArray(error.error) &&
+  //         error.error.length > 0
+  //       ) {
+  //         const errorMessage = error.error[0].value;
+  //         console.log(errorMessage);
+  //       } else {
+  //         console.log('Something went wrong. Please try again.');
+  //       }
+  //     }
+  //   );
+  //   return isSuccess;
+  // }
 
   logout(): Observable<any> {
     return this.http.delete(`${this.apiUrl}/auth/logout`, {});

@@ -10,6 +10,6 @@ export class NavbarComponent {
   constructor(private authService: AuthService) {}
 
   isAuthenticated(): boolean {
-    return this.authService.getIsAuthenticated();
+    return this.authService.getIsLogged();
   }
 }
