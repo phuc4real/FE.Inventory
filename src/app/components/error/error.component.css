@@ -17,8 +17,8 @@ div {
 }
 
 h1 {
-    color: #3f51b5;
-    font-size: 10rem;
+    color: #eb3d34;
+    font-size: 8rem;
     letter-spacing: .05em;
     margin: .025em 0;
     text-shadow: .05em .05em 0 rgba(0, 0, 0, .25);
@@ -26,7 +26,7 @@ h1 {
 }
 
 h2 {
-    color: #3f51b5;
+    color: #eb3d34;
     margin-bottom: .40em;
 }
 
