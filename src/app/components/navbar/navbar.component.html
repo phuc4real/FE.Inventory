@@ -2,19 +2,27 @@
   <button mat-icon-button>
     <mat-icon>menu</mat-icon>
   </button>
-  <span class="navbar-title">My App</span>
+  <span class="navbar-title">Inventory</span>
   <span class="spacer"></span>
   <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>
-      <mat-icon>person</mat-icon>
-      <span>Profile</span>
-    </button>
-    <button mat-menu-item>
-      <mat-icon>logout</mat-icon>
-      <span>Logout</span>
-    </button>
+    <div *ngIf="isAuthenticated(); else elseBlock">
+      <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+      <button mat-menu-item routerLink="/logout">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </div>
+    <ng-template #elseBlock>
+      <button mat-menu-item routerLink="/login">
+        <mat-icon>login</mat-icon>
+        <span>Login</span>
+      </button>
+    </ng-template>
   </mat-menu>
 </mat-toolbar>

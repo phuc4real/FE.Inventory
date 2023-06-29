@@ -13,7 +13,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  async getIsAuthenticated(): Promise<boolean> {
+  getIsAuthenticated(): boolean {
     const token = this.getToken();
     if (token) {
       let expireTime = Date.parse(token!.expireTime.toString());
@@ -21,8 +21,9 @@ export class AuthService {
       if (expireTime > curDate) {
         return true;
       } else {
-        let isSuccess = await this.tryRefreshToken();
-        return isSuccess;
+        // let isSuccess = await this.tryRefreshToken();
+        // return isSuccess;
+        return this.tryRefreshToken();
       }
     } else {
       return false;
@@ -60,27 +61,29 @@ export class AuthService {
     });
   }
 
-  async tryRefreshToken(): Promise<boolean> {
-    // console.log('Trying to refresh token');
-    try {
-      const response = await this.refreshToken().toPromise();
-      this.saveToken(response);
-      // console.log('Token refreshed successfully');
-      return true;
-    } catch (error: any) {
-      if (
-        error.status === 400 &&
-        Array.isArray(error.error) &&
-        error.error.length > 0
-      ) {
-        const errorMessage = error.error[0].value;
-        console.log(errorMessage);
-      } else {
-        console.log('Something went wrong. Please try again.');
+  tryRefreshToken(): boolean {
+    var isSuccess: boolean = false;
+    this.refreshToken().subscribe(
+      (response) => {
+        this.saveToken(response);
+        isSuccess = true;
+      },
+      (error: any) => {
+        if (
+          error.status === 400 &&
+          Array.isArray(error.error) &&
+          error.error.length > 0
+        ) {
+          const errorMessage = error.error[0].value;
+          console.log(errorMessage);
+        } else {
+          console.log('Something went wrong. Please try again.');
+        }
       }
+    );
+    console.log(isSuccess);
 
-      return false;
-    }
+    return isSuccess;
   }
 
   logout(): Observable<any> {

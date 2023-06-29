@@ -13,12 +13,12 @@ import {
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
-  async canActivate(
+  canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Promise<boolean> {
-    let isAuthenticated = await this.authService.getIsAuthenticated();
-    console.log(state.url);
+  ): boolean {
+    let isAuthenticated = this.authService.getIsAuthenticated();
+    // console.log(state.url);
 
     if (state.url == '/login' || state.url == '/register') {
       if (isAuthenticated) {

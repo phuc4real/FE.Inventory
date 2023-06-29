@@ -20,6 +20,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { LogoutComponent } from './components/auth/logout/logout.component';
+import { ErrorComponent } from './components/error/error.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     NotFoundComponent,
     NavbarComponent,
     SidebarComponent,
+    LogoutComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,

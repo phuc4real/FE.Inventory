@@ -5,11 +5,11 @@ import { Observable, of } from 'rxjs';
 import { Item } from '../models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ItemService {
   private apiUrl = environment.apiUrl;
-    private items: Item[] = [
+  private items: Item[] = [
     {
       id: '1',
       name: 'Item 1',
@@ -17,7 +17,7 @@ export class ItemService {
       imageUrl: 'path/to/image1.jpg',
       catalog: {
         id: 1,
-        name: 'Catalog 1'
+        name: 'Catalog 1',
       },
       inStock: 10,
       used: 5,
@@ -27,7 +27,7 @@ export class ItemService {
         userName: 'user1',
         email: 'user1@example.com',
         firstName: 'User',
-        lastName: '1'
+        lastName: '1',
       },
       lastModifiedDate: new Date(),
       modifiedByUser: {
@@ -35,8 +35,8 @@ export class ItemService {
         userName: 'user1',
         email: 'user1@example.com',
         firstName: 'User',
-        lastName: '1'
-      }
+        lastName: '1',
+      },
     },
     {
       id: '2',
@@ -45,7 +45,7 @@ export class ItemService {
       imageUrl: 'path/to/image2.jpg',
       catalog: {
         id: 2,
-        name: 'Catalog 2'
+        name: 'Catalog 2',
       },
       inStock: 5,
       used: 2,
@@ -55,7 +55,7 @@ export class ItemService {
         userName: 'user2',
         email: 'user2@example.com',
         firstName: 'User',
-        lastName: '2'
+        lastName: '2',
       },
       lastModifiedDate: new Date(),
       modifiedByUser: {
@@ -63,16 +63,14 @@ export class ItemService {
         userName: 'user2',
         email: 'user2@example.com',
         firstName: 'User',
-        lastName: '2'
-      }
+        lastName: '2',
+      },
     },
   ];
-  constructor(private http: HttpClient) { }
-
+  constructor(private http: HttpClient) {}
 
   getItems(params: any): Observable<Item[]> {
     return of(this.items);
     // return this.http.get<Item[]>(`${this.apiUrl}/item`, { params });
   }
-
 }
