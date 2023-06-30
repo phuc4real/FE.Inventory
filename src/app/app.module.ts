@@ -22,6 +22,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { LogoutComponent } from './components/auth/logout/logout.component';
 import { ErrorComponent } from './components/error/error.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ErrorComponent } from './components/error/error.component';
     AppRoutingModule,
     HttpClientModule,
     MaterialModule,
+    MatPaginatorModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
   ],

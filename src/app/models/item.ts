@@ -24,3 +24,11 @@ export interface Item {
   lastModifiedDate: Date;
   modifiedByUser: User;
 }
+
+export interface ItemDTO {
+  data: Item[];
+  pageIndex: number;
+  pageSize: number;
+  totalPage: number;
+  totalRecords: number;
+}

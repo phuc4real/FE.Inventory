@@ -19,7 +19,7 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard],
   },
-  { path: 'item', component: ItemComponent },
+  { path: 'item', component: ItemComponent, canActivate: [AuthGuard] },
   { path: 'error', component: ErrorComponent },
   { path: '**', component: NotFoundComponent },
 ];
