@@ -1,0 +1,52 @@
+<div class="item-container">
+    <mat-form-field>
+        <input matInput [(ngModel)]="searchValue" (keyup)="applyFilter()" placeholder="Search">
+    </mat-form-field>
+    <mat-table [dataSource]="items" matSort (matSortChange)="applyFilter()">
+        <!-- <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column }}</mat-header-cell>
+      <mat-cell *matCellDef="let item">{{ item[column] }}</mat-cell>
+    </ng-container> -->
+        <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.id }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.name }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.description }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="catalog">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Catalog</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.catalog.name }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="inStock">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>In Stock</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.inStock }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="used">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Used</mat-header-cell>
+            <mat-cell *matCellDef="let item">{{ item.used }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
+            <mat-cell *matCellDef="let item">
+                <button mat-button routerLink="{{item.id}}">Detail</button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    <mat-paginator #paginator [length]="totalItem" [pageSizeOptions]="pageSizeOptions"
+        showFirstLastButtons></mat-paginator>
+</div>

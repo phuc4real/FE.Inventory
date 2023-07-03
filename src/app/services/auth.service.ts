@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   getIsLogged(): boolean {
-    return this.getToken != null ? true : false;
+    return this.getToken() != null;
   }
 
   register(payload: any): Observable<any> {

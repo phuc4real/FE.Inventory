@@ -1,0 +1,16 @@
+/* item.component.css */
+.item-container {
+    margin-top: 20px;
+}
+
+.mat-form-field {
+    width: 100%;
+}
+
+.mat-table {
+    width: 100%;
+}
+
+mat-paginator {
+    margin-bottom: 34px;
+}

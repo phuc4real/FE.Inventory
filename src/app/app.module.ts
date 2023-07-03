@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { CatalogComponent } from './components/catalog/catalog.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ExportComponent } from './components/export/export.component';
-import { ItemComponent } from './components/item/item.component';
 import { OrderComponent } from './components/order/order.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
@@ -23,6 +22,15 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { LogoutComponent } from './components/auth/logout/logout.component';
 import { ErrorComponent } from './components/error/error.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { SideNavService } from './services/side-nav.service';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSortModule } from '@angular/material/sort';
+import { ItemDetailComponent } from './components/item/item-detail/item-detail.component';
+import { ListItemComponent } from './components/item/list-item/list-item.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +38,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     CatalogComponent,
     LoadingComponent,
     ExportComponent,
-    ItemComponent,
     OrderComponent,
     LoginComponent,
     RegisterComponent,
@@ -40,12 +47,20 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     SidebarComponent,
     LogoutComponent,
     ErrorComponent,
+    ItemDetailComponent,
+    ListItemComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     MaterialModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatSortModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
     MatPaginatorModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
@@ -56,6 +71,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
       useClass: TokenInterceptor,
       multi: true,
     },
+    SideNavService,
   ],
   bootstrap: [AppComponent],
 })

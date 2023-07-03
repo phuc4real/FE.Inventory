@@ -1,16 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ItemService } from '../../services';
-import { Item, ItemDTO } from '../../models';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { catchError, map, startWith, switchMap, of } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
+import { startWith, switchMap, catchError, of, map } from 'rxjs';
+import { Item } from 'src/app/models';
+import { ItemService } from 'src/app/services';
+
 @Component({
-  selector: 'app-item',
-  templateUrl: './item.component.html',
-  styleUrls: ['./item.component.css'],
+  selector: 'app-list-item',
+  templateUrl: './list-item.component.html',
+  styleUrls: ['./list-item.component.css'],
 })
-export class ItemComponent {
+export class ListItemComponent {
   items = new MatTableDataSource<Item>();
   displayedColumns: string[] = [
     'id',
@@ -19,10 +20,11 @@ export class ItemComponent {
     'catalog',
     'inStock',
     'used',
+    'actions',
   ];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
+  pageSizeOptions: number[] = [5, 10, 25, 50, 100];
 
   searchValue: string = '';
   ListItem!: Item[];
@@ -32,10 +34,15 @@ export class ItemComponent {
   ngAfterViewInit() {
     this.items.paginator = this.paginator;
     this.getPaginator();
+    this.items.sort = this.sort;
   }
 
   applyFilter() {
     this.paginator._changePageSize(this.paginator.pageSize);
+  }
+
+  onRowClick(row: any) {
+    console.log(row);
   }
 
   getPaginator() {
@@ -46,6 +53,8 @@ export class ItemComponent {
           const params: any = {
             pageIndex: this.paginator?.pageIndex,
             pageSize: this.paginator?.pageSize,
+            sortField: this.sort?.active,
+            sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
           };
           return this.getItems(params).pipe(catchError(() => of(null)));
@@ -58,14 +67,17 @@ export class ItemComponent {
       )
       .subscribe(
         (dto) => {
-          this.ListItem = dto;
-          this.items = new MatTableDataSource<Item>(this.ListItem);
+          this.setData(dto);
         },
         (error) => {
-          this.ListItem = [];
-          this.items = new MatTableDataSource<Item>(this.ListItem);
+          this.setData([]);
         }
       );
+  }
+
+  setData(items: any) {
+    this.ListItem = items;
+    this.items = new MatTableDataSource<Item>(this.ListItem);
   }
 
   getItems(params: any) {

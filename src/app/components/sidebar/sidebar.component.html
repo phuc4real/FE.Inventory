@@ -1,12 +1,27 @@
-<mat-sidenav mode="side" opened class="sidenav">
-  <mat-nav-list>
-    <mat-list-item routerLink="/" routerLinkActive="active">
-      <mat-icon>home</mat-icon>
-      <span>Home</span>
-    </mat-list-item>
-    <mat-list-item routerLink="/item" routerLinkActive="active">
-      <mat-icon>list</mat-icon>
-      <span>Item</span>
-    </mat-list-item>
-  </mat-nav-list>
-</mat-sidenav>
+<mat-sidenav-container class='app-drawer-container' fullscreen hasBackdrop="true">
+  <mat-sidenav #sidenav mode="side" class="sidenav">
+    <mat-nav-list>
+      <mat-list-item routerLink="/" routerLinkActive="active">
+        <div class="nav-item">
+          <mat-icon class="icon-style">home</mat-icon>
+          <span>Home</span>
+        </div>
+      </mat-list-item>
+      <mat-list-item routerLink="/item" routerLinkActive="active">
+        <div class="nav-item">
+          <mat-icon class="icon-style">list</mat-icon>
+          <span>Item</span>
+        </div>
+      </mat-list-item>
+      <mat-list-item routerLink="/catalog" routerLinkActive="active">
+        <div class="nav-item">
+          <mat-icon class="icon-style">list</mat-icon>
+          <span>Catalog</span>
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="sidenav-content">
+    <router-outlet class="router-outlet-custom"></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
