@@ -17,6 +17,7 @@ import { MaterialModule } from './share/material/material.module';
 import { TokenInterceptor } from './share/helpers/token-interceptor.interceptor';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { LogoutComponent } from './components/auth/logout/logout.component';
@@ -31,6 +32,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSortModule } from '@angular/material/sort';
 import { ItemDetailComponent } from './components/item/item-detail/item-detail.component';
 import { ListItemComponent } from './components/item/list-item/list-item.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { ListItemComponent } from './components/item/list-item/list-item.compone
     MaterialModule,
     MatToolbarModule,
     MatSidenavModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
     MatSortModule,
     MatMenuModule,
     MatIconModule,

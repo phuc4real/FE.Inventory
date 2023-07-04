@@ -27,6 +27,8 @@ const routes: Routes = [
     children: [
       { path: '', component: ListItemComponent },
       { path: ':id', component: ItemDetailComponent },
+      { path: 'edit/:id', component: ItemDetailComponent },
+      { path: 'new', component: ItemDetailComponent },
     ],
   },
   { path: 'catalog', component: CatalogComponent, canActivate: [AuthGuard] },

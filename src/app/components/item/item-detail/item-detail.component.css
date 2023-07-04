@@ -1,3 +1,43 @@
-.item-container {
-    margin-top: 20px;
+.item-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    overflow: hidden;
 }
+
+.item-form mat-form-field{
+    padding: 20px;
+    width: 320px;
+}
+
+.img-container {
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+}
+    .img-container input {
+    display: none;
+ }
+
+    .img-container button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+        background-color: #3f51b5;
+        border: none;
+        border-radius: 20px;
+        color: aliceblue;
+        width: 140px;
+        height: 40px;
+    }
+        .img-container button span{
+            font-weight: 500;
+            margin-left: 8px;
+        }

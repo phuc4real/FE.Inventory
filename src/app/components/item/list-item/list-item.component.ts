@@ -37,6 +37,10 @@ export class ListItemComponent {
     this.items.sort = this.sort;
   }
 
+  matSortChange(e: any) {
+    if (e.active != 'actions') this.applyFilter();
+  }
+
   applyFilter() {
     this.paginator._changePageSize(this.paginator.pageSize);
   }
@@ -82,5 +86,9 @@ export class ListItemComponent {
 
   getItems(params: any) {
     return this.itemService.getItems(params);
+  }
+
+  openDialog(id: string) {
+    console.log(id);
   }
 }

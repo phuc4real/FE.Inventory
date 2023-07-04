@@ -18,7 +18,13 @@ export class TokenInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const authToken = this.authService.getToken()?.accessToken;
     // console.log('Add access token to header');
-    if (authToken !== null) {
+    const skipIntercept = request.headers.has('skip');
+
+    if (skipIntercept) {
+      request = request.clone({
+        headers: request.headers.delete('skip'),
+      });
+    } else if (authToken !== null) {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${authToken}`,

@@ -2,7 +2,7 @@
     <mat-form-field>
         <input matInput [(ngModel)]="searchValue" (keyup)="applyFilter()" placeholder="Search">
     </mat-form-field>
-    <mat-table [dataSource]="items" matSort (matSortChange)="applyFilter()">
+    <mat-table [dataSource]="items" matSort (matSortChange)="matSortChange($event)">
         <!-- <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
       <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column }}</mat-header-cell>
       <mat-cell *matCellDef="let item">{{ item[column] }}</mat-cell>
@@ -40,7 +40,9 @@
         <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
             <mat-cell *matCellDef="let item">
-                <button mat-button routerLink="{{item.id}}">Detail</button>
+                <button mat-button routerLink="edit/{{item.id}}" color="primary">Edit</button>
+                <button mat-button routerLink="{{item.id}}" color="primary">Detail</button>
+                <button mat-button (click)="openDialog(item.id)" color="warn">Delete</button>
             </mat-cell>
         </ng-container>
 
