@@ -1,10 +1,8 @@
-import { formatDate } from '@angular/common';
-import { HttpContext, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ItemEditDTO } from 'src/app/models';
+import { ItemEdit } from 'src/app/models';
 import { Catalog } from 'src/app/models/catalog';
 import { ItemService } from 'src/app/services';
 import { CatalogService } from 'src/app/services/catalog.service';
@@ -47,7 +45,7 @@ export class EditItemComponent {
     this.img =
       'http://res.cloudinary.com/dhnoew5bj/image/upload/v1688537725/No-Image-Placeholder.svg_o0smur.png';
 
-    this.catalogService.getCatalogs().subscribe(
+    this.catalogService.getListCatalog().subscribe(
       (values) => {
         this.catalogs = values;
       },
@@ -108,7 +106,7 @@ export class EditItemComponent {
   }
 
   submitItem() {
-    const data: ItemEditDTO = {
+    const data: ItemEdit = {
       name: this.itemForm.value.name,
       description: this.itemForm.value.description,
       imageUrl: this.itemForm.value.imageUrl,

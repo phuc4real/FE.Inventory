@@ -36,7 +36,6 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { EditItemComponent } from './components/item/edit-item/edit-item.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ListCatalogComponent } from './components/catalog/list-catalog/list-catalog.component';
-import { CatalogDetailComponent } from './components/catalog/catalog-detail/catalog-detail.component';
 import { EditCatalogComponent } from './components/catalog/edit-catalog/edit-catalog.component';
 
 @NgModule({
@@ -57,7 +56,6 @@ import { EditCatalogComponent } from './components/catalog/edit-catalog/edit-cat
     ItemDetailComponent,
     EditItemComponent,
     ListCatalogComponent,
-    CatalogDetailComponent,
     EditCatalogComponent,
   ],
   imports: [

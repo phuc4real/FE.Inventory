@@ -15,7 +15,7 @@ export interface Item {
   modifiedByUser: User;
 }
 
-export interface ItemEditDTO {
+export interface ItemEdit {
   name: string;
   description: string;
   imageUrl: string;

@@ -28,7 +28,7 @@ export class ListItemComponent {
   pageSizeOptions: number[] = [10, 20, 50, 100];
 
   searchValue: string = '';
-  ListItem!: Item[];
+  listItem!: Item[];
   totalItem!: number;
   constructor(
     private itemService: ItemService,
@@ -80,8 +80,8 @@ export class ListItemComponent {
   }
 
   setData(items: any) {
-    this.ListItem = items;
-    this.items = new MatTableDataSource<Item>(this.ListItem);
+    this.listItem = items;
+    this.items = new MatTableDataSource<Item>(this.listItem);
   }
 
   getItems(params: any) {

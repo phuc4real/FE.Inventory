@@ -12,7 +12,6 @@ import { ItemDetailComponent } from './components/item/item-detail/item-detail.c
 import { EditItemComponent } from './components/item/edit-item/edit-item.component';
 import { ListCatalogComponent } from './components/catalog/list-catalog/list-catalog.component';
 import { EditCatalogComponent } from './components/catalog/edit-catalog/edit-catalog.component';
-import { CatalogDetailComponent } from './components/catalog/catalog-detail/catalog-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -40,7 +39,6 @@ const routes: Routes = [
     children: [
       { path: '', component: ListCatalogComponent },
       { path: 'add', component: EditCatalogComponent },
-      { path: ':id', component: CatalogDetailComponent },
       { path: 'edit/:id', component: EditCatalogComponent },
     ],
   },
