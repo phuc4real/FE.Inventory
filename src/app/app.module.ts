@@ -7,7 +7,6 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CatalogComponent } from './components/catalog/catalog.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ExportComponent } from './components/export/export.component';
 import { OrderComponent } from './components/order/order.component';
@@ -33,11 +32,16 @@ import { MatSortModule } from '@angular/material/sort';
 import { ItemDetailComponent } from './components/item/item-detail/item-detail.component';
 import { ListItemComponent } from './components/item/list-item/list-item.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { EditItemComponent } from './components/item/edit-item/edit-item.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ListCatalogComponent } from './components/catalog/list-catalog/list-catalog.component';
+import { CatalogDetailComponent } from './components/catalog/catalog-detail/catalog-detail.component';
+import { EditCatalogComponent } from './components/catalog/edit-catalog/edit-catalog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CatalogComponent,
     LoadingComponent,
     ExportComponent,
     OrderComponent,
@@ -49,8 +53,12 @@ import { MatNativeDateModule } from '@angular/material/core';
     SidebarComponent,
     LogoutComponent,
     ErrorComponent,
-    ItemDetailComponent,
     ListItemComponent,
+    ItemDetailComponent,
+    EditItemComponent,
+    ListCatalogComponent,
+    CatalogDetailComponent,
+    EditCatalogComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,6 +69,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatSidenavModule,
     MatNativeDateModule,
     MatDatepickerModule,
+    MatProgressSpinnerModule,
     MatSortModule,
     MatMenuModule,
     MatIconModule,
@@ -68,6 +77,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatPaginatorModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    SweetAlert2Module.forRoot(),
   ],
   providers: [
     {

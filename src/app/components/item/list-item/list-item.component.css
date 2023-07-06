@@ -1,16 +1,22 @@
 /* item.component.css */
 .item-container {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .mat-form-field {
-    width: 100%;
+  width: 100%;
 }
 
 .mat-table {
-    width: 100%;
+  width: 100%;
 }
 
 mat-paginator {
-    margin-bottom: 34px;
+  margin-bottom: 90px;
+}
+
+.add-style {
+  position: absolute;
+  margin-top: 20px;
+  right: 2%;
 }

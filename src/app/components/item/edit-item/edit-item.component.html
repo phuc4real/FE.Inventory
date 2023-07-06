@@ -1,0 +1,65 @@
+<div class="item-container">
+  <div class="back-link">
+    <a routerLink="/item">
+      <mat-icon>arrow_back_ios</mat-icon>
+      <span>Return to List</span>
+    </a>
+  </div>
+  <form class="item-form" [formGroup]="itemForm" (ngSubmit)="submitItem()">
+    <div class="img-container">
+      <img *ngIf="!isLoading; else loadingBlock" [src]="img" />
+      <ng-template #loadingBlock>
+        <mat-spinner></mat-spinner>
+      </ng-template>
+      <input
+        type="file"
+        multiple
+        accept="image/*"
+        (change)="onFileSelected($event)"
+        #hiddenfileinput
+      />
+      <button (click)="hiddenfileinput.click()" type="button">
+        <mat-icon>cloud</mat-icon>
+        <span>Upload Image</span>
+      </button>
+    </div>
+    <div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Catalog</mat-label>
+          <select
+            matNativeControl
+            formControlName="catalogId"
+            class="select-style"
+          >
+            <option
+              *ngFor="let item of catalogs"
+              [value]="item.id"
+              [selected]="item.id == selectedValue"
+            >
+              {{ item.name }}
+            </option>
+          </select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field id="description" appearance="fill">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="update-button"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,15 +1,5 @@
-interface Catalog {
-  id: number;
-  name: string;
-}
-
-interface User {
-  id: string;
-  userName: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-}
+import { Catalog } from './catalog';
+import { User } from './user';
 
 export interface Item {
   id: string;
@@ -25,7 +15,14 @@ export interface Item {
   modifiedByUser: User;
 }
 
-export interface ItemDTO {
+export interface ItemEditDTO {
+  name: string;
+  description: string;
+  imageUrl: string;
+  catalogId: number;
+}
+
+export interface ItemPagaination {
   data: Item[];
   pageIndex: number;
   pageSize: number;

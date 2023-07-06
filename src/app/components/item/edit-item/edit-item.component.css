@@ -1,4 +1,4 @@
-.item-container{
+.item-container {
     margin: 14px auto;
 }
 
@@ -8,7 +8,7 @@
     padding: 8px;
 }
 
-.item-container .back-link a{
+.item-container .back-link a {
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -30,9 +30,13 @@
     overflow: hidden;
 }
 
-.item-form mat-form-field{
+.item-form mat-form-field {
     padding: 20px;
     width: 320px;
+}
+
+.item-form mat-form-field#description {
+    width: 680px!important;
 }
 
 .img-container {
@@ -41,26 +45,34 @@
     flex-direction: column;
     align-items: center;
 }
-    .img-container input {
-    display: none;
- }
 
-    .img-container button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 20px;
-        background-color: #3f51b5;
-        border: none;
-        border-radius: 20px;
-        color: aliceblue;
-        width: 140px;
-        height: 40px;
-    }
-        .img-container button span{
-            font-weight: 500;
-            margin-left: 8px;
-        }
-    .img-container img {
-        height: 280px;
-    }
+.img-container input {
+    display: none;
+}
+
+.img-container button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    background-color: #3f51b5;
+    border: none;
+    border-radius: 20px;
+    color: aliceblue;
+    width: 140px;
+    height: 40px;
+}
+
+.img-container button span {
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+.img-container img {
+    height: 280px;
+}
+
+.update-button{
+    left: 40%;
+    padding: 20px 50px;
+}

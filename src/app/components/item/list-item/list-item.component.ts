@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
 import { Item } from 'src/app/models';
 import { ItemService } from 'src/app/services';
@@ -24,12 +25,15 @@ export class ListItemComponent {
   ];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  pageSizeOptions: number[] = [5, 10, 25, 50, 100];
+  pageSizeOptions: number[] = [10, 20, 50, 100];
 
   searchValue: string = '';
   ListItem!: Item[];
   totalItem!: number;
-  constructor(private itemService: ItemService) {}
+  constructor(
+    private itemService: ItemService,
+    private toastr: ToastrService
+  ) {}
 
   ngAfterViewInit() {
     this.items.paginator = this.paginator;
@@ -43,10 +47,6 @@ export class ListItemComponent {
 
   applyFilter() {
     this.paginator._changePageSize(this.paginator.pageSize);
-  }
-
-  onRowClick(row: any) {
-    console.log(row);
   }
 
   getPaginator() {
@@ -88,7 +88,18 @@ export class ListItemComponent {
     return this.itemService.getItems(params);
   }
 
-  openDialog(id: string) {
-    console.log(id);
+  deleteItem(id: string) {
+    this.itemService.deleteItem(id).subscribe(
+      (response) => {
+        this.applyFilter();
+        if (response[0]) {
+          this.toastr.success(response[0].value, response[0].key);
+        }
+      },
+      (error: any) => {
+        this.toastr.error('Something went wrong!', 'Error');
+        console.log(error);
+      }
+    );
   }
 }

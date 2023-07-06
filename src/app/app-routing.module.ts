@@ -7,9 +7,12 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { LogoutComponent } from './components/auth/logout/logout.component';
 import { ErrorComponent } from './components/error/error.component';
-import { CatalogComponent } from './components/catalog/catalog.component';
 import { ListItemComponent } from './components/item/list-item/list-item.component';
 import { ItemDetailComponent } from './components/item/item-detail/item-detail.component';
+import { EditItemComponent } from './components/item/edit-item/edit-item.component';
+import { ListCatalogComponent } from './components/catalog/list-catalog/list-catalog.component';
+import { EditCatalogComponent } from './components/catalog/edit-catalog/edit-catalog.component';
+import { CatalogDetailComponent } from './components/catalog/catalog-detail/catalog-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -26,12 +29,21 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', component: ListItemComponent },
+      { path: 'add', component: EditItemComponent },
       { path: ':id', component: ItemDetailComponent },
-      { path: 'edit/:id', component: ItemDetailComponent },
-      { path: 'new', component: ItemDetailComponent },
+      { path: 'edit/:id', component: EditItemComponent },
     ],
   },
-  { path: 'catalog', component: CatalogComponent, canActivate: [AuthGuard] },
+  {
+    path: 'catalog',
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', component: ListCatalogComponent },
+      { path: 'add', component: EditCatalogComponent },
+      { path: ':id', component: CatalogDetailComponent },
+      { path: 'edit/:id', component: EditCatalogComponent },
+    ],
+  },
   { path: 'error', component: ErrorComponent },
   { path: '**', component: NotFoundComponent },
 ];

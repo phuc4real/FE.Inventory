@@ -1,66 +1,72 @@
-<form class="item-form" [formGroup]="itemForm" (ngSubmit)="updateItemInfo()">
+<div class="item-container">
+  <div class="back-link">
+    <a routerLink="/item">
+      <mat-icon>arrow_back_ios</mat-icon>
+      <span>Return to List</span>
+    </a>
+  </div>
+  <form class="item-form" [formGroup]="itemForm">
     <div class="img-container">
-        <img [src]="img">
-        <input type="file" multiple accept="image/*" (change)="onFileSelected($event)" #hiddenfileinput>   
-        <button *ngIf="!isReadOnly" (click)="hiddenfileinput.click()">
-            <mat-icon>cloud</mat-icon>
-            <span>Upload Image</span>
-        </button>
+      <img [src]="img" />
     </div>
     <div>
-        <div>
-            <mat-form-field appearance="fill">
-                <mat-label>Item ID</mat-label>
-                <input matInput formControlName="id" readonly>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Name</mat-label>
-                <input matInput formControlName="name" [readonly]="isReadOnly">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Catalog</mat-label>
-                <input matInput formControlName="catalogName" [readonly]="isReadOnly">
-            </mat-form-field>
-        </div>
-        <div>
-            <mat-form-field appearance="fill">
-                <mat-label>Description</mat-label>
-                <input matInput formControlName="description" [readonly]="isReadOnly">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>InStock</mat-label>
-                <input matInput formControlName="inStock" [readonly]="isReadOnly">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Used</mat-label>
-                <input matInput formControlName="used" [readonly]="isReadOnly">
-            </mat-form-field>
-        </div>
-        <div *ngIf="isReadOnly">
-            <mat-form-field appearance="fill">
-                <mat-label>Created Date</mat-label>
-                <input matInput type="date" readonly formControlName="createdDate">
-                <!-- <input matInput [matDatepicker]="createdDatePicker" readonly formControlName="createdDate">
-                <mat-datepicker-toggle matIconSuffix [for]="createdDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #createdDatePicker></mat-datepicker> -->
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Created By User</mat-label>
-                <input matInput formControlName="createdByUser" readonly>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Last Modified</mat-label>
-                <input matInput type="date" readonly formControlName="lastModifiedDate">
-                <!-- <input matInput [matDatepicker]="lastModifiedDatePicker" readonly formControlName="lastModifiedDate">
-                <mat-datepicker-toggle matIconSuffix [for]="lastModifiedDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #lastModifiedDatePicker></mat-datepicker> -->
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Modified By User</mat-label>
-                <input matInput formControlName="modifiedByUser" readonly>
-            </mat-form-field>
-        </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Item ID</mat-label>
+          <input matInput formControlName="id" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Catalog</mat-label>
+          <input matInput formControlName="catalogName" readonly />
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="description" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>InStock</mat-label>
+          <input matInput formControlName="inStock" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Used</mat-label>
+          <input matInput formControlName="used" readonly />
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Created Date</mat-label>
+          <input matInput type="date" readonly formControlName="createdDate" />
+          <!-- <input matInput [matDatepicker]="createdDatePicker" readonly formControlName="createdDate">
+                    <mat-datepicker-toggle matIconSuffix [for]="createdDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #createdDatePicker></mat-datepicker> -->
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Created By User</mat-label>
+          <input matInput formControlName="createdByUser" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Last Modified</mat-label>
+          <input
+            matInput
+            type="date"
+            readonly
+            formControlName="lastModifiedDate"
+          />
+          <!-- <input matInput [matDatepicker]="lastModifiedDatePicker" readonly formControlName="lastModifiedDate">
+                    <mat-datepicker-toggle matIconSuffix [for]="lastModifiedDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #lastModifiedDatePicker></mat-datepicker> -->
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Modified By User</mat-label>
+          <input matInput formControlName="modifiedByUser" readonly />
+        </mat-form-field>
+      </div>
     </div>
-
-    <button *ngIf="!isReadOnly" mat-raised-button color="primary" type="submit">Update</button>
-</form>
+  </form>
+</div>
