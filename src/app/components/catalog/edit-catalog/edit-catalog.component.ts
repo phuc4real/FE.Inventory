@@ -54,6 +54,7 @@ export class EditCatalogComponent {
       this.catalogService.updateCatalog(this.catalogId, data).subscribe(
         (response) => {
           this.toastr.success(response[0].value, response[0].key);
+          this.router.navigate(['/catalog']);
         },
         (error: any) => {
           if (error[0]) this.toastr.error(error[0].value, error[0].key);
@@ -64,13 +65,14 @@ export class EditCatalogComponent {
       this.catalogService.addCatalog(data).subscribe(
         (resp) => {
           this.toastr.success(resp.body[0].value, resp.body[0].key);
+          this.router.navigate(['/catalog']);
         },
         (error: any) => {
           if (error[0]) this.toastr.error(error[0].value, error[0].key);
           else this.toastr.error('Something went wrong!', 'Error');
+          this.router.navigate(['/catalog']);
         }
       );
     }
-    this.router.navigate(['/catalog']);
   }
 }

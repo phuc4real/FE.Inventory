@@ -1,0 +1,52 @@
+.container {
+  margin: 14px auto;
+}
+
+.container .back-link {
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 8px;
+}
+
+.container .back-link a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 10px;
+  font-size: 1.2rem;
+  font-weight: 450;
+  color: black;
+}
+
+.order-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  overflow: hidden;
+}
+
+.order-form mat-form-field {
+  padding: 20px;
+  width: 320px;
+}
+
+.item-img {
+  padding: 10px;
+  height: 140px;
+}
+
+.item-link {
+  text-decoration: none;
+  color: black;
+}
+
+.item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+}

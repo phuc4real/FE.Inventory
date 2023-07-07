@@ -47,6 +47,7 @@ export class ListItemComponent {
 
   applyFilter() {
     this.paginator._changePageSize(this.paginator.pageSize);
+    this.paginator.firstPage();
   }
 
   getPaginator() {
@@ -61,7 +62,9 @@ export class ListItemComponent {
             sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
           };
-          return this.getItems(params).pipe(catchError(() => of(null)));
+          return this.itemService
+            .getItems(params)
+            .pipe(catchError(() => of(null)));
         }),
         map((dto) => {
           if (dto == null) return [];
@@ -84,21 +87,18 @@ export class ListItemComponent {
     this.items = new MatTableDataSource<Item>(this.listItem);
   }
 
-  getItems(params: any) {
-    return this.itemService.getItems(params);
-  }
-
   deleteItem(id: string) {
     this.itemService.deleteItem(id).subscribe(
       (response) => {
-        this.applyFilter();
         if (response[0]) {
           this.toastr.success(response[0].value, response[0].key);
+          this.paginator._changePageSize(this.paginator.pageSize);
         }
       },
-      (error: any) => {
+      (errors: any) => {
+        if (errors.error[0])
+          this.toastr.error(errors.error[0].value, errors.error[0].key);
         this.toastr.error('Something went wrong!', 'Error');
-        console.log(error);
       }
     );
   }

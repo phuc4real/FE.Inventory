@@ -12,6 +12,9 @@ import { ItemDetailComponent } from './components/item/item-detail/item-detail.c
 import { EditItemComponent } from './components/item/edit-item/edit-item.component';
 import { ListCatalogComponent } from './components/catalog/list-catalog/list-catalog.component';
 import { EditCatalogComponent } from './components/catalog/edit-catalog/edit-catalog.component';
+import { ListOrderComponent } from './components/order/list-order/list-order.component';
+import { OrderDetailComponent } from './components/order/order-detail/order-detail.component';
+import { AddOrderComponent } from './components/order/add-order/add-order.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -40,6 +43,15 @@ const routes: Routes = [
       { path: '', component: ListCatalogComponent },
       { path: 'add', component: EditCatalogComponent },
       { path: 'edit/:id', component: EditCatalogComponent },
+    ],
+  },
+  {
+    path: 'order',
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', component: ListOrderComponent },
+      { path: 'add', component: AddOrderComponent },
+      { path: ':id', component: OrderDetailComponent },
     ],
   },
   { path: 'error', component: ErrorComponent },

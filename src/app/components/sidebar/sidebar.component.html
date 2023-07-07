@@ -1,4 +1,8 @@
-<mat-sidenav-container class='app-drawer-container' fullscreen hasBackdrop="true">
+<mat-sidenav-container
+  class="app-drawer-container"
+  fullscreen
+  hasBackdrop="true"
+>
   <mat-sidenav #sidenav mode="side" class="sidenav">
     <mat-nav-list>
       <mat-list-item routerLink="/" routerLinkActive="active">
@@ -17,6 +21,12 @@
         <div class="nav-item">
           <mat-icon class="icon-style">list</mat-icon>
           <span>Catalog</span>
+        </div>
+      </mat-list-item>
+      <mat-list-item routerLink="/order" routerLinkActive="active">
+        <div class="nav-item">
+          <mat-icon class="icon-style">list</mat-icon>
+          <span>Order</span>
         </div>
       </mat-list-item>
     </mat-nav-list>

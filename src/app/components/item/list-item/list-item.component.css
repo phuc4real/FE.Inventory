@@ -3,12 +3,8 @@
   margin-top: 20px;
 }
 
-.mat-form-field {
-  width: 100%;
-}
-
-.mat-table {
-  width: 100%;
+.search-field {
+  width: 30%;
 }
 
 mat-paginator {

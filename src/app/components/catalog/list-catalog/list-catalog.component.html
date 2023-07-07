@@ -1,5 +1,5 @@
 <div class="container">
-  <mat-form-field>
+  <mat-form-field class="search-field">
     <input
       matInput
       [(ngModel)]="searchValue"
@@ -14,7 +14,7 @@
     color="primary"
     routerLink="add"
   >
-    New Item
+    Add new
   </button>
   <mat-table
     [dataSource]="catalogs"

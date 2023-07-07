@@ -3,35 +3,44 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { startWith, switchMap, catchError, of, map } from 'rxjs';
-import { Catalog } from 'src/app/models';
-import { CatalogService } from 'src/app/services/catalog.service';
+import { catchError, map, of, startWith, switchMap } from 'rxjs';
+import { Order } from 'src/app/models';
+import { OrderService } from 'src/app/services/order.service';
+import { formatCurrency, formatDate } from '@angular/common';
 
 @Component({
-  selector: 'app-list-catalog',
-  templateUrl: './list-catalog.component.html',
-  styleUrls: ['./list-catalog.component.css'],
+  selector: 'app-list-order',
+  templateUrl: './list-order.component.html',
+  styleUrls: ['./list-order.component.css'],
 })
-export class ListCatalogComponent {
-  catalogs = new MatTableDataSource<Catalog>();
-  displayedColumns: string[] = ['id', 'name', 'actions'];
+export class ListOrderComponent {
+  orders = new MatTableDataSource<Order>();
+  displayedColumns: string[] = [
+    'id',
+    'orderDate',
+    'status',
+    'orderTotal',
+    'user',
+    'completeDate',
+    'actions',
+  ];
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   pageSizeOptions: number[] = [10, 20, 50, 100];
 
   searchValue: string = '';
-  listCatalog!: Catalog[];
-  totalCatalog!: number;
-
+  listOrder!: Order[];
+  totalOrder!: number;
   constructor(
-    private catalogService: CatalogService,
+    private orderService: OrderService,
     private toastr: ToastrService
   ) {}
 
   ngAfterViewInit() {
-    this.catalogs.paginator = this.paginator;
+    this.orders.paginator = this.paginator;
     this.getPaginator();
-    this.catalogs.sort = this.sort;
+    this.orders.sort = this.sort;
   }
 
   matSortChange(e: any) {
@@ -55,11 +64,13 @@ export class ListCatalogComponent {
             sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
           };
-          return this.getCatalogs(params).pipe(catchError(() => of(null)));
+          return this.orderService
+            .getPaginationOrder(params)
+            .pipe(catchError(() => of(null)));
         }),
         map((dto) => {
           if (dto == null) return [];
-          this.totalCatalog = dto.totalRecords;
+          this.totalOrder = dto.totalRecords;
           return dto.data;
         })
       )
@@ -67,33 +78,32 @@ export class ListCatalogComponent {
         (dto) => {
           this.setData(dto);
         },
-        (error) => {
+        (error: any) => {
           this.setData([]);
         }
       );
   }
 
-  setData(catalogs: any) {
-    this.listCatalog = catalogs;
-    this.catalogs = new MatTableDataSource<Catalog>(this.listCatalog);
+  setData(orders: any) {
+    this.listOrder = orders;
+    this.orders = new MatTableDataSource<Order>(this.listOrder);
   }
 
-  getCatalogs(params: any) {
-    return this.catalogService.getCatalogs(params);
+  format(date: any) {
+    return formatDate(date, 'hh:mm:ss - dd/MM/yyyy', 'en-US');
   }
 
-  deteleCatalog(id: number) {
-    this.catalogService.deleteCatalog(id).subscribe(
+  cancelOrder(id: number) {
+    this.orderService.cancelOrder(id).subscribe(
       (response) => {
-        if (response[0]) {
+        if (response[0])
           this.toastr.success(response[0].value, response[0].key);
-          this.paginator._changePageSize(this.paginator.pageSize);
-        }
+        this.paginator._changePageSize(this.paginator.pageSize);
       },
       (errors: any) => {
         if (errors.error[0])
           this.toastr.error(errors.error[0].value, errors.error[0].key);
-        this.toastr.error('Something went wrong!', 'Error');
+        else this.toastr.error('Something went wrong', 'Error');
       }
     );
   }

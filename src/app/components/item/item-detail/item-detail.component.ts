@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ItemService } from 'src/app/services';
 
@@ -16,8 +16,8 @@ export class ItemDetailComponent {
 
   constructor(private route: ActivatedRoute, private itemService: ItemService) {
     this.itemForm = new FormGroup({
-      id: new FormControl('', Validators.required),
-      name: new FormControl('', Validators.required),
+      id: new FormControl(''),
+      name: new FormControl(''),
       description: new FormControl(''),
       imageUrl: new FormControl(''),
       catalogName: new FormControl(''),
@@ -54,11 +54,15 @@ export class ItemDetailComponent {
           catalogName: values.catalog.name,
           inStock: values.inStock,
           used: values.used,
-          createdDate: formatDate(values.createdDate, 'yyyy-MM-dd', 'en-US'),
+          createdDate: formatDate(
+            values.createdDate,
+            'hh:mm:ss - dd/MM/yyyy',
+            'en-US'
+          ),
           createdByUser: values.createdByUser.userName,
           lastModifiedDate: formatDate(
             values.lastModifiedDate,
-            'yyyy-MM-dd',
+            'hh:mm:ss - dd/MM/yyyy',
             'en-US'
           ),
           modifiedByUser: values.modifiedByUser.userName,

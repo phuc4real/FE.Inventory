@@ -1,0 +1,108 @@
+<div class="container">
+  <div>
+    <mat-form-field class="search-field">
+      <input
+        matInput
+        [(ngModel)]="searchValue"
+        (keyup)="applyFilter()"
+        placeholder="Search"
+      />
+    </mat-form-field>
+    <button
+      mat-button
+      class="add-style"
+      mat-raised-button
+      color="primary"
+      routerLink="add"
+    >
+      Add new
+    </button>
+  </div>
+  <mat-table
+    [dataSource]="orders"
+    matSort
+    (matSortChange)="matSortChange($event)"
+  >
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+      <mat-cell *matCellDef="let order">{{ order.id }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="orderDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Order Date</mat-header-cell
+      >
+      <mat-cell *matCellDef="let order">{{ format(order.orderDate) }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Order Status</mat-header-cell
+      >
+      <mat-cell *matCellDef="let order">{{ order.status }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="orderTotal">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Order Total</mat-header-cell
+      >
+      <mat-cell *matCellDef="let order">{{
+        order.orderTotal | number : "1.0-0"
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="user">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Order by</mat-header-cell
+      >
+      <mat-cell *matCellDef="let order">{{
+        order.orderByUser.userName
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="completeDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Complete Date</mat-header-cell
+      >
+      <mat-cell *matCellDef="let order">{{
+        format(order.completeDate)
+      }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Actions</mat-header-cell
+      >
+      <mat-cell *matCellDef="let order">
+        <button mat-button routerLink="{{ order.id }}" color="primary">
+          Detail
+        </button>
+        <button
+          *ngIf="order.status != 'Done' && order.status != 'Cancel'"
+          mat-button
+          color="warn"
+          [swal]="{ 
+                        title: 'Cancel order',
+                        icon: 'warning',
+                        text:'Cancel order #'+order.id,
+                        showCancelButton: true,
+                        confirmButtonText: 'Cancel order',
+                        confirmButtonColor: '#d61313',
+                    }"
+          (confirm)="cancelOrder(order.id)"
+        >
+          Cancel
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <mat-paginator
+    #paginator
+    [length]="totalOrder"
+    [pageSizeOptions]="pageSizeOptions"
+    showFirstLastButtons
+  ></mat-paginator>
+</div>
