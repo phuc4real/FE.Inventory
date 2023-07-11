@@ -35,6 +35,24 @@
           <input matInput formControlName="completeDate" readonly />
         </mat-form-field>
       </div>
+      <div *ngIf="status != ''" class="button-style">
+        <button
+          mat-button
+          mat-raised-button
+          color="primary"
+          (click)="updateStatus()"
+        >
+          Update Status to {{ status }}
+        </button>
+        <button
+          mat-button
+          mat-raised-button
+          color="warn"
+          (click)="cancelOrder()"
+        >
+          Cancel Order
+        </button>
+      </div>
     </div>
   </form>
 </div>

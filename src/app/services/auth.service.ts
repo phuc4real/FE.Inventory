@@ -1,8 +1,9 @@
 import { environment } from '../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { TokenModel } from 'src/app/models/token-model';
+import { greaterThan } from '../share/helpers/utilities-hepler';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +17,10 @@ export class AuthService {
   async getIsAuthenticated(): Promise<boolean> {
     const token = this.getToken();
     if (token) {
-      let expireTime = Date.parse(token!.expireTime.toString());
-      let curDate = Date.parse(new Date().toString());
-      if (expireTime > curDate) {
+      // let expireTime = Date.parse(token!.expireTime.toString());
+      // let curDate = Date.parse(new Date().toString());
+      // if (expireTime > curDate) {
+      if (greaterThan(token.expireTime, new Date())) {
         return true;
       } else {
         let isSuccess = await this.tryRefreshToken();

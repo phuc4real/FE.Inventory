@@ -31,20 +31,27 @@
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Catalog</mat-label>
-          <select
-            matNativeControl
-            formControlName="catalogId"
-            class="select-style"
-          >
-            <option
-              *ngFor="let item of catalogs"
-              [value]="item.id"
-              [selected]="item.id == selectedValue"
-            >
-              {{ item.name }}
-            </option>
-          </select>
+          <mat-select [(value)]="selectedValue" formControlName="catalogId">
+            <mat-option *ngFor="let catalog of catalogs" [value]="catalog.id">
+              {{ catalog.name }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
+        <!-- <mat-form-field appearance="fill">
+          <mat-label>Catalog</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="catalogId"
+            [matAutocomplete]="auto"
+            (keyup)="getCatalog()"
+          />
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let catalog of catalogs" [value]="catalog.id">
+              {{ catalog.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field> -->
       </div>
       <div>
         <mat-form-field id="description" appearance="fill">

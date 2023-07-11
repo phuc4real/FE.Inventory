@@ -34,11 +34,15 @@ export class ListCatalogComponent {
     this.catalogs.sort = this.sort;
   }
 
-  matSortChange(e: any) {
-    if (e.active != 'actions') this.applyFilter();
+  matSortChange() {
+    this.refreshData();
   }
 
   applyFilter() {
+    if (this.searchValue.length > 2) this.refreshData();
+  }
+
+  refreshData() {
     this.paginator._changePageSize(this.paginator.pageSize);
     this.paginator.firstPage();
   }
@@ -55,7 +59,9 @@ export class ListCatalogComponent {
             sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
           };
-          return this.getCatalogs(params).pipe(catchError(() => of(null)));
+          return this.catalogService
+            .getCatalogs(params)
+            .pipe(catchError(() => of(null)));
         }),
         map((dto) => {
           if (dto == null) return [];
@@ -76,10 +82,6 @@ export class ListCatalogComponent {
   setData(catalogs: any) {
     this.listCatalog = catalogs;
     this.catalogs = new MatTableDataSource<Catalog>(this.listCatalog);
-  }
-
-  getCatalogs(params: any) {
-    return this.catalogService.getCatalogs(params);
   }
 
   deteleCatalog(id: number) {

@@ -8,7 +8,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoadingComponent } from './components/loading/loading.component';
-import { ExportComponent } from './components/export/export.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { MaterialModule } from './share/material/material.module';
@@ -29,12 +28,15 @@ import { EditCatalogComponent } from './components/catalog/edit-catalog/edit-cat
 import { ListOrderComponent } from './components/order/list-order/list-order.component';
 import { OrderDetailComponent } from './components/order/order-detail/order-detail.component';
 import { AddOrderComponent } from './components/order/add-order/add-order.component';
+import { AddOrderDialogComponent } from './components/order/add-order-dialog/add-order-dialog.component';
+import { ListExportComponent } from './components/export/list-export/list-export.component';
+import { ExportDetailComponent } from './components/export/export-detail/export-detail.component';
+import { AddExportComponent } from './components/export/add-export/add-export.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoadingComponent,
-    ExportComponent,
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
@@ -51,6 +53,10 @@ import { AddOrderComponent } from './components/order/add-order/add-order.compon
     ListOrderComponent,
     OrderDetailComponent,
     AddOrderComponent,
+    AddOrderDialogComponent,
+    ListExportComponent,
+    ExportDetailComponent,
+    AddExportComponent,
   ],
   imports: [
     BrowserModule,

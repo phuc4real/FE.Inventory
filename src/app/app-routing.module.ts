@@ -1,6 +1,6 @@
 import { LoginComponent } from './components/auth/login/login.component';
 import { AuthGuard } from './share/guards/auth.guard';
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -15,6 +15,9 @@ import { EditCatalogComponent } from './components/catalog/edit-catalog/edit-cat
 import { ListOrderComponent } from './components/order/list-order/list-order.component';
 import { OrderDetailComponent } from './components/order/order-detail/order-detail.component';
 import { AddOrderComponent } from './components/order/add-order/add-order.component';
+import { ListExportComponent } from './components/export/list-export/list-export.component';
+import { ExportDetailComponent } from './components/export/export-detail/export-detail.component';
+import { AddExportComponent } from './components/export/add-export/add-export.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -52,6 +55,15 @@ const routes: Routes = [
       { path: '', component: ListOrderComponent },
       { path: 'add', component: AddOrderComponent },
       { path: ':id', component: OrderDetailComponent },
+    ],
+  },
+  {
+    path: 'export',
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', component: ListExportComponent },
+      { path: 'add', component: AddExportComponent },
+      { path: ':id', component: ExportDetailComponent },
     ],
   },
   { path: 'error', component: ErrorComponent },

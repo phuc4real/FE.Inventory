@@ -1,8 +1,8 @@
-import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ItemService } from 'src/app/services';
+import { toStringFormatDate } from 'src/app/share/helpers/utilities-hepler';
 
 @Component({
   selector: 'app-item-detail',
@@ -54,17 +54,9 @@ export class ItemDetailComponent {
           catalogName: values.catalog.name,
           inStock: values.inStock,
           used: values.used,
-          createdDate: formatDate(
-            values.createdDate,
-            'hh:mm:ss - dd/MM/yyyy',
-            'en-US'
-          ),
+          createdDate: toStringFormatDate(values.createdDate),
           createdByUser: values.createdByUser.userName,
-          lastModifiedDate: formatDate(
-            values.lastModifiedDate,
-            'hh:mm:ss - dd/MM/yyyy',
-            'en-US'
-          ),
+          lastModifiedDate: toStringFormatDate(values.lastModifiedDate),
           modifiedByUser: values.modifiedByUser.userName,
         });
       },

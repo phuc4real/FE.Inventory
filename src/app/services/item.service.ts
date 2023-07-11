@@ -16,6 +16,10 @@ export class ItemService {
     return this.http.get<ItemPagaination>(`${this.apiUrl}`, { params });
   }
 
+  getListItem(params: any): Observable<Item[]> {
+    return this.http.get<Item[]>(`${this.apiUrl}/list`, { params });
+  }
+
   getById(id: string): Observable<Item> {
     return this.http.get<Item>(`${this.apiUrl}/${id}`);
   }

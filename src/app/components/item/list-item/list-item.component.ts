@@ -41,13 +41,22 @@ export class ListItemComponent {
     this.items.sort = this.sort;
   }
 
-  matSortChange(e: any) {
-    if (e.active != 'actions') this.applyFilter();
+  matSortChange() {
+    this.refreshData();
   }
 
   applyFilter() {
-    this.paginator._changePageSize(this.paginator.pageSize);
+    if (this.searchValue.length > 2) this.refreshData();
+  }
+
+  setData(items: any) {
+    this.listItem = items;
+    this.items = new MatTableDataSource<Item>(this.listItem);
+  }
+
+  refreshData() {
     this.paginator.firstPage();
+    this.paginator._changePageSize(this.paginator.pageSize);
   }
 
   getPaginator() {
@@ -80,11 +89,6 @@ export class ListItemComponent {
           this.setData([]);
         }
       );
-  }
-
-  setData(items: any) {
-    this.listItem = items;
-    this.items = new MatTableDataSource<Item>(this.listItem);
   }
 
   deleteItem(id: string) {

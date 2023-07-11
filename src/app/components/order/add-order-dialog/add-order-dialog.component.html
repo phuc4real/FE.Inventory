@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Add item to Order</h1>
+<div mat-dialog-content class="dialog-content">
+  <mat-form-field>
+    <mat-label>Quantity</mat-label>
+    <input matInput [(ngModel)]="data.quantity" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Price</mat-label>
+    <input matInput [(ngModel)]="data.price" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button
+    class="dialog-button"
+    mat-button
+    [mat-dialog-close]="data"
+    cdkFocusInitial
+  >
+    Ok
+  </button>
+</div>

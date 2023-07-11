@@ -18,11 +18,7 @@
       Add new
     </button>
   </div>
-  <mat-table
-    [dataSource]="orders"
-    matSort
-    (matSortChange)="matSortChange($event)"
-  >
+  <mat-table [dataSource]="orders" matSort (matSortChange)="matSortChange()">
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
       <mat-cell *matCellDef="let order">{{ order.id }}</mat-cell>
@@ -32,7 +28,9 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Order Date</mat-header-cell
       >
-      <mat-cell *matCellDef="let order">{{ format(order.orderDate) }}</mat-cell>
+      <mat-cell *matCellDef="let order">{{
+        dateString(order.orderDate)
+      }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="status">
@@ -51,7 +49,7 @@
       }}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="user">
+    <ng-container matColumnDef="orderByUser">
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Order by</mat-header-cell
       >
@@ -65,14 +63,12 @@
         >Complete Date</mat-header-cell
       >
       <mat-cell *matCellDef="let order">{{
-        format(order.completeDate)
+        dateString(order.completeDate)
       }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Actions</mat-header-cell
-      >
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
       <mat-cell *matCellDef="let order">
         <button mat-button routerLink="{{ order.id }}" color="primary">
           Detail

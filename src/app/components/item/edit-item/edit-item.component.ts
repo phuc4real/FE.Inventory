@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Observable, map, startWith } from 'rxjs';
 import { ItemEdit } from 'src/app/models';
 import { Catalog } from 'src/app/models/catalog';
 import { ItemService } from 'src/app/services';
@@ -45,14 +46,7 @@ export class EditItemComponent {
     this.img =
       'http://res.cloudinary.com/dhnoew5bj/image/upload/v1688537725/No-Image-Placeholder.svg_o0smur.png';
 
-    this.catalogService.getListCatalog().subscribe(
-      (values) => {
-        this.catalogs = values;
-      },
-      (error: any) => {
-        console.log(error);
-      }
-    );
+    this.getCatalog();
   }
 
   ngAfterViewInit() {
@@ -77,6 +71,21 @@ export class EditItemComponent {
         imageUrl: this.img,
       });
     }
+  }
+
+  getCatalog() {
+    this.catalogService.getListCatalog().subscribe(
+      (value) => {
+        this.catalogs = value;
+      },
+      (error: any) => {
+        if (error.status != 404)
+          this.toastr.error(
+            'Something went wrong! Get catalog list failed',
+            'Error'
+          );
+      }
+    );
   }
 
   onFileSelected(event: Event) {

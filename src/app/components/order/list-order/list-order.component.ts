@@ -6,7 +6,11 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, map, of, startWith, switchMap } from 'rxjs';
 import { Order } from 'src/app/models';
 import { OrderService } from 'src/app/services/order.service';
-import { formatCurrency, formatDate } from '@angular/common';
+import { formatDate } from '@angular/common';
+import {
+  isDefaultDate,
+  toStringFormatDate,
+} from 'src/app/share/helpers/utilities-hepler';
 
 @Component({
   selector: 'app-list-order',
@@ -20,7 +24,7 @@ export class ListOrderComponent {
     'orderDate',
     'status',
     'orderTotal',
-    'user',
+    'orderByUser',
     'completeDate',
     'actions',
   ];
@@ -43,8 +47,8 @@ export class ListOrderComponent {
     this.orders.sort = this.sort;
   }
 
-  matSortChange(e: any) {
-    if (e.active != 'actions') this.applyFilter();
+  matSortChange() {
+    this.applyFilter();
   }
 
   applyFilter() {
@@ -65,7 +69,7 @@ export class ListOrderComponent {
             searchKeyword: this.searchValue,
           };
           return this.orderService
-            .getPaginationOrder(params)
+            .getPagination(params)
             .pipe(catchError(() => of(null)));
         }),
         map((dto) => {
@@ -89,8 +93,8 @@ export class ListOrderComponent {
     this.orders = new MatTableDataSource<Order>(this.listOrder);
   }
 
-  format(date: any) {
-    return formatDate(date, 'hh:mm:ss - dd/MM/yyyy', 'en-US');
+  dateString(date: any) {
+    return isDefaultDate(date) ? 'Not Complete' : toStringFormatDate(date);
   }
 
   cancelOrder(id: number) {
