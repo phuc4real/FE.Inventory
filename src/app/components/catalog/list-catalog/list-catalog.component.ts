@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
 import { Catalog } from 'src/app/models';
 import { CatalogService } from 'src/app/services/catalog.service';
+import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
 
 @Component({
   selector: 'app-list-catalog',
@@ -39,7 +40,7 @@ export class ListCatalogComponent {
   }
 
   applyFilter() {
-    if (this.searchValue.length > 2) this.refreshData();
+    this.refreshData();
   }
 
   refreshData() {
@@ -60,7 +61,7 @@ export class ListCatalogComponent {
             searchKeyword: this.searchValue,
           };
           return this.catalogService
-            .getCatalogs(params)
+            .getPagination(params)
             .pipe(catchError(() => of(null)));
         }),
         map((dto) => {
@@ -87,16 +88,10 @@ export class ListCatalogComponent {
   deteleCatalog(id: number) {
     this.catalogService.deleteCatalog(id).subscribe(
       (response) => {
-        if (response[0]) {
-          this.toastr.success(response[0].value, response[0].key);
-          this.paginator._changePageSize(this.paginator.pageSize);
-        }
+        showMessage(response, this.toastr);
+        this.paginator._changePageSize(this.paginator.pageSize);
       },
-      (errors: any) => {
-        if (errors.error[0])
-          this.toastr.error(errors.error[0].value, errors.error[0].key);
-        this.toastr.error('Something went wrong!', 'Error');
-      }
+      (err: any) => showError(err, this.toastr)
     );
   }
 }

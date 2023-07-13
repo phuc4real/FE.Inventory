@@ -4,6 +4,7 @@ import { AuthService } from './../../../services';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +15,11 @@ export class RegisterComponent {
   registrationForm: FormGroup;
   registrationError!: string;
 
-  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {
     this.registrationForm = new FormGroup({
       username: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -22,9 +27,7 @@ export class RegisterComponent {
     });
   }
 
-  ngOnInit(){
-
-  }
+  ngOnInit() {}
 
   registerUser(): void {
     if (this.registrationForm.invalid) {
@@ -38,22 +41,11 @@ export class RegisterComponent {
     };
 
     this.authService.register(payload).subscribe(
-      (response: any) => {
-        this.toastr.success('Đăng ký thành công!', 'Success');
+      (response) => {
+        showMessage(response, this.toastr);
         this.router.navigate(['/login']);
       },
-      (error: any) => {
-        if (error.status === 400 && Array.isArray(error.error) && error.error.length > 0) {
-          const errorMessage = error.error[0].value;
-          if (errorMessage === 'User already exists!') {
-            this.toastr.error(errorMessage, 'Error');
-          } else {
-            this.registrationError = 'Registration failed. Please try again.';
-          }
-        } else {
-          this.registrationError = 'Registration failed. Please try again.';
-        }
-      }
+      (err: any) => showError(err, this.toastr)
     );
   }
 }

@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TokenModel } from 'src/app/models/token-model';
-import { greaterThan } from '../share/helpers/utilities-hepler';
+import { greaterThan } from '../share/helpers/utilities-helper';
+import { ResponseMessage } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -17,9 +18,6 @@ export class AuthService {
   async getIsAuthenticated(): Promise<boolean> {
     const token = this.getToken();
     if (token) {
-      // let expireTime = Date.parse(token!.expireTime.toString());
-      // let curDate = Date.parse(new Date().toString());
-      // if (expireTime > curDate) {
       if (greaterThan(token.expireTime, new Date())) {
         return true;
       } else {
@@ -35,12 +33,18 @@ export class AuthService {
     return this.getToken() != null;
   }
 
-  register(payload: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/register`, payload);
+  register(payload: any): Observable<ResponseMessage> {
+    return this.http.post<ResponseMessage>(
+      `${this.apiUrl}/auth/register`,
+      payload
+    );
   }
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/login`, { username, password });
+  login(username: string, password: string): Observable<TokenModel> {
+    return this.http.post<TokenModel>(`${this.apiUrl}/auth/login`, {
+      username,
+      password,
+    });
   }
 
   saveToken(tokenModel: TokenModel): void {
@@ -65,8 +69,24 @@ export class AuthService {
       },
     });
   }
+
   async tryRefreshToken(): Promise<boolean> {
     console.log('Trying to refresh token');
+    // var bool = false;
+    // this.refreshToken().subscribe(
+    //   (token) => {
+    //     this.saveToken(token);
+    //     console.log('Token refreshed successfully!');
+    //     bool = true;
+    //   },
+    //   (err) => {
+    //     if (err.status == 400) console.log(err.error.value);
+    //     else console.log('Something went wrong!');
+    //     this.removeToken();
+    //   }
+    // );
+
+    // return bool;
     try {
       const response = await this.refreshToken().toPromise();
       this.saveToken(response!);
@@ -87,31 +107,7 @@ export class AuthService {
     }
   }
 
-  // tryRefreshToken(): boolean {
-  //   var isSuccess: boolean = false;
-  //   this.refreshToken().subscribe(
-  //     (response) => {
-  //       this.saveToken(response);
-  //       isSuccess = true;
-  //       console.log('Refresh token successfully!');
-  //     },
-  //     (error: any) => {
-  //       if (
-  //         error.status === 400 &&
-  //         Array.isArray(error.error) &&
-  //         error.error.length > 0
-  //       ) {
-  //         const errorMessage = error.error[0].value;
-  //         console.log(errorMessage);
-  //       } else {
-  //         console.log('Something went wrong. Please try again.');
-  //       }
-  //     }
-  //   );
-  //   return isSuccess;
-  // }
-
-  logout(): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/auth/logout`, {});
+  logout(): Observable<ResponseMessage> {
+    return this.http.delete<ResponseMessage>(`${this.apiUrl}/auth/logout`);
   }
 }

@@ -29,11 +29,13 @@ export class OrderService {
   }
 
   addOrder(): Observable<any> {
-    let data = this.getAddOrder();
+    let data = this.getObject();
     return this.http.post(`${this.apiUrl}`, data, { observe: 'response' });
   }
 
-  initAddOrder() {
+  // LocalStorage //
+
+  initObject() {
     let order: AddOrder = {
       orderTotal: 0,
       details: [],
@@ -41,16 +43,16 @@ export class OrderService {
     return order;
   }
 
-  getAddOrder() {
+  getObject() {
     let json = localStorage.getItem('order');
     return json ? (JSON.parse(json) as AddOrder) : null;
   }
 
-  setAddOrder(order: AddOrder) {
+  setObject(order: AddOrder) {
     localStorage.setItem('order', JSON.stringify(order));
   }
 
-  addItemToOrder(itemId: string, quantity: number, price: number) {
+  addToObject(itemId: string, quantity: number, price: number) {
     let detail: AddOrderDetail = {
       itemId: itemId,
       quantity: quantity,
@@ -58,19 +60,19 @@ export class OrderService {
       total: quantity * price,
     };
 
-    let addOrder = this.getAddOrder();
-    if (addOrder == null) addOrder = this.initAddOrder();
+    let addOrder = this.getObject();
+    if (addOrder == null) addOrder = this.initObject();
     addOrder.details.push(detail);
     addOrder.orderTotal += detail.total;
-    this.setAddOrder(addOrder);
+    this.setObject(addOrder);
   }
 
-  removeAddOrder() {
+  removeObject() {
     localStorage.removeItem('order');
   }
 
-  removeItemFromOrder(itemId: string): boolean {
-    let order = this.getAddOrder();
+  removeFromObject(itemId: string): boolean {
+    let order = this.getObject();
     if (order == null) return false;
     let index = order?.details.findIndex((x) => x.itemId == itemId) ?? 0;
     if (index < 0) return false;
@@ -79,7 +81,7 @@ export class OrderService {
     order.orderTotal -= total;
     order.details.splice(index, 1);
 
-    this.setAddOrder(order!);
+    this.setObject(order!);
     return true;
   }
 }

@@ -1,1 +1,78 @@
-<p>add-export works!</p>
+<div class="container">
+  <div class="top">
+    <mat-form-field>
+      <mat-label>Find Item</mat-label>
+      <input
+        type="text"
+        aria-label="Item"
+        matInput
+        [matAutocomplete]="auto"
+        [(ngModel)]="searchValue"
+        (keyup)="getItems()"
+      />
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="selectOption($event)"
+      >
+        <mat-option *ngFor="let item of items" [value]="item">
+          {{ item.name }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <div class="back-link">
+      <a routerLink="/export">
+        <mat-icon>arrow_back_ios</mat-icon>
+        <span>Return to List</span>
+      </a>
+    </div>
+  </div>
+
+  <mat-table [dataSource]="data" class="item">
+    <ng-container matColumnDef="itemName">
+      <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
+      <mat-cell *matCellDef="let detail">
+        <a class="item-link" routerLink="/item/{{ detail.item.id }}">
+          {{ detail.item.name }}
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity">
+      <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+      <mat-cell *matCellDef="let detail">{{ detail.quantity }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let detail">
+        <button
+          mat-button
+          color="warn"
+          [swal]="{ 
+                        title: 'Remove item',
+                        icon: 'warning',
+                        text:'Remove item #'+detail.item.id,
+                        showCancelButton: true,
+                        confirmButtonText: 'Remove item',
+                        confirmButtonColor: '#d61313',
+                    }"
+          (confirm)="removeItem(detail.item.id)"
+        >
+          Remove
+        </button>
+      </mat-cell>
+      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <div class="button-container">
+    <button mat-button mat-raised-button color="basic" (click)="clearAll()">
+      Clear All
+    </button>
+    <button mat-button color="primary" mat-raised-button (click)="addExport()">
+      Add Export
+    </button>
+  </div>
+</div>

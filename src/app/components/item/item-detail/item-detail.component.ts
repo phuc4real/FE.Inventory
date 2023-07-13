@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ItemService } from 'src/app/services';
-import { toStringFormatDate } from 'src/app/share/helpers/utilities-hepler';
+import { toStringFormatDate } from 'src/app/share/helpers/utilities-helper';
 
 @Component({
   selector: 'app-item-detail',
@@ -14,7 +14,11 @@ export class ItemDetailComponent {
   itemId!: string;
   img!: string;
 
-  constructor(private route: ActivatedRoute, private itemService: ItemService) {
+  constructor(
+    private route: ActivatedRoute,
+    private itemService: ItemService,
+    private router: Router
+  ) {
     this.itemForm = new FormGroup({
       id: new FormControl(''),
       name: new FormControl(''),
@@ -60,8 +64,9 @@ export class ItemDetailComponent {
           modifiedByUser: values.modifiedByUser.userName,
         });
       },
-      (error: any) => {
-        console.log(error);
+      (err: any) => {
+        if (err.status == 404) this.router.navigate(['/notfound']);
+        console.log(err);
       }
     );
   }

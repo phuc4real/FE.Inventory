@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { CatalogEdit } from 'src/app/models';
+import { CatalogEdit, ResponseMessage } from 'src/app/models';
 import { CatalogService } from 'src/app/services/catalog.service';
+import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
 
 @Component({
   selector: 'app-edit-catalog',
@@ -38,9 +39,7 @@ export class EditCatalogComponent {
             name: values.name,
           });
         },
-        (error: any) => {
-          console.log(error);
-        }
+        (err: any) => showError(err, this.toastr)
       );
     }
   }
@@ -53,23 +52,19 @@ export class EditCatalogComponent {
     if (this.catalogId != null) {
       this.catalogService.updateCatalog(this.catalogId, data).subscribe(
         (response) => {
-          this.toastr.success(response[0].value, response[0].key);
+          showMessage(response, this.toastr);
           this.router.navigate(['/catalog']);
         },
-        (error: any) => {
-          if (error[0]) this.toastr.error(error[0].value, error[0].key);
-          else this.toastr.error('Something went wrong!', 'Error');
-        }
+        (err: any) => showError(err, this.toastr)
       );
     } else {
       this.catalogService.addCatalog(data).subscribe(
-        (resp) => {
-          this.toastr.success(resp.body[0].value, resp.body[0].key);
+        (response) => {
+          showMessage(response, this.toastr);
           this.router.navigate(['/catalog']);
         },
-        (error: any) => {
-          if (error[0]) this.toastr.error(error[0].value, error[0].key);
-          else this.toastr.error('Something went wrong!', 'Error');
+        (err: any) => {
+          showError(err, this.toastr);
           this.router.navigate(['/catalog']);
         }
       );

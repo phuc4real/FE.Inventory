@@ -3,11 +3,12 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, map, startWith } from 'rxjs';
-import { ItemEdit } from 'src/app/models';
+import { ItemEdit, ResponseMessage } from 'src/app/models';
 import { Catalog } from 'src/app/models/catalog';
 import { ItemService } from 'src/app/services';
 import { CatalogService } from 'src/app/services/catalog.service';
 import { UploadImageService } from 'src/app/services/upload-image.service';
+import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
 
 @Component({
   selector: 'app-edit-item',
@@ -62,9 +63,7 @@ export class EditItemComponent {
           });
           this.selectedValue = values.catalog.id;
         },
-        (error: any) => {
-          console.log(error);
-        }
+        (err: any) => showError(err, this.toastr)
       );
     } else {
       this.itemForm.patchValue({
@@ -74,17 +73,11 @@ export class EditItemComponent {
   }
 
   getCatalog() {
-    this.catalogService.getListCatalog().subscribe(
+    this.catalogService.getList().subscribe(
       (value) => {
         this.catalogs = value;
       },
-      (error: any) => {
-        if (error.status != 404)
-          this.toastr.error(
-            'Something went wrong! Get catalog list failed',
-            'Error'
-          );
-      }
+      (err: any) => showError(err, this.toastr)
     );
   }
 
@@ -125,29 +118,22 @@ export class EditItemComponent {
     if (this.itemId != null) {
       this.itemService.updateItem(this.itemId, data).subscribe(
         (response) => {
-          this.toastr.success(
-            response.messages[0].value,
-            response.messages[0].key
-          );
+          showMessage(response, this.toastr);
           this.router.navigate(['/item/' + this.itemId]);
         },
-        (error: any) => {
-          if (error.messages[0])
-            this.toastr.error(error.messages[0].value, error.messages[0].key);
-          else this.toastr.error('Something went wrong!', 'Error');
+        (err: any) => {
+          showError(err, this.toastr);
           this.router.navigate(['/item' + this.itemId]);
         }
       );
     } else {
       this.itemService.addItem(data).subscribe(
-        (resp) => {
-          this.toastr.success(resp.body[0].value, resp.body[0].key);
-          this.router.navigate(['/' + resp.headers.get('Location')]);
+        (response) => {
+          showMessage(response, this.toastr);
+          this.router.navigate(['/' + response.headers.get('Location')]);
         },
-        (error: any) => {
-          if (error.messages[0])
-            this.toastr.error(error[0].value, error[0].key);
-          else this.toastr.error('Something went wrong!', 'Error');
+        (err: any) => {
+          showError(err, this.toastr);
           this.router.navigate(['/item']);
         }
       );
