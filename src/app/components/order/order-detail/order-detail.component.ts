@@ -1,16 +1,16 @@
-import { formatDate, formatNumber } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { OrderDetail } from 'src/app/models';
 import { OrderService } from 'src/app/services/order.service';
+import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
 import {
   isDefaultDate,
   toStringFormatDate,
   toStringFormatNumber,
-} from 'src/app/share/helpers/utilities-hepler';
+} from 'src/app/share/helpers/utilities-helper';
 
 @Component({
   selector: 'app-order-detail',
@@ -77,40 +77,28 @@ export class OrderDetailComponent {
           completeDate: completeDateString,
         });
       },
-      (error: any) => {
-        console.log(error);
-      }
+      (err: any) => showError(err, this.toastr)
     );
   }
 
   updateStatus() {
     this.orderService.updateStatus(this.orderId).subscribe(
       (response) => {
-        if (response[0])
-          this.toastr.success(response[0].value, response[0].key);
+        showMessage(response, this.toastr);
         this.getData();
       },
-      (errors: any) => {
-        if (errors.error[0])
-          this.toastr.error(errors.error[0].value, errors.error[0].key);
-        else this.toastr.error('Something went wrong', 'Error');
-      }
+      (err: any) => showError(err, this.toastr)
     );
   }
 
   cancelOrder() {
     this.orderService.cancelOrder(this.orderId).subscribe(
       (response) => {
-        if (response[0])
-          this.toastr.success(response[0].value, response[0].key);
+        showMessage(response, this.toastr);
         this.status = '';
         this.getData();
       },
-      (errors: any) => {
-        if (errors.error[0])
-          this.toastr.error(errors.error[0].value, errors.error[0].key);
-        else this.toastr.error('Something went wrong', 'Error');
-      }
+      (err: any) => showError(err, this.toastr)
     );
   }
 }

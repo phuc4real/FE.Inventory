@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services';
+import { showError } from 'src/app/share/helpers/toastr-helper';
 
 @Component({
   selector: 'app-login',
@@ -35,23 +36,8 @@ export class LoginComponent {
         this.router.navigate(['/dashboard']);
         this.toastr.success('Login successful!', 'Success');
         this.authService.saveToken(response);
-        // // TODO
       },
-      (error: any) => {
-        if (
-          error.status === 400 &&
-          Array.isArray(error.error) &&
-          error.error.length > 0
-        ) {
-          const errorMessage = error.error[0].value;
-          this.toastr.error(errorMessage, 'Login failed');
-        } else {
-          this.toastr.error(
-            'Something went wrong. Please try again.',
-            'Login failed'
-          );
-        }
-      }
+      (err: any) => showError(err, this.toastr)
     );
   }
 }

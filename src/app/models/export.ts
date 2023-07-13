@@ -18,6 +18,7 @@ export interface Export {
   description: string;
   createdDate: Date;
   createdByUser: User;
+  details: ExportDetail[];
 }
 
 export interface ExportPagination {
@@ -26,14 +27,6 @@ export interface ExportPagination {
   pageSize: number;
   totalPage: number;
   totalRecords: number;
-}
-
-export interface ExportWithDetail {
-  id: number;
-  description: string;
-  createdDate: Date;
-  createdByUser: User;
-  details: ExportDetail[];
 }
 
 export interface AddExport {

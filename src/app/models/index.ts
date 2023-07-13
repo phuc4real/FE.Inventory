@@ -4,3 +4,4 @@ export * from './catalog';
 export * from './user';
 export * from './order';
 export * from './dialogData';
+export * from './response-message';

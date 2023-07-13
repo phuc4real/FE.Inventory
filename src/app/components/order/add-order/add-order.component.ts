@@ -9,6 +9,7 @@ import { ItemService } from 'src/app/services';
 import { OrderService } from 'src/app/services/order.service';
 import { AddOrderDialogComponent } from '../add-order-dialog/add-order-dialog.component';
 import { Router } from '@angular/router';
+import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
 
 @Component({
   selector: 'app-add-order',
@@ -28,7 +29,6 @@ export class AddOrderComponent {
 
   @ViewChild(MatAutocomplete) itemSearch!: MatAutocomplete;
 
-  myControl: FormControl;
   items!: Item[];
   searchValue = '';
 
@@ -44,16 +44,14 @@ export class AddOrderComponent {
     private toastr: ToastrService,
     public dialog: MatDialog,
     private router: Router
-  ) {
-    this.myControl = new FormControl();
-  }
+  ) {}
 
   ngOnInit() {
     this.getTableData();
   }
 
   getTableData() {
-    let order = this.orderService.getAddOrder();
+    let order = this.orderService.getObject();
     let addOrderDetails = order?.details ?? [];
 
     this.listDetail = [];
@@ -77,16 +75,14 @@ export class AddOrderComponent {
             this.listDetail.push(detail);
             this.details = new MatTableDataSource<OrderDetail>(this.listDetail);
           },
-          (error: any) => {
-            this.toastr.error('Something went wrong!', 'Error');
-          }
+          (err: any) => showError(err, this.toastr)
         );
       });
     }
   }
 
   removeItem(id: string) {
-    let result = this.orderService.removeItemFromOrder(id);
+    let result = this.orderService.removeFromObject(id);
     this.getTableData();
     if (result) {
       this.toastr.success('Remove item success', 'Success');
@@ -97,15 +93,11 @@ export class AddOrderComponent {
     let params: any = {
       name: this.searchValue,
     };
-    this.itemService.getListItem(params).subscribe(
+    this.itemService.getList(params).subscribe(
       (values) => {
         this.items = values;
       },
-      (error: any) => {
-        if (error.status != 404)
-          this.toastr.error('Something went wrong', 'Error');
-        console.log(error);
-      }
+      (err: any) => showError(err, this.toastr)
     );
   }
 
@@ -120,28 +112,25 @@ export class AddOrderComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.orderService.addItemToOrder(itemId, result.quantity, result.price);
+      this.orderService.addToObject(itemId, result.quantity, result.price);
       this.getTableData();
     });
   }
 
   clearAll() {
-    this.orderService.removeAddOrder();
+    this.orderService.removeObject();
     this.getTableData();
   }
 
   addOrder() {
     this.orderService.addOrder().subscribe(
       (response) => {
-        this.toastr.success(response.body[0].value, response.body[0].key);
+        showMessage(response, this.toastr);
         this.router.navigate(['/' + response.headers.get('Location')]);
-        console.log(response);
       },
-      (error: any) => {
-        if (error.messages[0]) this.toastr.error(error[0].value, error[0].key);
-        else this.toastr.error('Something went wrong!', 'Error');
+      (err: any) => {
+        showError(err, this.toastr);
         this.router.navigate(['/order']);
-        console.log(error);
       }
     );
     this.clearAll();

@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
 import { Item } from 'src/app/models';
 import { ItemService } from 'src/app/services';
+import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
 
 @Component({
   selector: 'app-list-item',
@@ -46,7 +47,7 @@ export class ListItemComponent {
   }
 
   applyFilter() {
-    if (this.searchValue.length > 2) this.refreshData();
+    this.refreshData();
   }
 
   setData(items: any) {
@@ -72,7 +73,7 @@ export class ListItemComponent {
             searchKeyword: this.searchValue,
           };
           return this.itemService
-            .getItems(params)
+            .getPagination(params)
             .pipe(catchError(() => of(null)));
         }),
         map((dto) => {
@@ -94,16 +95,10 @@ export class ListItemComponent {
   deleteItem(id: string) {
     this.itemService.deleteItem(id).subscribe(
       (response) => {
-        if (response[0]) {
-          this.toastr.success(response[0].value, response[0].key);
-          this.paginator._changePageSize(this.paginator.pageSize);
-        }
+        showMessage(response, this.toastr);
+        this.paginator._changePageSize(this.paginator.pageSize);
       },
-      (errors: any) => {
-        if (errors.error[0])
-          this.toastr.error(errors.error[0].value, errors.error[0].key);
-        this.toastr.error('Something went wrong!', 'Error');
-      }
+      (err: any) => showError(err, this.toastr)
     );
   }
 }

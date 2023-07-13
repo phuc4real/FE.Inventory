@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services';
+import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
 
 @Component({
   selector: 'app-logout',
@@ -16,24 +17,12 @@ export class LogoutComponent implements OnInit {
   ngOnInit(): void {
     this.authService.logout().subscribe(
       (response) => {
-        this.toastr.success('User log out!', 'Success');
+        showMessage(response, this.toastr);
         this.authService.removeToken();
         this.router.navigate(['/login']);
       },
-      (error: any) => {
-        if (
-          error.status === 400 &&
-          Array.isArray(error.error) &&
-          error.error.length > 0
-        ) {
-          const errorMessage = error.error[0].value;
-          this.toastr.error(errorMessage, 'Logout failed');
-        } else {
-          this.toastr.error(
-            'Something went wrong. Please try again.',
-            'Logout failed'
-          );
-        }
+      (err: any) => {
+        showError(err, this.toastr);
         this.router.navigate(['/error']);
       }
     );

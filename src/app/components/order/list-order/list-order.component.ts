@@ -10,7 +10,8 @@ import { formatDate } from '@angular/common';
 import {
   isDefaultDate,
   toStringFormatDate,
-} from 'src/app/share/helpers/utilities-hepler';
+} from 'src/app/share/helpers/utilities-helper';
+import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
 
 @Component({
   selector: 'app-list-order',
@@ -82,7 +83,7 @@ export class ListOrderComponent {
         (dto) => {
           this.setData(dto);
         },
-        (error: any) => {
+        (err: any) => {
           this.setData([]);
         }
       );
@@ -100,15 +101,10 @@ export class ListOrderComponent {
   cancelOrder(id: number) {
     this.orderService.cancelOrder(id).subscribe(
       (response) => {
-        if (response[0])
-          this.toastr.success(response[0].value, response[0].key);
+        showMessage(response, this.toastr);
         this.paginator._changePageSize(this.paginator.pageSize);
       },
-      (errors: any) => {
-        if (errors.error[0])
-          this.toastr.error(errors.error[0].value, errors.error[0].key);
-        else this.toastr.error('Something went wrong', 'Error');
-      }
+      (err: any) => showError(err, this.toastr)
     );
   }
 }
