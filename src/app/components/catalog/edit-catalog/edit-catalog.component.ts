@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { CatalogEdit, ResponseMessage } from 'src/app/models';
-import { CatalogService } from 'src/app/services/catalog.service';
-import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
+import { CatalogEdit } from 'src/app/models';
+import { CatalogService } from 'src/app/services';
+import { showError, showMessage } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-edit-catalog',

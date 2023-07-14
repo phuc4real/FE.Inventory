@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { LoaderService } from 'src/app/services/loader.service';
+import { LoaderService } from 'src/app/services';
 
 @Component({
   selector: 'app-spinner',

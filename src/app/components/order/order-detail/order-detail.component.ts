@@ -4,13 +4,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { OrderDetail } from 'src/app/models';
-import { OrderService } from 'src/app/services/order.service';
-import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
+import { OrderService } from 'src/app/services';
 import {
   isDefaultDate,
   toStringFormatDate,
   toStringFormatNumber,
-} from 'src/app/share/helpers/utilities-helper';
+  showError,
+  showMessage,
+} from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-order-detail',

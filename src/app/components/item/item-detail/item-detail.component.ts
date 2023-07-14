@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemService } from 'src/app/services';
-import { toStringFormatDate } from 'src/app/share/helpers/utilities-helper';
+import { toStringFormatDate } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-item-detail',

@@ -5,8 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
 import { Catalog } from 'src/app/models';
-import { CatalogService } from 'src/app/services/catalog.service';
-import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
+import { CatalogService } from 'src/app/services';
+import { showError, showMessage } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-catalog',

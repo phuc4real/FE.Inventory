@@ -1,5 +1,4 @@
-import { Catalog } from './catalog';
-import { User } from './user';
+import { Catalog, User } from '.';
 
 export interface Item {
   id: string;

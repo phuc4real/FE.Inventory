@@ -1,5 +1,4 @@
-import { Item } from './item';
-import { User } from './user';
+import { Item, User } from '.';
 
 export interface ExportDetail {
   item: Item;

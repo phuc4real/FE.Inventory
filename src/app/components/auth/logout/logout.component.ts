@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services';
-import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
+import { showError, showMessage } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-logout',

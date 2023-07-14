@@ -1,10 +1,9 @@
 import { Router } from '@angular/router';
-import { Observer } from 'rxjs';
-import { AuthService } from './../../../services';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
+import { showError, showMessage } from 'src/app/share/helpers';
+import { AuthService } from 'src/app/services';
 
 @Component({
   selector: 'app-register',

@@ -1,9 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Catalog, CatalogEdit, CatalogPagination } from '../models/catalog';
+import {
+  Catalog,
+  CatalogEdit,
+  CatalogPagination,
+  ResponseMessage,
+} from '../models';
 import { Observable } from 'rxjs';
-import { ResponseMessage } from '../models';
 
 @Injectable({
   providedIn: 'root',

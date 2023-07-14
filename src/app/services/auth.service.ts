@@ -2,9 +2,8 @@ import { environment } from '../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TokenModel } from 'src/app/models/token-model';
 import { greaterThan } from '../share/helpers/utilities-helper';
-import { ResponseMessage } from '../models';
+import { ResponseMessage, TokenModel } from '../models';
 
 @Injectable({
   providedIn: 'root',
