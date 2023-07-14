@@ -1,0 +1,61 @@
+.container {
+  margin: 14px auto;
+}
+
+.container .back-link {
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 8px;
+}
+
+.container .back-link a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 10px;
+  font-size: 1.2rem;
+  font-weight: 450;
+  color: black;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  overflow: hidden;
+}
+
+.form-group mat-form-field {
+  padding: 20px;
+  width: 320px;
+}
+
+.form-group .description {
+  width: 54.2vw;
+}
+
+.item-img {
+  padding: 10px;
+  height: 140px;
+}
+
+.item-link {
+  text-decoration: none;
+  color: black;
+}
+
+.item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+}
+
+.button-style {
+  display: flex;
+  justify-content: space-evenly;
+}

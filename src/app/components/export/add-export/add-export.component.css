@@ -27,13 +27,20 @@
   color: black;
 }
 
-.search-field {
-  padding: 10px;
+.description-field {
+  margin-top: 10px;
+  width: 88%;
 }
 
 .item-link {
   text-decoration: none;
   color: black;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .button-container {

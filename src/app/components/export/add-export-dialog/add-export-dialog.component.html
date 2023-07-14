@@ -1,0 +1,36 @@
+<h1 mat-dialog-title>Add item to Order</h1>
+<div mat-dialog-content class="dialog-content">
+  <mat-form-field>
+    <mat-label>Quantity</mat-label>
+    <input matInput [(ngModel)]="data.quantity" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Find user</mat-label>
+    <input
+      type="text"
+      aria-label="Item"
+      matInput
+      [matAutocomplete]="auto"
+      [(ngModel)]="searchValue"
+      (keyup)="getUser()"
+    />
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="selectOption($event)"
+    >
+      <mat-option *ngFor="let user of users" [value]="user">
+        {{ user.userName }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button
+    class="dialog-button"
+    mat-button
+    [mat-dialog-close]="data"
+    cdkFocusInitial
+  >
+    Ok
+  </button>
+</div>

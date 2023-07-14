@@ -4,9 +4,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
-import { Order } from 'src/app/models';
 import { Export } from 'src/app/models/export';
 import { ExportService } from 'src/app/services/export.service';
+import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
 import { toStringFormatDate } from 'src/app/share/helpers/utilities-helper';
 
 @Component({
@@ -77,6 +77,7 @@ export class ListExportComponent {
       .subscribe(
         (dto) => {
           this.setData(dto);
+          console.log(dto);
         },
         (error: any) => {
           this.setData([]);
@@ -91,5 +92,15 @@ export class ListExportComponent {
 
   dateString(date: any) {
     return toStringFormatDate(date);
+  }
+
+  cancel(id: number) {
+    this.exportService.cancelExport(id).subscribe(
+      (response) => {
+        showMessage(response, this.toastr);
+        this.paginator._changePageSize(this.paginator.pageSize);
+      },
+      (err: any) => showError(err, this.toastr)
+    );
   }
 }

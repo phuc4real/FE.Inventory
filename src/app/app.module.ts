@@ -32,6 +32,12 @@ import { AddOrderDialogComponent } from './components/order/add-order-dialog/add
 import { ListExportComponent } from './components/export/list-export/list-export.component';
 import { ExportDetailComponent } from './components/export/export-detail/export-detail.component';
 import { AddExportComponent } from './components/export/add-export/add-export.component';
+import { AddExportDialogComponent } from './components/export/add-export-dialog/add-export-dialog.component';
+import { ListReceiptComponent } from './components/receipt/list-receipt/list-receipt.component';
+import { ReceiptDetailComponent } from './components/receipt/receipt-detail/receipt-detail.component';
+import { AddReceiptComponent } from './components/receipt/add-receipt/add-receipt.component';
+import { AddReceiptDialogComponent } from './components/receipt/add-receipt-dialog/add-receipt-dialog.component';
+import { LoaderInterceptor } from './share/helpers/loader.interceptor';
 
 @NgModule({
   declarations: [
@@ -57,6 +63,11 @@ import { AddExportComponent } from './components/export/add-export/add-export.co
     ListExportComponent,
     ExportDetailComponent,
     AddExportComponent,
+    AddExportDialogComponent,
+    ListReceiptComponent,
+    ReceiptDetailComponent,
+    AddReceiptComponent,
+    AddReceiptDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +79,11 @@ import { AddExportComponent } from './components/export/add-export/add-export.co
     SweetAlert2Module.forRoot(),
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

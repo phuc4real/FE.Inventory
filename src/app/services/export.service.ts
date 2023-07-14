@@ -30,8 +30,9 @@ export class ExportService {
     return this.http.delete<ResponseMessage>(`${this.apiUrl}/${id}/cancel`);
   }
 
-  addExport(): Observable<any> {
+  addExport(description: string): Observable<any> {
     let data = this.getObject();
+    data!.description = description;
     return this.http.post(`${this.apiUrl}`, data, { observe: 'response' });
   }
 
@@ -59,11 +60,11 @@ export class ExportService {
     localStorage.removeItem('export');
   }
 
-  addToObject(itemId: string, quantity: number, forUserId: string) {
+  addToObject(itemId: string, quantity: number, userId: string) {
     let item: AddExportDetail = {
       itemId: itemId,
       quantity: quantity,
-      forUserId: forUserId,
+      forUserId: userId,
     };
 
     let object = this.getObject();

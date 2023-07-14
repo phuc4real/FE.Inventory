@@ -1,1 +1,70 @@
-<p>export-detail works!</p>
+<div class="container">
+  <div class="back-link">
+    <a routerLink="/export">
+      <mat-icon>arrow_back_ios</mat-icon>
+      <span>Return to List</span>
+    </a>
+  </div>
+  <form class="form-group" [formGroup]="formGroup">
+    <div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Export ID</mat-label>
+          <input matInput formControlName="id" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Created Date</mat-label>
+          <input matInput formControlName="createdDate" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Created by</mat-label>
+          <input matInput formControlName="createdByUser" readonly />
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="description">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="description" readonly />
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="container">
+  <mat-table [dataSource]="tableData" class="item">
+    <ng-container matColumnDef="itemImage">
+      <mat-header-cell *matHeaderCellDef>Item Image</mat-header-cell>
+      <mat-cell *matCellDef="let detail">
+        <img
+          class="item-img"
+          src="{{ detail.item.imageUrl }}"
+          alt="{{ detail.item.name }}"
+        />
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="itemName">
+      <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
+      <mat-cell *matCellDef="let detail">
+        <a class="item-link" routerLink="/item/{{ detail.item.id }}">
+          {{ detail.item.name }}
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity">
+      <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+      <mat-cell *matCellDef="let detail">{{ detail.quantity }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="forUser">
+      <mat-header-cell *matHeaderCellDef>For User</mat-header-cell>
+      <mat-cell *matCellDef="let detail">{{
+        detail.forUser ? detail.forUser.userName : "Everyone"
+      }}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>
