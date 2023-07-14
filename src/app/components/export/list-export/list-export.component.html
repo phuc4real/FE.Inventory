@@ -45,7 +45,7 @@
         >Created By User</mat-header-cell
       >
       <mat-cell *matCellDef="let export">{{
-        export.createdByUser.username
+        export.createdByUser.userName
       }}</mat-cell>
     </ng-container>
 
@@ -66,6 +66,7 @@
                         confirmButtonText: 'Cancel export',
                         confirmButtonColor: '#d61313',
                     }"
+          (confirm)="cancel(export.id)"
         >
           Cancel
         </button>

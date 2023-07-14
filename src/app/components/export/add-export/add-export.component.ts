@@ -10,6 +10,8 @@ import { Export, ExportDetail } from 'src/app/models/export';
 import { ItemService } from 'src/app/services';
 import { ExportService } from 'src/app/services/export.service';
 import { UserService } from 'src/app/services/user.service';
+import { showError, showMessage } from 'src/app/share/helpers/toastr-helper';
+import { AddExportDialogComponent } from '../add-export-dialog/add-export-dialog.component';
 
 @Component({
   selector: 'app-add-export',
@@ -19,13 +21,15 @@ import { UserService } from 'src/app/services/user.service';
 export class AddExportComponent {
   tableData = new MatTableDataSource<ExportDetail>();
   data: ExportDetail[] = [];
-  displayedColumns: string[] = ['itemName', 'quantity', 'actions'];
+  displayedColumns: string[] = ['itemName', 'quantity', 'forUser', 'actions'];
 
   @ViewChild(MatAutocomplete) itemSearch!: MatAutocomplete;
 
   items!: Item[];
   searchValue = '';
+  description = '';
   detailQuantity!: number;
+  userId!: string;
 
   constructor(
     private exportService: ExportService,
@@ -57,7 +61,6 @@ export class AddExportComponent {
           quantity: d.quantity,
           forUser: user,
         };
-
         this.data.push(detail);
         this.tableData = new MatTableDataSource<ExportDetail>(this.data);
       });
@@ -65,22 +68,71 @@ export class AddExportComponent {
   }
 
   removeItem(id: string) {
-    throw new Error('Method not implemented.');
+    let result = this.exportService.removeFromObject(id);
+    this.getTableData();
+    if (result) {
+      this.toastr.success('Remove item success', 'Success');
+    } else this.toastr.error('Something went wrong', 'Error');
   }
 
   getItems() {
-    throw new Error('Method not implemented.');
+    let params: any = {
+      name: this.searchValue,
+    };
+    this.itemService.getList(params).subscribe(
+      (values) => {
+        this.items = values;
+      },
+      (err: any) => showError(err, this.toastr)
+    );
   }
 
   selectOption(e: any) {
-    throw new Error('Method not implemented.');
+    console.log(e);
+
+    this.searchValue = e.option.value.name;
+    this.openDialog(e.option.value.id);
+  }
+
+  openDialog(itemId: string): void {
+    const dialogRef = this.dialog.open(AddExportDialogComponent, {
+      data: { quantity: this.detailQuantity, userId: this.userId },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.itemService.getById(itemId).subscribe(
+        (response) => {
+          if (response.inStock < result.quantity)
+            this.toastr.warning('Item instock not enough');
+          else
+            this.exportService.addToObject(
+              itemId,
+              result.quantity,
+              result.userId
+            );
+          this.getTableData();
+        },
+        (err: any) => showError(err, this.toastr)
+      );
+    });
   }
 
   clearAll() {
-    throw new Error('Method not implemented.');
+    this.exportService.removeObject();
+    this.getTableData();
   }
 
   addExport() {
-    throw new Error('Method not implemented.');
+    this.exportService.addExport(this.description).subscribe(
+      (response) => {
+        showMessage(response, this.toastr);
+        this.router.navigate(['/' + response.headers.get('Location')]);
+      },
+      (err: any) => {
+        showError(err, this.toastr);
+        this.router.navigate(['/export']);
+      }
+    );
+    this.clearAll();
   }
 }

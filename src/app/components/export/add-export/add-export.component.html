@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <mat-table [dataSource]="data" class="item">
+  <mat-table [dataSource]="tableData" class="item">
     <ng-container matColumnDef="itemName">
       <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
       <mat-cell *matCellDef="let detail">
@@ -40,6 +40,13 @@
     <ng-container matColumnDef="quantity">
       <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
       <mat-cell *matCellDef="let detail">{{ detail.quantity }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="forUser">
+      <mat-header-cell *matHeaderCellDef>For User</mat-header-cell>
+      <mat-cell *matCellDef="let detail">{{
+        detail.forUser ? detail.forUser.userName : "Everyone"
+      }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actions">
@@ -67,12 +74,24 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
-  <div class="button-container">
-    <button mat-button mat-raised-button color="basic" (click)="clearAll()">
-      Clear All
-    </button>
-    <button mat-button color="primary" mat-raised-button (click)="addExport()">
-      Add Export
-    </button>
+  <div class="bottom" *ngIf="tableData.data.length > 0">
+    <mat-form-field class="description-field">
+      <mat-label>Export description</mat-label>
+      <input type="text" matInput [(ngModel)]="description" />
+    </mat-form-field>
+
+    <div class="button-container">
+      <button mat-button mat-raised-button color="basic" (click)="clearAll()">
+        Clear All
+      </button>
+      <button
+        mat-button
+        color="primary"
+        mat-raised-button
+        (click)="addExport()"
+      >
+        Add Export
+      </button>
+    </div>
   </div>
 </div>

@@ -26,7 +26,8 @@ export function showError(err: any, toastr: ToastrService) {
 
 export function showMessage(response: any, toastr: ToastrService) {
   console.log(response);
-  toastr.success(response.value, response.key);
+  if (response.body) toastr.success(response.body.value, response.body.key);
+  else toastr.success(response.value, response.key);
 }
 
 function show(err: any, toastr: ToastrService) {
