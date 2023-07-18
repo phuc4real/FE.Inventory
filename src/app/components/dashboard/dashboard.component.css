@@ -1,0 +1,16 @@
+.container {
+  margin-top: 20px;
+}
+
+.chart {
+  height: 400px;
+}
+
+.mt {
+  margin-top: 25px;
+}
+
+.activity-list {
+  width: 80%;
+  height: 100%;
+}

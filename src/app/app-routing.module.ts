@@ -18,6 +18,9 @@ import { AddOrderComponent } from './components/order/add-order/add-order.compon
 import { ListExportComponent } from './components/export/list-export/list-export.component';
 import { ExportDetailComponent } from './components/export/export-detail/export-detail.component';
 import { AddExportComponent } from './components/export/add-export/add-export.component';
+import { ListReceiptComponent } from './components/receipt/list-receipt/list-receipt.component';
+import { AddReceiptComponent } from './components/receipt/add-receipt/add-receipt.component';
+import { ReceiptDetailComponent } from './components/receipt/receipt-detail/receipt-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -64,6 +67,15 @@ const routes: Routes = [
       { path: '', component: ListExportComponent },
       { path: 'add', component: AddExportComponent },
       { path: ':id', component: ExportDetailComponent },
+    ],
+  },
+  {
+    path: 'receipt',
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', component: ListReceiptComponent },
+      { path: 'add', component: AddReceiptComponent },
+      { path: ':id', component: ReceiptDetailComponent },
     ],
   },
   { path: 'error', component: ErrorComponent },

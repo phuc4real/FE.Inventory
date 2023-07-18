@@ -1,0 +1,13 @@
+mat-tab-group {
+  background-color: aliceblue;
+  min-height: 100%;
+}
+
+mat-list-item {
+  border-bottom: 1px solid;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}

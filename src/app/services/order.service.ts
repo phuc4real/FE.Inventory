@@ -2,7 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { AddOrder, AddOrderDetail, Order, OrderPagination } from '../models';
+import {
+  AddOrder,
+  AddOrderDetail,
+  Order,
+  OrderPagination,
+  ResponseMessage,
+} from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +24,10 @@ export class OrderService {
 
   getById(id: number): Observable<Order> {
     return this.http.get<Order>(`${this.apiUrl}/${id}`);
+  }
+
+  getCount(): Observable<ResponseMessage[]> {
+    return this.http.get<ResponseMessage[]>(`${this.apiUrl}/count-by-month`);
   }
 
   updateStatus(id: number): Observable<any> {

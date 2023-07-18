@@ -2,43 +2,34 @@ import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from 'ngx-toastr';
-import { catchError, map, of, startWith, switchMap } from 'rxjs';
-import { Export, Receipt } from 'src/app/models';
-import { ReceiptService } from 'src/app/services';
-import {
-  toStringFormatDate,
-  showMessage,
-  showError,
-} from 'src/app/share/helpers';
+import { startWith, switchMap, catchError, of, map } from 'rxjs';
+import { UsingItem } from 'src/app/models';
+import { UsingItemService } from 'src/app/services';
+import { toStringFormatDate } from 'src/app/share/helpers';
 
 @Component({
-  selector: 'app-list-receipt',
-  templateUrl: './list-receipt.component.html',
-  styleUrls: ['./list-receipt.component.css'],
+  selector: 'app-using-item-table',
+  templateUrl: './using-item-table.component.html',
+  styleUrls: ['./using-item-table.component.css'],
 })
-export class ListReceiptComponent {
-  dataTable = new MatTableDataSource<Receipt>();
+export class UsingItemTableComponent {
+  dataTable = new MatTableDataSource<UsingItem>();
   displayedColumns: string[] = [
-    'id',
-    'itemCount',
-    'createdDate',
-    'createdByUser',
-    'actions',
+    'itemName',
+    'quantity',
+    'export',
+    'description',
+    'forUser',
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  pageSizeOptions: number[] = [10, 20, 50, 100];
-  searchValue: string = '';
-  data!: Receipt[];
+  pageSizeOptions: number[] = [5, 10, 15, 20];
+  data!: UsingItem[];
   totalRecords!: number;
 
-  constructor(
-    private recieptService: ReceiptService,
-    private toastr: ToastrService
-  ) {}
+  constructor(private usingItemService: UsingItemService) {}
 
   ngAfterViewInit() {
     this.dataTable.paginator = this.paginator;
@@ -65,9 +56,8 @@ export class ListReceiptComponent {
             pageSize: this.paginator?.pageSize,
             sortField: this.sort?.active,
             sortDirection: this.sort?.direction,
-            searchKeyword: this.searchValue,
           };
-          return this.recieptService
+          return this.usingItemService
             .getPagination(params)
             .pipe(catchError(() => of(null)));
         }),
@@ -79,6 +69,7 @@ export class ListReceiptComponent {
       )
       .subscribe(
         (dto) => {
+          console.log(dto);
           this.setData(dto);
           console.log(dto);
         },
@@ -88,9 +79,11 @@ export class ListReceiptComponent {
       );
   }
 
-  setData(exports: any) {
-    this.data = exports;
-    this.dataTable = new MatTableDataSource<Receipt>(this.data);
+  setData(data: any) {
+    this.data = data;
+
+    this.dataTable = new MatTableDataSource<UsingItem>(this.data);
+    console.log(data);
   }
 
   dateString(date: any) {

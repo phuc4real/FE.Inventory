@@ -8,3 +8,4 @@ export * from './receipt.service';
 export * from './side-nav.service';
 export * from './upload-image.service';
 export * from './user.service';
+export * from './using-item.service';

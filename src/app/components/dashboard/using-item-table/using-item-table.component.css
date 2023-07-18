@@ -1,0 +1,9 @@
+mat-paginator {
+  margin-bottom: 50px;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

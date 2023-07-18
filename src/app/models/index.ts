@@ -7,3 +7,5 @@ export * from './receipt';
 export * from './response-message';
 export * from './token-model';
 export * from './user';
+export * from './ticketCount';
+export * from './using-item';

@@ -19,6 +19,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const sharedModules = [
   CommonModule,
@@ -42,6 +45,9 @@ const sharedModules = [
   MatProgressSpinnerModule,
   MatAutocompleteModule,
   MatDialogModule,
+  MatGridListModule,
+  MatCardModule,
+  MatTabsModule,
 ];
 @NgModule({
   declarations: [],

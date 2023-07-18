@@ -1,12 +1,12 @@
 import { Item, User } from '.';
 
 export interface ReceiptDetail {
-  Item: Item;
+  item: Item;
   quantity: number;
 }
 
 export interface AddReceiptDetail {
-  ItemId: string;
+  itemId: string;
   quantity: number;
 }
 

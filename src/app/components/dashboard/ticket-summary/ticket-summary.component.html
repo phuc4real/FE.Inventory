@@ -1,0 +1,39 @@
+<mat-grid-list cols="4" rowHeight="200px">
+  <mat-grid-tile colspan="1" rowspan="1">
+    <div class="card">
+      <div class="card-header">
+        <span>Pending Ticket</span>
+        <p>This month</p>
+      </div>
+      <p class="card-body">{{ ticketCount.pending }}</p>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="1" rowspan="1">
+    <div class="card">
+      <div class="card-header">
+        <span>Processing Ticket</span>
+        <p>This month</p>
+      </div>
+      <p class="card-body">{{ ticketCount.processing }}</p>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="1" rowspan="1">
+    <div class="card">
+      <div class="card-header">
+        <span>Rejected Ticket</span>
+        <p>This month</p>
+      </div>
+
+      <p class="card-body">{{ ticketCount.rejected }}</p>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="1" rowspan="1">
+    <div class="card">
+      <div class="card-header">
+        <span>Completed Ticket</span>
+        <p>This month</p>
+      </div>
+      <p class="card-body">{{ ticketCount.completed }}</p>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>

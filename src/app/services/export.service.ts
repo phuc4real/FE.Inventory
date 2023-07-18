@@ -26,6 +26,10 @@ export class ExportService {
     return this.http.get<Export>(`${this.apiUrl}/${id}`);
   }
 
+  getCount(): Observable<ResponseMessage[]> {
+    return this.http.get<ResponseMessage[]>(`${this.apiUrl}/count-by-month`);
+  }
+
   cancelExport(id: number): Observable<ResponseMessage> {
     return this.http.delete<ResponseMessage>(`${this.apiUrl}/${id}/cancel`);
   }

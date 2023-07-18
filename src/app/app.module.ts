@@ -38,6 +38,13 @@ import { ReceiptDetailComponent } from './components/receipt/receipt-detail/rece
 import { AddReceiptComponent } from './components/receipt/add-receipt/add-receipt.component';
 import { AddReceiptDialogComponent } from './components/receipt/add-receipt-dialog/add-receipt-dialog.component';
 import { LoaderInterceptor } from './share/helpers/loader.interceptor';
+import { NgChartsModule } from 'ng2-charts';
+import Annotation from 'chartjs-plugin-annotation';
+import { DashboardChartComponent } from './components/dashboard/dashboard-chart/dashboard-chart.component';
+import { TicketSummaryComponent } from './components/dashboard/ticket-summary/ticket-summary.component';
+import { UsingItemTableComponent } from './components/dashboard/using-item-table/using-item-table.component';
+import { TabGroupComponent } from './components/dashboard/tab-group/tab-group.component';
+import { ListComponent } from './components/dashboard/list/list.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +75,11 @@ import { LoaderInterceptor } from './share/helpers/loader.interceptor';
     ReceiptDetailComponent,
     AddReceiptComponent,
     AddReceiptDialogComponent,
+    DashboardChartComponent,
+    TicketSummaryComponent,
+    UsingItemTableComponent,
+    TabGroupComponent,
+    ListComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +89,7 @@ import { LoaderInterceptor } from './share/helpers/loader.interceptor';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     SweetAlert2Module.forRoot(),
+    NgChartsModule.forRoot(),
   ],
   providers: [
     {

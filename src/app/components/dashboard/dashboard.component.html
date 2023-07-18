@@ -1,1 +1,25 @@
-<p>dashboard works!</p>
+<div class="container">
+  <app-ticket-summary></app-ticket-summary>
+  <div>
+    <mat-grid-list cols="4" rowHeight="40vh" class="mt">
+      <mat-grid-tile colspan="2" rowspan="1">
+        <div class="chart">
+          <app-dashboard-chart></app-dashboard-chart>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="1">
+        <div class="activity-list">
+          <dashboard-tab-group></dashboard-tab-group>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="1">
+        <div class="activity-list">
+          <dashboard-list></dashboard-list>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <div class="mt">
+      <app-using-item-table></app-using-item-table>
+    </div>
+  </div>
+</div>
