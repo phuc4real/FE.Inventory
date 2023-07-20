@@ -9,3 +9,4 @@ export * from './token-model';
 export * from './user';
 export * from './ticketCount';
 export * from './using-item';
+export * from './ticket';

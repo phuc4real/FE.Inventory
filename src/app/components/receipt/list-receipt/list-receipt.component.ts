@@ -80,7 +80,6 @@ export class ListReceiptComponent {
       .subscribe(
         (dto) => {
           this.setData(dto);
-          console.log(dto);
         },
         (error: any) => {
           this.setData([]);

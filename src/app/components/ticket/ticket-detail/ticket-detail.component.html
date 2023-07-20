@@ -1,0 +1,107 @@
+<div class="container">
+  <div class="back-link">
+    <a routerLink="/ticket">
+      <mat-icon>arrow_back_ios</mat-icon>
+      <span>Return to List</span>
+    </a>
+  </div>
+  <form class="form-group" [formGroup]="formGroup">
+    <div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>ID</mat-label>
+          <input matInput formControlName="id" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Purpose</mat-label>
+          <input matInput formControlName="purpose" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="description" readonly />
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Leader Approve</mat-label>
+          <input matInput formControlName="leaderApprove" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Status</mat-label>
+          <input matInput formControlName="status" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Created Date</mat-label>
+          <input matInput formControlName="createdDate" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Created By User</mat-label>
+          <input matInput formControlName="createdByUser" readonly />
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Last Modified Date</mat-label>
+          <input matInput formControlName="lastModifiedDate" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Modified By User</mat-label>
+          <input matInput formControlName="modifiedByUser" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill" *ngIf="isClosed">
+          <mat-label>Reject Reason</mat-label>
+          <input matInput formControlName="rejectReason" readonly />
+        </mat-form-field>
+        <mat-form-field appearance="fill" *ngIf="isClosed">
+          <mat-label>Closed Date</mat-label>
+          <input matInput formControlName="closedDate" readonly />
+        </mat-form-field>
+      </div>
+      <div class="button-style">
+        <button mat-button mat-flat-button color="primary">Approve</button>
+        <button mat-button mat-flat-button color="primary">Reject</button>
+        <button
+          mat-button
+          mat-flat-button
+          color="primary"
+          (click)="cancelTicket()"
+        >
+          Cancel
+        </button>
+        <button mat-button mat-flat-button color="primary">
+          Update Status
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="container">
+  <mat-table [dataSource]="tableData" class="item">
+    <ng-container matColumnDef="itemName">
+      <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
+      <mat-cell *matCellDef="let detail">
+        <a class="item-link" routerLink="/item/{{ detail.item.id }}">
+          {{ detail.item.name }}
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity">
+      <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+      <mat-cell *matCellDef="let detail">{{ detail.quantity }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+      <mat-cell *matCellDef="let detail">{{ detail.type }}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>

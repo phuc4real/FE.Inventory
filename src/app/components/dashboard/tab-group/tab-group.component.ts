@@ -10,9 +10,9 @@ import { showError, toStringFormatDate } from 'src/app/share/helpers';
   styleUrls: ['./tab-group.component.css'],
 })
 export class TabGroupComponent {
-  orders!: Order[];
-  exports!: Export[];
-  receipts!: Receipt[];
+  orders: Order[] = [];
+  exports: Export[] = [];
+  receipts: Receipt[] = [];
 
   params: any = {
     pageIndex: 0,
@@ -32,21 +32,21 @@ export class TabGroupComponent {
   getListData() {
     this.orderService.getPagination(this.params).subscribe(
       (response) => {
-        this.orders = response.data;
+        this.orders = response ? response.data : [];
       },
       (err: any) => showError(err, this.toastr)
     );
 
     this.receiptService.getPagination(this.params).subscribe(
       (response) => {
-        this.receipts = response.data;
+        this.receipts = response ? response.data : [];
       },
       (err: any) => showError(err, this.toastr)
     );
 
     this.exportService.getPagination(this.params).subscribe(
       (response) => {
-        this.exports = response.data;
+        this.exports = response ? response.data : [];
       },
       (err: any) => showError(err, this.toastr)
     );

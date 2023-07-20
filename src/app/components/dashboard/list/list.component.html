@@ -2,7 +2,15 @@
   <span>Ticket Activity</span>
 </mat-toolbar>
 <mat-list role="list">
-  <mat-list-item role="listitem">Item 1</mat-list-item>
-  <mat-list-item role="listitem">Item 2</mat-list-item>
-  <mat-list-item role="listitem">Item 3</mat-list-item>
+  <div *ngIf="tickets.length > 0; else noData">
+    <mat-list-item role="listitem" *ngFor="let item of tickets"
+      >Ticket <a routerLink="/ticket/{{ item.id }}">{{ "#" + item.id }}</a
+      >. Status: {{ item.status }} at {{ item.lastModifiedDate }}</mat-list-item
+    >
+  </div>
+  <ng-template #noData>
+    <div class="noData">
+      <h4>No records</h4>
+    </div>
+  </ng-template>
 </mat-list>

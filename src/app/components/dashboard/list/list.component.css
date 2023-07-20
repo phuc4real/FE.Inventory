@@ -1,0 +1,18 @@
+mat-list {
+  background-color: aliceblue;
+  min-height: 100%;
+}
+
+mat-list-item {
+  border-bottom: 1px solid;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.noData {
+  display: flex;
+  justify-content: center;
+}

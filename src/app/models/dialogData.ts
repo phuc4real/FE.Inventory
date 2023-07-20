@@ -7,3 +7,8 @@ export interface ExportDialogData {
   quantity: number;
   userId: string;
 }
+
+export interface TicketDialogData {
+  quantity: number;
+  type: number;
+}

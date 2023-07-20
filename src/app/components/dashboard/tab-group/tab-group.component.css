@@ -11,3 +11,8 @@ a {
   text-decoration: none;
   color: black;
 }
+
+.noData {
+  display: flex;
+  justify-content: center;
+}

@@ -45,6 +45,10 @@ import { TicketSummaryComponent } from './components/dashboard/ticket-summary/ti
 import { UsingItemTableComponent } from './components/dashboard/using-item-table/using-item-table.component';
 import { TabGroupComponent } from './components/dashboard/tab-group/tab-group.component';
 import { ListComponent } from './components/dashboard/list/list.component';
+import { ListTicketComponent } from './components/ticket/list-ticket/list-ticket.component';
+import { TicketDetailComponent } from './components/ticket/ticket-detail/ticket-detail.component';
+import { AddTicketComponent } from './components/ticket/add-ticket/add-ticket.component';
+import { AddTicketDialogComponent } from './components/ticket/add-ticket-dialog/add-ticket-dialog.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +84,10 @@ import { ListComponent } from './components/dashboard/list/list.component';
     UsingItemTableComponent,
     TabGroupComponent,
     ListComponent,
+    ListTicketComponent,
+    TicketDetailComponent,
+    AddTicketComponent,
+    AddTicketDialogComponent,
   ],
   imports: [
     BrowserModule,

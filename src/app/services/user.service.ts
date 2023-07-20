@@ -17,6 +17,10 @@ export class UserService {
     return this.http.get(`${this.apiUrl}/${id}`);
   }
 
+  getUserInfo(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/info`);
+  }
+
   getList(params: any): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/list`, { params });
   }

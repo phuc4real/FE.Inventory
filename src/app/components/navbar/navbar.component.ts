@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService, SideNavService } from 'src/app/services';
+import { AuthService, SideNavService, UserService } from 'src/app/services';
+import { showError } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-navbar',
@@ -7,6 +8,7 @@ import { AuthService, SideNavService } from 'src/app/services';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent {
+  userName = '';
   constructor(
     private authService: AuthService,
     private sideNavService: SideNavService

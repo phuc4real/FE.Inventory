@@ -1,27 +1,39 @@
 <mat-tab-group backgroundColor="primary">
   <mat-tab label="Export">
     <mat-list role="list">
-      <mat-list-item role="listitem" *ngFor="let item of exports"
-        >Export <a routerLink="/export/{{ item.id }}">{{ "#" + item.id }}</a
-        >. Create at {{ dateString(item.createdDate) }}</mat-list-item
-      >
+      <div *ngIf="exports.length > 0; else noData">
+        <mat-list-item role="listitem" *ngFor="let item of exports"
+          >Export <a routerLink="/export/{{ item.id }}">{{ "#" + item.id }}</a
+          >. Create at {{ dateString(item.createdDate) }}</mat-list-item
+        >
+      </div>
     </mat-list></mat-tab
   >
   <mat-tab label="Receipt">
     <mat-list role="list">
-      <mat-list-item role="listitem" *ngFor="let item of receipts">
-        >Receipt <a routerLink="/export/{{ item.id }}">{{ "#" + item.id }}</a
-        >. Create at {{ dateString(item.createdDate) }}</mat-list-item
-      >
+      <div *ngIf="receipts.length > 0; else noData">
+        <mat-list-item role="listitem" *ngFor="let item of receipts">
+          >Receipt <a routerLink="/receipt/{{ item.id }}">{{ "#" + item.id }}</a
+          >. Create at {{ dateString(item.createdDate) }}</mat-list-item
+        >
+      </div>
     </mat-list></mat-tab
   >
   <mat-tab label="Order">
     <mat-list role="list">
-      <mat-list-item role="listitem" *ngFor="let item of orders">
-        Order
-        <a routerLink="/order/{{ item.id }}">{{ "#" + item.id }}</a
-        >.Order Status: {{ item.status }}
-      </mat-list-item>
+      <div *ngIf="orders.length > 0; else noData">
+        <mat-list-item role="listitem" *ngFor="let item of orders">
+          Order
+          <a routerLink="/order/{{ item.id }}">{{ "#" + item.id }}</a
+          >.Order Status: {{ item.status }}
+        </mat-list-item>
+      </div>
     </mat-list></mat-tab
   >
 </mat-tab-group>
+
+<ng-template #noData>
+  <div class="noData">
+    <h4>No records</h4>
+  </div>
+</ng-template>

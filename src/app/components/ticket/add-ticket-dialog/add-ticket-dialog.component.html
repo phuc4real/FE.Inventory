@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Detail infomation</h1>
+<div mat-dialog-content class="dialog-content">
+  <mat-form-field>
+    <mat-label>Quantity</mat-label>
+    <input matInput [(ngModel)]="data.quantity" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Type</mat-label>
+    <mat-select [(value)]="data.type">
+      <mat-option value="1"> New </mat-option>
+      <mat-option value="2"> Change From </mat-option>
+      <mat-option value="3"> Change To </mat-option>
+      <mat-option value="4"> Fix </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button
+    class="dialog-button"
+    mat-button
+    [mat-dialog-close]="data"
+    cdkFocusInitial
+  >
+    Ok
+  </button>
+</div>

@@ -14,7 +14,10 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.sideNavService.sideNavToggleSubject.subscribe(() => {
-      this.sidenav.toggle();
+      //workaround
+      try {
+        this.sidenav.toggle();
+      } catch (ex) {}
     });
   }
 }

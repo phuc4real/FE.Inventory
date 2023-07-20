@@ -21,6 +21,9 @@ import { AddExportComponent } from './components/export/add-export/add-export.co
 import { ListReceiptComponent } from './components/receipt/list-receipt/list-receipt.component';
 import { AddReceiptComponent } from './components/receipt/add-receipt/add-receipt.component';
 import { ReceiptDetailComponent } from './components/receipt/receipt-detail/receipt-detail.component';
+import { ListTicketComponent } from './components/ticket/list-ticket/list-ticket.component';
+import { AddTicketComponent } from './components/ticket/add-ticket/add-ticket.component';
+import { TicketDetailComponent } from './components/ticket/ticket-detail/ticket-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -76,6 +79,15 @@ const routes: Routes = [
       { path: '', component: ListReceiptComponent },
       { path: 'add', component: AddReceiptComponent },
       { path: ':id', component: ReceiptDetailComponent },
+    ],
+  },
+  {
+    path: 'ticket',
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', component: ListTicketComponent },
+      { path: 'add', component: AddTicketComponent },
+      { path: ':id', component: TicketDetailComponent },
     ],
   },
   { path: 'error', component: ErrorComponent },

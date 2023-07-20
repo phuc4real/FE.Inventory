@@ -2,34 +2,43 @@ import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
-import { UsingItem } from 'src/app/models';
-import { UsingItemService } from 'src/app/services';
+import { Ticket } from 'src/app/models';
+import { TicketService } from 'src/app/services/ticket.service';
 import { toStringFormatDate } from 'src/app/share/helpers';
 
 @Component({
-  selector: 'app-using-item-table',
-  templateUrl: './using-item-table.component.html',
-  styleUrls: ['./using-item-table.component.css'],
+  selector: 'app-list-ticket',
+  templateUrl: './list-ticket.component.html',
+  styleUrls: ['./list-ticket.component.css'],
 })
-export class UsingItemTableComponent {
-  dataTable = new MatTableDataSource<UsingItem>();
+export class ListTicketComponent {
+  dataTable = new MatTableDataSource<Ticket>();
   displayedColumns: string[] = [
-    'itemName',
-    'quantity',
-    'export',
+    'id',
+    'title',
+    'purpose',
     'description',
-    'forUser',
+    'pmStatus',
+    'status',
+    'createdDate',
+    'createdByUser',
+    'actions',
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  pageSizeOptions: number[] = [5, 10, 15, 20];
-  data!: UsingItem[];
+  pageSizeOptions: number[] = [10, 20, 50, 100];
+  searchValue: string = '';
+  data!: Ticket[];
   totalRecords!: number;
 
-  constructor(private usingItemService: UsingItemService) {}
+  constructor(
+    private ticketService: TicketService,
+    private toastr: ToastrService
+  ) {}
 
   ngAfterViewInit() {
     this.dataTable.paginator = this.paginator;
@@ -56,8 +65,9 @@ export class UsingItemTableComponent {
             pageSize: this.paginator?.pageSize,
             sortField: this.sort?.active,
             sortDirection: this.sort?.direction,
+            searchKeyword: this.searchValue,
           };
-          return this.usingItemService
+          return this.ticketService
             .getPagination(params)
             .pipe(catchError(() => of(null)));
         }),
@@ -79,7 +89,7 @@ export class UsingItemTableComponent {
 
   setData(data: any) {
     this.data = data;
-    this.dataTable = new MatTableDataSource<UsingItem>(this.data);
+    this.dataTable = new MatTableDataSource<Ticket>(this.data);
   }
 
   dateString(date: any) {
