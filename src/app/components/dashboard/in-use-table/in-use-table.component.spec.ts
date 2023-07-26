@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UsingItemTableComponent } from './using-item-table.component';
+import { InUseTableComponent } from './in-use-table.component';
 
 describe('UsingItemTableComponent', () => {
-  let component: UsingItemTableComponent;
-  let fixture: ComponentFixture<UsingItemTableComponent>;
+  let component: InUseTableComponent;
+  let fixture: ComponentFixture<InUseTableComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [UsingItemTableComponent]
+      declarations: [InUseTableComponent],
     });
-    fixture = TestBed.createComponent(UsingItemTableComponent);
+    fixture = TestBed.createComponent(InUseTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

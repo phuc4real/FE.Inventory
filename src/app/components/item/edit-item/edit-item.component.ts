@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ItemEdit, Catalog } from 'src/app/models';
+import { UpdateItem, Catalog } from 'src/app/models';
 import {
   ItemService,
   CatalogService,
@@ -32,6 +32,7 @@ export class EditItemComponent {
     private router: Router
   ) {
     this.itemForm = new FormGroup({
+      code: new FormControl(''),
       name: new FormControl('', Validators.required),
       description: new FormControl(''),
       imageUrl: new FormControl(''),
@@ -56,6 +57,7 @@ export class EditItemComponent {
         (values) => {
           if (values.imageUrl != '') this.img = values.imageUrl;
           this.itemForm.patchValue({
+            code: values.code,
             name: values.name,
             description: values.description,
             imageUrl: values.imageUrl != '' ? values.imageUrl : this.img,
@@ -108,7 +110,8 @@ export class EditItemComponent {
   }
 
   submitItem() {
-    const data: ItemEdit = {
+    const data: UpdateItem = {
+      code: this.itemForm.value.code,
       name: this.itemForm.value.name,
       description: this.itemForm.value.description,
       imageUrl: this.itemForm.value.imageUrl,
@@ -116,7 +119,7 @@ export class EditItemComponent {
     };
 
     if (this.itemId != null) {
-      this.itemService.updateItem(this.itemId, data).subscribe(
+      this.itemService.update(this.itemId, data).subscribe(
         (response) => {
           showMessage(response, this.toastr);
           this.router.navigate(['/item/' + this.itemId]);
@@ -127,7 +130,7 @@ export class EditItemComponent {
         }
       );
     } else {
-      this.itemService.addItem(data).subscribe(
+      this.itemService.create(data).subscribe(
         (response) => {
           showMessage(response, this.toastr);
           this.router.navigate(['/' + response.headers.get('Location')]);

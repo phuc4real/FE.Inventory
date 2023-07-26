@@ -1,38 +1,20 @@
-import { Item, User } from '.';
-
-export interface OrderDetail {
-  item: Item;
-  quantity: number;
-  price: number;
-  total: number;
-}
-
-export interface AddOrderDetail {
-  itemId: string;
-  quantity: number;
-  price: number;
-  total: number;
-}
+import { OrderInfo, Pagination, User } from '.';
 
 export interface Order {
   id: number;
-  orderTotal: number;
-  orderDate: Date;
-  status: string;
-  orderByUser: User;
+
+  createdDate: Date;
+  createdByUser: User;
+  updatedDate: Date;
+  updatedByUser: User;
+
   completeDate: Date;
-  details: OrderDetail[];
 }
 
-export interface OrderPagination {
+export interface OrderWithHistory extends Order {
+  history: OrderInfo[];
+}
+
+export interface OrderPagination extends Pagination {
   data: Order[];
-  pageIndex: number;
-  pageSize: number;
-  totalPage: number;
-  totalRecords: number;
-}
-
-export interface AddOrder {
-  orderTotal: number;
-  details: AddOrderDetail[];
 }

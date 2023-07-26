@@ -2,12 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
-  AddTicket,
-  AddTicketDetail,
   ResponseMessage,
   Ticket,
   TicketCount,
   TicketPagination,
+  TicketWithHistory,
+  UpdateDecision,
+  UpdateTickerInfo,
+  UpdateTicketDetail,
 } from '../models';
 import { Observable } from 'rxjs';
 
@@ -23,29 +25,54 @@ export class TicketService {
     return this.http.get<TicketPagination>(`${this.apiUrl}`, { params });
   }
 
-  getTicketCount(): Observable<TicketCount> {
-    return this.http.get<TicketCount>(`${this.apiUrl}/count`);
-  }
-
   getList(): Observable<Ticket[]> {
     return this.http.get<Ticket[]>(`${this.apiUrl}/list`);
   }
 
-  addTicket(data: AddTicket): Observable<any> {
+  getTicketCount(): Observable<TicketCount> {
+    return this.http.get<TicketCount>(`${this.apiUrl}/count`);
+  }
+
+  getById(id: number): Observable<TicketWithHistory> {
+    return this.http.get<TicketWithHistory>(`${this.apiUrl}/${id}`);
+  }
+
+  create(data: UpdateTickerInfo): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`, data, { observe: 'response' });
   }
 
-  getById(id: string): Observable<Ticket> {
-    return this.http.get<Ticket>(`${this.apiUrl}/${id}`);
+  cancel(id: number): Observable<ResponseMessage> {
+    return this.http.delete<ResponseMessage>(`${this.apiUrl}/${id}/cancel`);
   }
 
-  cancelTicket(id: string): Observable<ResponseMessage> {
-    return this.http.delete<ResponseMessage>(`${this.apiUrl}/${id}`);
+  updateStatus(id: number): Observable<ResponseMessage> {
+    return this.http.put<ResponseMessage>(
+      `${this.apiUrl}/${id}/update-status`,
+      null
+    );
   }
+
+  decide(id: number, decision: UpdateDecision): Observable<ResponseMessage> {
+    return this.http.put<ResponseMessage>(
+      `${this.apiUrl}/${id}/decide`,
+      decision
+    );
+  }
+
+  leaderDecide(
+    id: number,
+    decision: UpdateDecision
+  ): Observable<ResponseMessage> {
+    return this.http.put<ResponseMessage>(
+      `${this.apiUrl}/${id}/leader-decide`,
+      decision
+    );
+  }
+
   // LocalStorage //
 
   initObject() {
-    let object: AddTicket = {
+    let object: UpdateTickerInfo = {
       purpose: 0,
       title: '',
       description: '',
@@ -57,10 +84,10 @@ export class TicketService {
 
   getObject() {
     let json = localStorage.getItem('ticket');
-    return json ? (JSON.parse(json) as AddTicket) : null;
+    return json ? (JSON.parse(json) as UpdateTickerInfo) : null;
   }
 
-  setObject(object: AddTicket) {
+  setObject(object: UpdateTickerInfo) {
     localStorage.setItem('ticket', JSON.stringify(object));
   }
 
@@ -68,16 +95,11 @@ export class TicketService {
     localStorage.removeItem('ticket');
   }
 
-  addToObject(itemId: string, quantity: number, type: number) {
-    let item: AddTicketDetail = {
-      itemId: itemId,
-      quantity: quantity,
-      type: parseInt(type.toString()),
-    };
-
+  addToObject(detail: UpdateTicketDetail) {
     let object = this.getObject();
     if (object == null) object = this.initObject();
-    object.details.push(item);
+    object.details.push(detail);
+
     this.setObject(object);
   }
 

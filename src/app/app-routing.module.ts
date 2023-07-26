@@ -11,16 +11,11 @@ import { ListItemComponent } from './components/item/list-item/list-item.compone
 import { ItemDetailComponent } from './components/item/item-detail/item-detail.component';
 import { EditItemComponent } from './components/item/edit-item/edit-item.component';
 import { ListCatalogComponent } from './components/catalog/list-catalog/list-catalog.component';
-import { EditCatalogComponent } from './components/catalog/edit-catalog/edit-catalog.component';
 import { ListOrderComponent } from './components/order/list-order/list-order.component';
 import { OrderDetailComponent } from './components/order/order-detail/order-detail.component';
 import { AddOrderComponent } from './components/order/add-order/add-order.component';
 import { ListExportComponent } from './components/export/list-export/list-export.component';
 import { ExportDetailComponent } from './components/export/export-detail/export-detail.component';
-import { AddExportComponent } from './components/export/add-export/add-export.component';
-import { ListReceiptComponent } from './components/receipt/list-receipt/list-receipt.component';
-import { AddReceiptComponent } from './components/receipt/add-receipt/add-receipt.component';
-import { ReceiptDetailComponent } from './components/receipt/receipt-detail/receipt-detail.component';
 import { ListTicketComponent } from './components/ticket/list-ticket/list-ticket.component';
 import { AddTicketComponent } from './components/ticket/add-ticket/add-ticket.component';
 import { TicketDetailComponent } from './components/ticket/ticket-detail/ticket-detail.component';
@@ -48,11 +43,7 @@ const routes: Routes = [
   {
     path: 'catalog',
     canActivate: [AuthGuard],
-    children: [
-      { path: '', component: ListCatalogComponent },
-      { path: 'add', component: EditCatalogComponent },
-      { path: 'edit/:id', component: EditCatalogComponent },
-    ],
+    children: [{ path: '', component: ListCatalogComponent }],
   },
   {
     path: 'order',
@@ -68,17 +59,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', component: ListExportComponent },
-      { path: 'add', component: AddExportComponent },
       { path: ':id', component: ExportDetailComponent },
-    ],
-  },
-  {
-    path: 'receipt',
-    canActivate: [AuthGuard],
-    children: [
-      { path: '', component: ListReceiptComponent },
-      { path: 'add', component: AddReceiptComponent },
-      { path: ':id', component: ReceiptDetailComponent },
     ],
   },
   {

@@ -71,7 +71,7 @@ export class AddTicketComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.ticketService.addToObject(itemId, result.quantity, result.type);
+      // this.ticketService.addToObject(itemId, result.quantity, result.type);
       this.getTableData();
     });
   }
@@ -86,15 +86,15 @@ export class AddTicketComponent {
     } else {
       ticketDetails.forEach((adddetail) => {
         this.itemService.getById(adddetail.itemId).subscribe(
-          (values) => {
-            let detail: TicketDetail = {
-              item: values,
-              quantity: adddetail.quantity,
-              type: this.type[adddetail.type - 1],
-            };
-            this.data.push(detail);
-            this.tableData = new MatTableDataSource<TicketDetail>(this.data);
-          },
+          // (values) => {
+          //   let detail: TicketDetail = {
+          //     item: values,
+          //     quantity: adddetail.quantity,
+          //     type: this.type[adddetail.type - 1],
+          //   };
+          //   this.data.push(detail);
+          //   this.tableData = new MatTableDataSource<TicketDetail>(this.data);
+          // },
           (err: any) => showError(err, this.toastr)
         );
       });
@@ -120,7 +120,7 @@ export class AddTicketComponent {
     ticket!.purpose = parseInt(this.formGroup.value.purpose);
     ticket!.description = this.formGroup.value.description;
 
-    this.ticketService.addTicket(ticket!).subscribe(
+    this.ticketService.create(ticket!).subscribe(
       (response) => {
         showMessage(response, this.toastr);
         this.router.navigate(['/' + response.headers.get('Location')]);

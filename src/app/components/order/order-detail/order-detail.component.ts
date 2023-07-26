@@ -61,22 +61,22 @@ export class OrderDetailComponent {
   getData() {
     this.orderService.getById(this.orderId).subscribe(
       (values) => {
-        this.listDetail = values.details;
+        // this.listDetail = values.details;
         this.details = new MatTableDataSource<OrderDetail>(this.listDetail);
-        let index = this.orderStatus.findIndex((x) => x == values.status);
-        if (index < 2) this.status = this.orderStatus[index + 1];
-        else this.status = '';
+        // let index = this.orderStatus.findIndex((x) => x == values.status);
+        // if (index < 2) this.status = this.orderStatus[index + 1];
+        // else this.status = '';
         let completeDateString = isDefaultDate(values.completeDate)
           ? 'Not Complete'
           : toStringFormatDate(values.completeDate);
-        this.orderForm.patchValue({
-          id: values.id,
-          orderDate: toStringFormatDate(values.orderDate),
-          status: values.status,
-          orderTotal: toStringFormatNumber(values.orderTotal),
-          user: values.orderByUser.userName,
-          completeDate: completeDateString,
-        });
+        // this.orderForm.patchValue({
+        //   id: values.id,
+        //   orderDate: toStringFormatDate(values.orderDate),
+        //   status: values.status,
+        //   orderTotal: toStringFormatNumber(values.orderTotal),
+        //   user: values.orderByUser.userName,
+        //   completeDate: completeDateString,
+        // });
       },
       (err: any) => showError(err, this.toastr)
     );
@@ -93,7 +93,7 @@ export class OrderDetailComponent {
   }
 
   cancelOrder() {
-    this.orderService.cancelOrder(this.orderId).subscribe(
+    this.orderService.cancel(this.orderId).subscribe(
       (response) => {
         showMessage(response, this.toastr);
         this.status = '';

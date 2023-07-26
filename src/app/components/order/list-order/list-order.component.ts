@@ -99,7 +99,7 @@ export class ListOrderComponent {
   }
 
   cancelOrder(id: number) {
-    this.orderService.cancelOrder(id).subscribe(
+    this.orderService.cancel(id).subscribe(
       (response) => {
         showMessage(response, this.toastr);
         this.paginator._changePageSize(this.paginator.pageSize);

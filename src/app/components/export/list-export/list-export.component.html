@@ -1,81 +1,59 @@
 <div class="container">
   <div>
-    <mat-form-field class="search-field">
+    <mat-form-field class="search">
       <input
         matInput
         [(ngModel)]="searchValue"
-        (keyup)="applyFilter()"
+        (keyup)="refreshData()"
         placeholder="Search"
       />
     </mat-form-field>
-    <button
-      mat-button
-      class="add-style"
-      mat-raised-button
-      color="primary"
-      routerLink="add"
-    >
-      Add new
-    </button>
   </div>
-  <mat-table [dataSource]="exports" matSort (matSortChange)="matSortChange()">
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-      <mat-cell *matCellDef="let export">{{ export.id }}</mat-cell>
-    </ng-container>
+  <div class="table">
+    <mat-table [dataSource]="exports" matSort (matSortChange)="refreshData()">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+        <mat-cell *matCellDef="let export">{{ export.id }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="description">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Description</mat-header-cell
-      >
-      <mat-cell *matCellDef="let export">{{ export.description }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="createdDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Created Date</mat-header-cell
-      >
-      <mat-cell *matCellDef="let export">{{
-        dateString(export.createdDate)
-      }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="createdByUser">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Created By User</mat-header-cell
-      >
-      <mat-cell *matCellDef="let export">{{
-        export.createdByUser.userName
-      }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-      <mat-cell *matCellDef="let export">
-        <button mat-button routerLink="{{ export.id }}" color="primary">
-          Detail
-        </button>
-        <button
-          mat-button
-          color="warn"
-          [swal]="{ 
-                        title: 'Cancel export',
-                        icon: 'warning',
-                        text:'Cancel export #'+export.id,
-                        showCancelButton: true,
-                        confirmButtonText: 'Cancel export',
-                        confirmButtonColor: '#d61313',
-                    }"
-          (confirm)="cancel(export.id)"
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Description</mat-header-cell
         >
-          Cancel
-        </button>
-      </mat-cell>
-    </ng-container>
+        <mat-cell *matCellDef="let export">{{ export.description }}</mat-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-  </mat-table>
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Status</mat-header-cell
+        >
+        <mat-cell *matCellDef="let export">{{ export.status }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="forUser">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >For User</mat-header-cell
+        >
+        <mat-cell *matCellDef="let export">{{
+          export.forUser.username
+        }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-cell *matCellDef="let export">
+          <button mat-button routerLink="{{ export.id }}" color="primary">
+            Detail
+          </button>
+          <button mat-button routerLink="{{ export.id }}" color="primary">
+            Update Status
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+  </div>
   <mat-paginator
     #paginator
     [length]="totalRecords"

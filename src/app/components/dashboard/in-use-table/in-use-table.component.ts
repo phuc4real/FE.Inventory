@@ -3,17 +3,17 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
-import { UsingItem } from 'src/app/models';
-import { UsingItemService } from 'src/app/services';
+import { InUse } from 'src/app/models';
+import { InUserService } from 'src/app/services';
 import { toStringFormatDate } from 'src/app/share/helpers';
 
 @Component({
-  selector: 'app-using-item-table',
-  templateUrl: './using-item-table.component.html',
-  styleUrls: ['./using-item-table.component.css'],
+  selector: 'app-in-use-table',
+  templateUrl: './in-use-table.component.html',
+  styleUrls: ['./in-use-table.component.css'],
 })
-export class UsingItemTableComponent {
-  dataTable = new MatTableDataSource<UsingItem>();
+export class InUseTableComponent {
+  dataTable = new MatTableDataSource<InUse>();
   displayedColumns: string[] = [
     'itemName',
     'quantity',
@@ -26,10 +26,10 @@ export class UsingItemTableComponent {
   @ViewChild(MatSort) sort!: MatSort;
 
   pageSizeOptions: number[] = [5, 10, 15, 20];
-  data!: UsingItem[];
+  data!: InUse[];
   totalRecords!: number;
 
-  constructor(private usingItemService: UsingItemService) {}
+  constructor(private inUseService: InUserService) {}
 
   ngAfterViewInit() {
     this.dataTable.paginator = this.paginator;
@@ -57,7 +57,7 @@ export class UsingItemTableComponent {
             sortField: this.sort?.active,
             sortDirection: this.sort?.direction,
           };
-          return this.usingItemService
+          return this.inUseService
             .getPagination(params)
             .pipe(catchError(() => of(null)));
         }),
@@ -79,7 +79,7 @@ export class UsingItemTableComponent {
 
   setData(data: any) {
     this.data = data;
-    this.dataTable = new MatTableDataSource<UsingItem>(this.data);
+    this.dataTable = new MatTableDataSource<InUse>(this.data);
   }
 
   dateString(date: any) {

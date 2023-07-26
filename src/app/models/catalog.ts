@@ -1,16 +1,14 @@
+import { Pagination } from '.';
+
 export interface Catalog {
   id: number;
   name: string;
 }
 
-export interface CatalogEdit {
+export interface UpdateCatalog {
   name: string;
 }
 
-export interface CatalogPagination {
+export interface CatalogPagination extends Pagination {
   data: Catalog[];
-  pageIndex: number;
-  pageSize: number;
-  totalPage: number;
-  totalRecords: number;
 }

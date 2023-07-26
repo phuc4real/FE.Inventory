@@ -9,23 +9,12 @@
       </div>
     </mat-list></mat-tab
   >
-  <mat-tab label="Receipt">
-    <mat-list role="list">
-      <div *ngIf="receipts.length > 0; else noData">
-        <mat-list-item role="listitem" *ngFor="let item of receipts">
-          >Receipt <a routerLink="/receipt/{{ item.id }}">{{ "#" + item.id }}</a
-          >. Create at {{ dateString(item.createdDate) }}</mat-list-item
-        >
-      </div>
-    </mat-list></mat-tab
-  >
   <mat-tab label="Order">
     <mat-list role="list">
       <div *ngIf="orders.length > 0; else noData">
         <mat-list-item role="listitem" *ngFor="let item of orders">
           Order
-          <a routerLink="/order/{{ item.id }}">{{ "#" + item.id }}</a
-          >.Order Status: {{ item.status }}
+          <a routerLink="/order/{{ item.id }}">{{ "#" + item.id }}</a>
         </mat-list-item>
       </div>
     </mat-list></mat-tab

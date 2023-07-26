@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Export, Order, Receipt } from 'src/app/models';
-import { ExportService, OrderService, ReceiptService } from 'src/app/services';
+import { Export, Order } from 'src/app/models';
+import { ExportService, OrderService } from 'src/app/services';
 import { showError, toStringFormatDate } from 'src/app/share/helpers';
 
 @Component({
@@ -12,7 +12,6 @@ import { showError, toStringFormatDate } from 'src/app/share/helpers';
 export class TabGroupComponent {
   orders: Order[] = [];
   exports: Export[] = [];
-  receipts: Receipt[] = [];
 
   params: any = {
     pageIndex: 0,
@@ -23,7 +22,6 @@ export class TabGroupComponent {
   constructor(
     private toastr: ToastrService,
     private orderService: OrderService,
-    private receiptService: ReceiptService,
     private exportService: ExportService
   ) {
     this.getListData();
@@ -33,13 +31,6 @@ export class TabGroupComponent {
     this.orderService.getPagination(this.params).subscribe(
       (response) => {
         this.orders = response ? response.data : [];
-      },
-      (err: any) => showError(err, this.toastr)
-    );
-
-    this.receiptService.getPagination(this.params).subscribe(
-      (response) => {
-        this.receipts = response ? response.data : [];
       },
       (err: any) => showError(err, this.toastr)
     );

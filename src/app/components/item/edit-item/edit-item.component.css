@@ -1,14 +1,15 @@
-.item-container {
-  margin: 20px;
-}
-
-.item-container .back-link {
+.container {
+  margin: 30px 30px 0;
   display: flex;
-  flex-direction: row-reverse;
-  padding: 8px;
+  align-items: center;
+  flex-direction: column;
 }
 
-.item-container .back-link a {
+.container .link {
+  padding: 10px;
+}
+
+.container .link a {
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -18,39 +19,37 @@
   color: black;
 }
 
-.item-form {
+.form {
   display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: center;
   padding: 20px;
+  width: 50vw;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f4f4f4;
-  overflow: hidden;
 }
 
-.item-form mat-form-field {
-  padding: 20px;
-  width: 320px;
+.form mat-form-field {
+  padding: 15px;
+  width: 25%;
 }
 
-.item-form mat-form-field#description {
-  width: 680px !important;
+.form mat-form-field#description {
+  width: 83% !important;
 }
 
-.img-container {
+.img {
   display: flex;
   padding: 20px;
   flex-direction: column;
   align-items: center;
 }
 
-.img-container input {
+.img input {
   display: none;
 }
 
-.img-container button {
+.img button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,16 +62,16 @@
   height: 40px;
 }
 
-.img-container button span {
+.img button span {
   font-weight: 500;
   margin-left: 8px;
 }
 
-.img-container img {
+.img img {
   height: 280px;
 }
 
-.update-button {
+.button {
   left: 40%;
   padding: 20px 50px;
 }

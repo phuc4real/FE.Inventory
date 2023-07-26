@@ -1,30 +1,22 @@
-import { Catalog, User } from '.';
+import { Catalog, Pagination, User } from '.';
 
 export interface Item {
   id: string;
+  code: string;
   name: string;
   description: string;
   imageUrl: string;
   catalog: Catalog;
-  inStock: number;
-  used: number;
-  createdDate: Date;
-  createdByUser: User;
-  lastModifiedDate: Date;
-  modifiedByUser: User;
 }
 
-export interface ItemEdit {
+export interface UpdateItem {
+  code: string;
   name: string;
   description: string;
   imageUrl: string;
   catalogId: number;
 }
 
-export interface ItemPagaination {
+export interface ItemPagaination extends Pagination {
   data: Item[];
-  pageIndex: number;
-  pageSize: number;
-  totalPage: number;
-  totalRecords: number;
 }

@@ -15,7 +15,7 @@ export class ListComponent {
   params: any = {
     pageIndex: 0,
     pageSize: 7,
-    sortField: 'lastModifiedDate',
+    sortField: 'updatedDate',
     sortDirection: 'desc',
   };
 

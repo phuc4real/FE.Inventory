@@ -4,9 +4,8 @@
 <mat-list role="list">
   <div *ngIf="tickets.length > 0; else noData">
     <mat-list-item role="listitem" *ngFor="let item of tickets"
-      >Ticket <a routerLink="/ticket/{{ item.id }}">{{ "#" + item.id }}</a
-      >. Status: {{ item.status }} at {{ item.lastModifiedDate }}</mat-list-item
-    >
+      >Ticket <a routerLink="/ticket/{{ item.id }}">{{ "#" + item.id }}</a>
+    </mat-list-item>
   </div>
   <ng-template #noData>
     <div class="noData">

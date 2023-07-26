@@ -2,7 +2,13 @@ import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Item, ItemEdit, ItemPagaination, ResponseMessage } from '../models';
+import {
+  Item,
+  UpdateItem,
+  ItemPagaination,
+  ResponseMessage,
+  ItemDetail,
+} from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -20,19 +26,19 @@ export class ItemService {
     return this.http.get<Item[]>(`${this.apiUrl}/list`, { params });
   }
 
-  getById(id: string): Observable<Item> {
-    return this.http.get<Item>(`${this.apiUrl}/${id}`);
+  getById(id: string): Observable<ItemDetail> {
+    return this.http.get<ItemDetail>(`${this.apiUrl}/${id}`);
   }
 
-  updateItem(id: string, data: ItemEdit): Observable<ResponseMessage> {
+  update(id: string, data: UpdateItem): Observable<ResponseMessage> {
     return this.http.put<ResponseMessage>(`${this.apiUrl}/${id}`, data);
   }
 
-  deleteItem(id: string): Observable<ResponseMessage> {
+  delete(id: string): Observable<ResponseMessage> {
     return this.http.delete<ResponseMessage>(`${this.apiUrl}/${id}`);
   }
 
-  addItem(data: ItemEdit): Observable<any> {
+  create(data: UpdateItem): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`, data, { observe: 'response' });
   }
 }

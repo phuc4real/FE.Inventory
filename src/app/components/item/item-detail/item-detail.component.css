@@ -1,66 +1,64 @@
-.item-container{
-    margin: 14px auto;
+.container {
+  margin: 30px 30px 0;
 }
 
-.item-container .back-link {
-    display: flex;
-    flex-direction: row-reverse;
-    padding: 8px;
+.container .link {
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 8px;
 }
 
-.item-container .back-link a{
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    padding: 10px;
-    font-size: 1.2rem;
-    font-weight: 450;
-    color: black;
+.container .link a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 10px;
+  font-size: 1.2rem;
+  font-weight: 450;
+  color: black;
 }
 
-.item-form {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f4f4f4;
-    overflow: hidden;
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f4f4f4;
 }
 
-.item-form mat-form-field{
-    padding: 20px;
-    width: 320px;
+.form mat-form-field {
+  padding: 15px;
+  width: 320px;
 }
 
-.img-container {
-    display: flex;
-    padding: 20px;
-    flex-direction: column;
-    align-items: center;
+.img {
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  align-items: center;
 }
-    .img-container input {
-    display: none;
- }
+.img input {
+  display: none;
+}
 
-    .img-container button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 20px;
-        background-color: #3f51b5;
-        border: none;
-        border-radius: 20px;
-        color: aliceblue;
-        width: 140px;
-        height: 40px;
-    }
-        .img-container button span{
-            font-weight: 500;
-            margin-left: 8px;
-        }
-    .img-container img {
-        height: 280px;
-    }
+.img button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  background-color: #3f51b5;
+  border: none;
+  border-radius: 20px;
+  color: aliceblue;
+  width: 140px;
+  height: 40px;
+}
+.img button span {
+  font-weight: 500;
+  margin-left: 8px;
+}
+.img img {
+  height: 280px;
+}

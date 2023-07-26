@@ -16,12 +16,12 @@ import { showError, showMessage } from 'src/app/share/helpers';
 export class ListItemComponent {
   items = new MatTableDataSource<Item>();
   displayedColumns: string[] = [
-    'id',
+    'code',
     'name',
     'description',
     'catalog',
     'inStock',
-    'used',
+    'inUse',
     'actions',
   ];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -31,6 +31,7 @@ export class ListItemComponent {
   searchValue: string = '';
   listItem!: Item[];
   totalItem!: number;
+
   constructor(
     private itemService: ItemService,
     private toastr: ToastrService
@@ -40,19 +41,6 @@ export class ListItemComponent {
     this.items.paginator = this.paginator;
     this.getPaginator();
     this.items.sort = this.sort;
-  }
-
-  matSortChange() {
-    this.refreshData();
-  }
-
-  applyFilter() {
-    this.refreshData();
-  }
-
-  setData(items: any) {
-    this.listItem = items;
-    this.items = new MatTableDataSource<Item>(this.listItem);
   }
 
   refreshData() {
@@ -84,16 +72,18 @@ export class ListItemComponent {
       )
       .subscribe(
         (dto) => {
-          this.setData(dto);
+          this.listItem = dto;
+          this.items = new MatTableDataSource<Item>(this.listItem);
         },
         (error) => {
-          this.setData([]);
+          this.listItem = [];
+          this.items = new MatTableDataSource<Item>(this.listItem);
         }
       );
   }
 
   deleteItem(id: string) {
-    this.itemService.deleteItem(id).subscribe(
+    this.itemService.delete(id).subscribe(
       (response) => {
         showMessage(response, this.toastr);
         this.paginator._changePageSize(this.paginator.pageSize);

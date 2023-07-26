@@ -4,9 +4,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
-import { Catalog } from 'src/app/models';
+import { Catalog, UpdateCatalog } from 'src/app/models';
 import { CatalogService } from 'src/app/services';
 import { showError, showMessage } from 'src/app/share/helpers';
+import { UpdateCatalogDialogComponent } from '../update-catalog-dialog/update-catalog-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-list-catalog',
@@ -23,9 +25,9 @@ export class ListCatalogComponent {
   searchValue: string = '';
   listCatalog!: Catalog[];
   totalCatalog!: number;
-
   constructor(
     private catalogService: CatalogService,
+    public dialog: MatDialog,
     private toastr: ToastrService
   ) {}
 
@@ -33,14 +35,6 @@ export class ListCatalogComponent {
     this.catalogs.paginator = this.paginator;
     this.getPaginator();
     this.catalogs.sort = this.sort;
-  }
-
-  matSortChange() {
-    this.refreshData();
-  }
-
-  applyFilter() {
-    this.refreshData();
   }
 
   refreshData() {
@@ -72,26 +66,61 @@ export class ListCatalogComponent {
       )
       .subscribe(
         (dto) => {
-          this.setData(dto);
+          this.listCatalog = dto;
+          this.catalogs = new MatTableDataSource<Catalog>(this.listCatalog);
         },
         (error) => {
-          this.setData([]);
+          this.listCatalog = [];
+          this.catalogs = new MatTableDataSource<Catalog>(this.listCatalog);
         }
       );
   }
 
-  setData(catalogs: any) {
-    this.listCatalog = catalogs;
-    this.catalogs = new MatTableDataSource<Catalog>(this.listCatalog);
-  }
-
   deteleCatalog(id: number) {
-    this.catalogService.deleteCatalog(id).subscribe(
+    this.catalogService.delete(id).subscribe(
       (response) => {
         showMessage(response, this.toastr);
         this.paginator._changePageSize(this.paginator.pageSize);
       },
       (err: any) => showError(err, this.toastr)
     );
+  }
+
+  openDialog(id: number, name: string): void {
+    let title = id == 0 ? 'Add new catalog' : 'Edit catalog info';
+    const dialogRef = this.dialog.open(UpdateCatalogDialogComponent, {
+      data: { name: name, title: title },
+      position: { top: '16vh' },
+    });
+
+    dialogRef.afterClosed().subscribe((catalogName) => {
+      if (catalogName) this.updateCatalog(id, catalogName);
+    });
+  }
+
+  updateCatalog(id: number, catalogName: string) {
+    let data: UpdateCatalog = {
+      name: catalogName,
+    };
+
+    if (id != 0) {
+      this.catalogService.update(id, data).subscribe(
+        (response) => {
+          showMessage(response, this.toastr);
+          this.refreshData();
+        },
+        (err: any) => showError(err, this.toastr)
+      );
+    } else {
+      this.catalogService.create(data).subscribe(
+        (response) => {
+          showMessage(response, this.toastr);
+          this.refreshData();
+        },
+        (err: any) => {
+          showError(err, this.toastr);
+        }
+      );
+    }
   }
 }

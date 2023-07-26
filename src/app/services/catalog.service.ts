@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
   Catalog,
-  CatalogEdit,
+  UpdateCatalog,
   CatalogPagination,
   ResponseMessage,
 } from '../models';
@@ -28,15 +28,15 @@ export class CatalogService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-  deleteCatalog(id: number): Observable<ResponseMessage> {
+  delete(id: number): Observable<ResponseMessage> {
     return this.http.delete<ResponseMessage>(`${this.apiUrl}/${id}`);
   }
 
-  updateCatalog(id: number, data: CatalogEdit): Observable<ResponseMessage> {
+  update(id: number, data: UpdateCatalog): Observable<ResponseMessage> {
     return this.http.put<ResponseMessage>(`${this.apiUrl}/${id}`, data);
   }
 
-  addCatalog(data: CatalogEdit): Observable<any> {
+  create(data: UpdateCatalog): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`, data, { observe: 'response' });
   }
 }

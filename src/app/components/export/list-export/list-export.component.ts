@@ -6,11 +6,6 @@ import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
 import { Export } from 'src/app/models';
 import { ExportService } from 'src/app/services';
-import {
-  showError,
-  showMessage,
-  toStringFormatDate,
-} from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-export',
@@ -22,8 +17,8 @@ export class ListExportComponent {
   displayedColumns: string[] = [
     'id',
     'description',
-    'createdDate',
-    'createdByUser',
+    'status',
+    'forUser',
     'actions',
   ];
 
@@ -46,11 +41,7 @@ export class ListExportComponent {
     this.exports.sort = this.sort;
   }
 
-  matSortChange() {
-    this.applyFilter();
-  }
-
-  applyFilter() {
+  refreshData() {
     this.paginator._changePageSize(this.paginator.pageSize);
     this.paginator.firstPage();
   }
@@ -79,31 +70,13 @@ export class ListExportComponent {
       )
       .subscribe(
         (dto) => {
-          this.setData(dto);
-          console.log(dto);
+          this.list = dto;
+          this.exports = new MatTableDataSource<Export>(this.list);
         },
         (error: any) => {
-          this.setData([]);
+          this.list = [];
+          this.exports = new MatTableDataSource<Export>(this.list);
         }
       );
-  }
-
-  setData(exports: any) {
-    this.list = exports;
-    this.exports = new MatTableDataSource<Export>(this.list);
-  }
-
-  dateString(date: any) {
-    return toStringFormatDate(date);
-  }
-
-  cancel(id: number) {
-    this.exportService.cancelExport(id).subscribe(
-      (response) => {
-        showMessage(response, this.toastr);
-        this.paginator._changePageSize(this.paginator.pageSize);
-      },
-      (err: any) => showError(err, this.toastr)
-    );
   }
 }

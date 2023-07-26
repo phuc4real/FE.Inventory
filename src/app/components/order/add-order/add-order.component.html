@@ -59,9 +59,9 @@
       <mat-cell *matCellDef="let detail">{{
         detail.total | number : "1.0-0"
       }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef>{{
+      <!-- <mat-footer-cell *matFooterCellDef>{{
         orderTotal | number : "1.0-0"
-      }}</mat-footer-cell>
+      }}</mat-footer-cell> -->
     </ng-container>
 
     <ng-container matColumnDef="actions">
@@ -92,7 +92,7 @@
       *matFooterRowDef="displayedColumns; sticky: true"
     ></mat-footer-row>
   </mat-table>
-  <div class="button-container" *ngIf="orderTotal != 0">
+  <div class="button-container">
     <button mat-button mat-raised-button color="basic" (click)="clearAll()">
       Clear All
     </button>

@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
-  AddOrder,
-  AddOrderDetail,
   Order,
   OrderPagination,
+  OrderWithHistory,
   ResponseMessage,
+  UpdateDecision,
+  UpdateOrderDetail,
+  UpdateOrderInfo,
 } from '../models';
 
 @Injectable({
@@ -22,8 +24,12 @@ export class OrderService {
     return this.http.get<OrderPagination>(`${this.apiUrl}`, { params });
   }
 
-  getById(id: number): Observable<Order> {
-    return this.http.get<Order>(`${this.apiUrl}/${id}`);
+  getList(): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.apiUrl}`);
+  }
+
+  getById(id: number): Observable<OrderWithHistory> {
+    return this.http.get<OrderWithHistory>(`${this.apiUrl}/${id}`);
   }
 
   getCount(): Observable<ResponseMessage[]> {
@@ -34,11 +40,18 @@ export class OrderService {
     return this.http.put<any>(`${this.apiUrl}/${id}/update-status`, null);
   }
 
-  cancelOrder(id: number): Observable<any> {
+  decide(id: number, decision: UpdateDecision): Observable<ResponseMessage> {
+    return this.http.post<ResponseMessage>(
+      `${this.apiUrl}/${id}/decide`,
+      decision
+    );
+  }
+
+  cancel(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}/cancel`);
   }
 
-  addOrder(): Observable<any> {
+  create(): Observable<any> {
     let data = this.getObject();
     return this.http.post(`${this.apiUrl}`, data, { observe: 'response' });
   }
@@ -46,8 +59,10 @@ export class OrderService {
   // LocalStorage //
 
   initObject() {
-    let order: AddOrder = {
-      orderTotal: 0,
+    let order: UpdateOrderInfo = {
+      minTotal: 0,
+      maxTotal: 0,
+      description: '',
       details: [],
     };
     return order;
@@ -55,26 +70,22 @@ export class OrderService {
 
   getObject() {
     let json = localStorage.getItem('order');
-    return json ? (JSON.parse(json) as AddOrder) : null;
+    return json ? (JSON.parse(json) as UpdateOrderInfo) : null;
   }
 
-  setObject(order: AddOrder) {
+  setObject(order: UpdateOrderInfo) {
     localStorage.setItem('order', JSON.stringify(order));
   }
 
-  addToObject(itemId: string, quantity: number, price: number) {
-    let detail: AddOrderDetail = {
-      itemId: itemId,
-      quantity: quantity,
-      price: price,
-      total: quantity * price,
-    };
+  addToObject(detail: UpdateOrderDetail) {
+    let orderInfo = this.getObject();
+    if (orderInfo == null) orderInfo = this.initObject();
 
-    let addOrder = this.getObject();
-    if (addOrder == null) addOrder = this.initObject();
-    addOrder.details.push(detail);
-    addOrder.orderTotal += detail.total;
-    this.setObject(addOrder);
+    orderInfo.details.push(detail);
+    orderInfo.minTotal += detail.minTotal;
+    orderInfo.maxTotal += detail.maxTotal;
+
+    this.setObject(orderInfo);
   }
 
   removeObject() {
@@ -82,16 +93,18 @@ export class OrderService {
   }
 
   removeFromObject(itemId: string): boolean {
-    let order = this.getObject();
-    if (order == null) return false;
-    let index = order?.details.findIndex((x) => x.itemId == itemId) ?? 0;
+    let orderInfo = this.getObject();
+    if (orderInfo == null) return false;
+    let index = orderInfo?.details.findIndex((x) => x.itemId == itemId) ?? 0;
     if (index < 0) return false;
 
-    let total = order?.details[index].total ?? 0;
-    order.orderTotal -= total;
-    order.details.splice(index, 1);
+    let minTotal = orderInfo?.details[index].minTotal ?? 0;
+    let maxTotal = orderInfo?.details[index].maxTotal ?? 0;
+    orderInfo.minTotal -= minTotal;
+    orderInfo.maxTotal -= maxTotal;
+    orderInfo.details.splice(index, 1);
 
-    this.setObject(order!);
+    this.setObject(orderInfo!);
     return true;
   }
 }

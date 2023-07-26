@@ -1,34 +1,19 @@
-import { Item, User } from '.';
-
-export interface ExportDetail {
-  item: Item;
-  quantity: number;
-  forUser: User;
-}
-
-export interface AddExportDetail {
-  itemId: string;
-  quantity: number;
-  forUserId: string;
-}
+import { ExportDetail, Pagination, User } from '.';
 
 export interface Export {
   id: number;
   description: string;
+  status: string;
+  forUser: User;
+
   createdDate: Date;
   createdByUser: User;
+  updatedDate: Date;
+  updatedByUser: User;
+
   details: ExportDetail[];
 }
 
-export interface ExportPagination {
+export interface ExportPagination extends Pagination {
   data: Export[];
-  pageIndex: number;
-  pageSize: number;
-  totalPage: number;
-  totalRecords: number;
-}
-
-export interface AddExport {
-  description: string;
-  details: AddExportDetail[];
 }

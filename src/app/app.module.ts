@@ -24,31 +24,24 @@ import { ListItemComponent } from './components/item/list-item/list-item.compone
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { EditItemComponent } from './components/item/edit-item/edit-item.component';
 import { ListCatalogComponent } from './components/catalog/list-catalog/list-catalog.component';
-import { EditCatalogComponent } from './components/catalog/edit-catalog/edit-catalog.component';
 import { ListOrderComponent } from './components/order/list-order/list-order.component';
 import { OrderDetailComponent } from './components/order/order-detail/order-detail.component';
 import { AddOrderComponent } from './components/order/add-order/add-order.component';
 import { AddOrderDialogComponent } from './components/order/add-order-dialog/add-order-dialog.component';
 import { ListExportComponent } from './components/export/list-export/list-export.component';
 import { ExportDetailComponent } from './components/export/export-detail/export-detail.component';
-import { AddExportComponent } from './components/export/add-export/add-export.component';
-import { AddExportDialogComponent } from './components/export/add-export-dialog/add-export-dialog.component';
-import { ListReceiptComponent } from './components/receipt/list-receipt/list-receipt.component';
-import { ReceiptDetailComponent } from './components/receipt/receipt-detail/receipt-detail.component';
-import { AddReceiptComponent } from './components/receipt/add-receipt/add-receipt.component';
-import { AddReceiptDialogComponent } from './components/receipt/add-receipt-dialog/add-receipt-dialog.component';
 import { LoaderInterceptor } from './share/helpers/loader.interceptor';
 import { NgChartsModule } from 'ng2-charts';
-import Annotation from 'chartjs-plugin-annotation';
 import { DashboardChartComponent } from './components/dashboard/dashboard-chart/dashboard-chart.component';
 import { TicketSummaryComponent } from './components/dashboard/ticket-summary/ticket-summary.component';
-import { UsingItemTableComponent } from './components/dashboard/using-item-table/using-item-table.component';
 import { TabGroupComponent } from './components/dashboard/tab-group/tab-group.component';
 import { ListComponent } from './components/dashboard/list/list.component';
 import { ListTicketComponent } from './components/ticket/list-ticket/list-ticket.component';
 import { TicketDetailComponent } from './components/ticket/ticket-detail/ticket-detail.component';
 import { AddTicketComponent } from './components/ticket/add-ticket/add-ticket.component';
 import { AddTicketDialogComponent } from './components/ticket/add-ticket-dialog/add-ticket-dialog.component';
+import { InUseTableComponent } from './components/dashboard/in-use-table/in-use-table.component';
+import { UpdateCatalogDialogComponent } from './components/catalog/update-catalog-dialog/update-catalog-dialog.component';
 
 @NgModule({
   declarations: [
@@ -66,28 +59,22 @@ import { AddTicketDialogComponent } from './components/ticket/add-ticket-dialog/
     ItemDetailComponent,
     EditItemComponent,
     ListCatalogComponent,
-    EditCatalogComponent,
     ListOrderComponent,
     OrderDetailComponent,
     AddOrderComponent,
     AddOrderDialogComponent,
     ListExportComponent,
     ExportDetailComponent,
-    AddExportComponent,
-    AddExportDialogComponent,
-    ListReceiptComponent,
-    ReceiptDetailComponent,
-    AddReceiptComponent,
-    AddReceiptDialogComponent,
     DashboardChartComponent,
     TicketSummaryComponent,
-    UsingItemTableComponent,
     TabGroupComponent,
     ListComponent,
     ListTicketComponent,
     TicketDetailComponent,
     AddTicketComponent,
     AddTicketDialogComponent,
+    InUseTableComponent,
+    UpdateCatalogDialogComponent,
   ],
   imports: [
     BrowserModule,

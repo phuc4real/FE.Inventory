@@ -19,7 +19,7 @@ import {
 export class TicketDetailComponent {
   formGroup!: FormGroup;
 
-  id!: string;
+  id!: number;
   isClosed: boolean = true;
 
   data!: TicketDetail[];
@@ -61,38 +61,38 @@ export class TicketDetailComponent {
   getData() {
     this.ticketService.getById(this.id).subscribe(
       (response) => {
-        this.data = response.details;
+        // this.data = response.details;
         this.tableData = new MatTableDataSource<TicketDetail>(this.data);
 
         console.log(response);
 
-        this.formGroup.patchValue({
-          id: response.id,
-          title: response.title,
-          purpose: response.purpose,
-          description: response.description,
-          leaderApprove: response.leaderApprove,
-          status: response.status,
-          createdDate: toStringFormatDate(response.createdDate),
-          createdByUser: response.createdByUser.userName,
-          lastModifiedDate: toStringFormatDate(response.lastModifiedDate),
-          modifiedByUser: response.modifiedByUser.userName,
-        });
+        // this.formGroup.patchValue({
+        //   id: response.id,
+        //   title: response.title,
+        //   purpose: response.purpose,
+        //   description: response.description,
+        //   leaderApprove: response.leaderApprove,
+        //   status: response.status,
+        //   createdDate: toStringFormatDate(response.createdDate),
+        //   createdByUser: response.createdByUser.userName,
+        //   lastModifiedDate: toStringFormatDate(response.lastModifiedDate),
+        //   modifiedByUser: response.modifiedByUser.userName,
+        // });
 
-        if (response.isClosed) {
-          this.formGroup.patchValue({
-            rejectReason: response.rejectReason,
-            closedDate: toStringFormatDate(response.closedDate),
-          });
-        }
-        this.isClosed = response.isClosed;
+        // if (response.isClosed) {
+        //   this.formGroup.patchValue({
+        //     rejectReason: response.rejectReason,
+        //     closedDate: toStringFormatDate(response.closedDate),
+        //   });
+        // }
+        // this.isClosed = response.isClosed;
       },
       (err: any) => showError(err, this.toastr)
     );
   }
 
   cancelTicket() {
-    this.ticketService.cancelTicket(this.id).subscribe(
+    this.ticketService.cancel(this.id).subscribe(
       (response) => {
         showMessage(response, this.toastr);
         this.router.navigate(['/ticket']);

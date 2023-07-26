@@ -3,7 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { Item, OrderDetail } from 'src/app/models';
+import { Item, OrderDetail, UpdateOrderDetail } from 'src/app/models';
 import { ItemService, OrderService } from 'src/app/services';
 import { AddOrderDialogComponent } from '../add-order-dialog/add-order-dialog.component';
 import { Router } from '@angular/router';
@@ -33,7 +33,8 @@ export class AddOrderComponent {
   detailQuantity!: number;
   detailPrice!: number;
 
-  orderTotal: number = 0;
+  minTotal: number = 0;
+  maxTotal: number = 0;
   sumQuantity: number = 0;
 
   constructor(
@@ -54,7 +55,9 @@ export class AddOrderComponent {
 
     this.listDetail = [];
     this.sumQuantity = 0;
-    this.orderTotal = order?.orderTotal ?? 0;
+    this.minTotal = order?.minTotal ?? 0;
+    this.maxTotal = order?.maxTotal ?? 0;
+
     if (addOrderDetails.length < 1) {
       this.details = new MatTableDataSource<OrderDetail>(this.listDetail);
     } else {
@@ -64,8 +67,11 @@ export class AddOrderComponent {
             let detail: OrderDetail = {
               item: values,
               quantity: adddetail.quantity,
-              price: adddetail.price,
-              total: adddetail.total,
+              minPrice: adddetail.minPrice,
+              maxPrice: adddetail.minPrice,
+              minTotal: adddetail.minTotal,
+              maxTotal: adddetail.maxTotal,
+              note: adddetail.note,
             };
 
             // this.sumQuantity += detail.quantity;
@@ -110,7 +116,16 @@ export class AddOrderComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.orderService.addToObject(itemId, result.quantity, result.price);
+      let detail: UpdateOrderDetail = {
+        itemId: itemId,
+        quantity: result.quantity,
+        minPrice: result.price,
+        maxPrice: result.price,
+        minTotal: result.price * result.quantity,
+        maxTotal: result.price * result.quantity,
+        note: result.note,
+      };
+      this.orderService.addToObject(detail);
       this.getTableData();
     });
   }
@@ -121,7 +136,7 @@ export class AddOrderComponent {
   }
 
   addOrder() {
-    this.orderService.addOrder().subscribe(
+    this.orderService.create().subscribe(
       (response) => {
         showMessage(response, this.toastr);
         this.router.navigate(['/' + response.headers.get('Location')]);

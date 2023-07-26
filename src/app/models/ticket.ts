@@ -1,49 +1,20 @@
-import { Item, User } from './';
-
-export interface TicketDetail {
-  item: Item;
-  quantity: number;
-  type: string;
-}
-
-export interface AddTicketDetail {
-  itemId: string;
-  quantity: number;
-  type: number;
-}
+import { Item, Pagination, TicketInfo, User } from './';
 
 export interface Ticket {
-  id: string;
-  purpose: string;
-  title: string;
-  description: string;
-  leaderApprove: string;
-  status: string;
-  rejectReason: string;
-
-  isClosed: boolean;
-  closedDate: Date;
+  id: number;
 
   createdDate: Date;
   createdByUser: User;
-  lastModifiedDate: Date;
-  modifiedByUser: User;
+  updatedDate: Date;
+  updatedByUser: User;
 
-  details: TicketDetail[];
+  closeDate: Date;
 }
 
-export interface TicketPagination {
+export interface TicketWithHistory extends Ticket {
+  history: TicketInfo[];
+}
+
+export interface TicketPagination extends Pagination {
   data: Ticket[];
-  pageIndex: number;
-  pageSize: number;
-  totalPage: number;
-  totalRecords: number;
-}
-
-export interface AddTicket {
-  purpose: number;
-  title: string;
-  description: string;
-
-  details: AddTicketDetail[];
 }

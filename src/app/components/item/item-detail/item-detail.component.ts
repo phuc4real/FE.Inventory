@@ -20,17 +20,16 @@ export class ItemDetailComponent {
     private router: Router
   ) {
     this.itemForm = new FormGroup({
-      id: new FormControl(''),
+      code: new FormControl(''),
       name: new FormControl(''),
       description: new FormControl(''),
-      imageUrl: new FormControl(''),
       catalogName: new FormControl(''),
       inStock: new FormControl(''),
-      used: new FormControl(''),
+      inUsing: new FormControl(''),
       createdDate: new FormControl(''),
       createdByUser: new FormControl(''),
-      lastModifiedDate: new FormControl(''),
-      modifiedByUser: new FormControl(''),
+      updatedDate: new FormControl(''),
+      updatedByUser: new FormControl(''),
     });
   }
 
@@ -51,17 +50,17 @@ export class ItemDetailComponent {
         }
 
         this.itemForm.patchValue({
-          id: values.id,
+          code: values.code,
           name: values.name,
           description: values.description,
           imageUrl: values.imageUrl,
           catalogName: values.catalog.name,
           inStock: values.inStock,
-          used: values.used,
+          inUsing: values.inUsing,
           createdDate: toStringFormatDate(values.createdDate),
           createdByUser: values.createdByUser.userName,
-          lastModifiedDate: toStringFormatDate(values.lastModifiedDate),
-          modifiedByUser: values.modifiedByUser.userName,
+          updatedDate: toStringFormatDate(values.updatedDate),
+          updatedByUser: values.updatedByUser.userName,
         });
       },
       (err: any) => {
