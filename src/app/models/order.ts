@@ -3,6 +3,7 @@ import { OrderInfo, Pagination, User } from '.';
 export interface Order {
   id: number;
 
+  status: string;
   createdDate: Date;
   createdByUser: User;
   updatedDate: Date;

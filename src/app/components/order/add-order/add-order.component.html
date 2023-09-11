@@ -1,7 +1,7 @@
 <div class="container">
-  <div class="top">
+  <div class="header">
     <mat-form-field>
-      <mat-label>Find Item</mat-label>
+      <mat-label>Enter item name to add</mat-label>
       <input
         type="text"
         aria-label="Item"
@@ -19,58 +19,68 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-    <div class="back-link">
-      <a routerLink="/order">
-        <mat-icon>arrow_back_ios</mat-icon>
-        <span>Return to List</span>
-      </a>
-    </div>
+    <a routerLink="/order">
+      <mat-icon>arrow_back_ios</mat-icon>
+      <span>Return to List</span>
+    </a>
   </div>
 
-  <mat-table [dataSource]="details" class="item">
-    <ng-container matColumnDef="itemName">
-      <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
-      <mat-cell *matCellDef="let detail">
-        <a class="item-link" routerLink="/item/{{ detail.item.id }}">
-          {{ detail.item.name }}
-        </a>
-      </mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
+  <div class="content">
+    <mat-table [dataSource]="tableData" class="item">
+      <ng-container matColumnDef="itemImage">
+        <mat-header-cell *matHeaderCellDef>Item Image</mat-header-cell>
+        <mat-cell *matCellDef="let detail">
+          <img
+            class="img"
+            src="{{ detail.item.imageUrl }}"
+            alt="{{ detail.item.name }}"
+          />
+        </mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="itemName">
+        <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
+        <mat-cell *matCellDef="let detail">
+          <a class="link" routerLink="/item/{{ detail.item.id }}">
+            {{ detail.item.name }}
+          </a>
+        </mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="price">
-      <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
-      <mat-cell *matCellDef="let detail">{{
-        detail.price | number : "1.0-0"
-      }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
-    </ng-container>
+      <ng-container matColumnDef="price">
+        <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
+        <mat-cell *matCellDef="let detail">{{
+          detail.minPrice + " - " + detail.maxPrice
+        }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="quantity">
-      <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
-      <mat-cell *matCellDef="let detail">{{ detail.quantity }}</mat-cell>
-      <mat-footer-cell *matFooterCellDef>{{
-        sumQuantity | number : "1.0-0"
-      }}</mat-footer-cell>
-    </ng-container>
+      <ng-container matColumnDef="quantity">
+        <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+        <mat-cell *matCellDef="let detail">{{ detail.quantity }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef>{{
+          sumQuantity | number : "1.0-0"
+        }}</mat-footer-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="total">
-      <mat-header-cell *matHeaderCellDef>Total</mat-header-cell>
-      <mat-cell *matCellDef="let detail">{{
-        detail.total | number : "1.0-0"
-      }}</mat-cell>
-      <!-- <mat-footer-cell *matFooterCellDef>{{
-        orderTotal | number : "1.0-0"
-      }}</mat-footer-cell> -->
-    </ng-container>
+      <ng-container matColumnDef="total">
+        <mat-header-cell *matHeaderCellDef>Total</mat-header-cell>
+        <mat-cell *matCellDef="let detail">{{
+          detail.minTotal + " - " + detail.maxTotal
+        }}</mat-cell>
+        <mat-footer-cell *matFooterCellDef>
+          {{ minTotal + " - " + maxTotal }}</mat-footer-cell
+        >
+      </ng-container>
 
-    <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-      <mat-cell *matCellDef="let detail">
-        <button
-          mat-button
-          color="warn"
-          [swal]="{ 
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-cell *matCellDef="let detail">
+          <button
+            mat-button
+            color="warn"
+            [swal]="{ 
                         title: 'Remove item',
                         icon: 'warning',
                         text:'Remove item #'+detail.item.id,
@@ -78,21 +88,22 @@
                         confirmButtonText: 'Remove item',
                         confirmButtonColor: '#d61313',
                     }"
-          (confirm)="removeItem(detail.item.id)"
-        >
-          Remove
-        </button>
-      </mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
+            (confirm)="removeItem(detail.item.id)"
+          >
+            Remove
+          </button>
+        </mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    <mat-footer-row
-      *matFooterRowDef="displayedColumns; sticky: true"
-    ></mat-footer-row>
-  </mat-table>
-  <div class="button-container">
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      <mat-footer-row
+        *matFooterRowDef="displayedColumns; sticky: true"
+      ></mat-footer-row>
+    </mat-table>
+  </div>
+  <div class="button" *ngIf="sumQuantity > 0">
     <button mat-button mat-raised-button color="basic" (click)="clearAll()">
       Clear All
     </button>

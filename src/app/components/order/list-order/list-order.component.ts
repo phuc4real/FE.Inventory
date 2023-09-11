@@ -22,11 +22,12 @@ export class ListOrderComponent {
   orders = new MatTableDataSource<Order>();
   displayedColumns: string[] = [
     'id',
-    'orderDate',
     'status',
-    'orderTotal',
-    'orderByUser',
     'completeDate',
+    'createdDate',
+    'createdByUser',
+    'updatedDate',
+    'updatedByUser',
     'actions',
   ];
 

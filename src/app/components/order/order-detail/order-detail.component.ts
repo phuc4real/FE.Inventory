@@ -8,7 +8,6 @@ import { OrderService } from 'src/app/services';
 import {
   isDefaultDate,
   toStringFormatDate,
-  toStringFormatNumber,
   showError,
   showMessage,
 } from 'src/app/share/helpers';
@@ -42,7 +41,9 @@ export class OrderDetailComponent {
       id: new FormControl(''),
       orderDate: new FormControl(''),
       status: new FormControl(''),
-      orderTotal: new FormControl(''),
+      total: new FormControl(''),
+      approve: new FormControl(''),
+      approveBy: new FormControl(''),
       user: new FormControl(''),
       completeDate: new FormControl(''),
     });
@@ -61,22 +62,21 @@ export class OrderDetailComponent {
   getData() {
     this.orderService.getById(this.orderId).subscribe(
       (values) => {
-        // this.listDetail = values.details;
-        this.details = new MatTableDataSource<OrderDetail>(this.listDetail);
-        // let index = this.orderStatus.findIndex((x) => x == values.status);
-        // if (index < 2) this.status = this.orderStatus[index + 1];
-        // else this.status = '';
+        let orderInfo = values.history[0];
+        this.details = new MatTableDataSource<OrderDetail>(orderInfo.details);
         let completeDateString = isDefaultDate(values.completeDate)
           ? 'Not Complete'
           : toStringFormatDate(values.completeDate);
-        // this.orderForm.patchValue({
-        //   id: values.id,
-        //   orderDate: toStringFormatDate(values.orderDate),
-        //   status: values.status,
-        //   orderTotal: toStringFormatNumber(values.orderTotal),
-        //   user: values.orderByUser.userName,
-        //   completeDate: completeDateString,
-        // });
+        this.orderForm.patchValue({
+          id: values.id,
+          orderDate: toStringFormatDate(values.createdDate),
+          status: orderInfo.status,
+          user: values.createdByUser.userName,
+          approve: orderInfo.decision ? orderInfo.decision.status : '',
+          approveBy: orderInfo.decision ? orderInfo.decision.byUser : '',
+          total: orderInfo.minTotal + ' - ' + orderInfo.maxTotal,
+          completeDate: completeDateString,
+        });
       },
       (err: any) => showError(err, this.toastr)
     );

@@ -15,9 +15,10 @@ import { showError, showMessage } from 'src/app/share/helpers';
   styleUrls: ['./add-order.component.css'],
 })
 export class AddOrderComponent {
-  details = new MatTableDataSource<OrderDetail>();
-  listDetail: OrderDetail[] = [];
+  data: OrderDetail[] = [];
+  tableData = new MatTableDataSource<OrderDetail>();
   displayedColumns: string[] = [
+    'itemImage',
     'itemName',
     'price',
     'quantity',
@@ -29,9 +30,6 @@ export class AddOrderComponent {
 
   items!: Item[];
   searchValue = '';
-
-  detailQuantity!: number;
-  detailPrice!: number;
 
   minTotal: number = 0;
   maxTotal: number = 0;
@@ -50,34 +48,33 @@ export class AddOrderComponent {
   }
 
   getTableData() {
-    let order = this.orderService.getObject();
-    let addOrderDetails = order?.details ?? [];
+    let orderInfo = this.orderService.getObject();
+    let details = orderInfo?.details ?? [];
 
-    this.listDetail = [];
     this.sumQuantity = 0;
-    this.minTotal = order?.minTotal ?? 0;
-    this.maxTotal = order?.maxTotal ?? 0;
 
-    if (addOrderDetails.length < 1) {
-      this.details = new MatTableDataSource<OrderDetail>(this.listDetail);
+    if (details.length < 1) {
+      this.tableData = new MatTableDataSource<OrderDetail>(this.data);
     } else {
-      addOrderDetails.forEach((adddetail) => {
-        this.itemService.getById(adddetail.itemId).subscribe(
-          (values) => {
-            let detail: OrderDetail = {
-              item: values,
-              quantity: adddetail.quantity,
-              minPrice: adddetail.minPrice,
-              maxPrice: adddetail.minPrice,
-              minTotal: adddetail.minTotal,
-              maxTotal: adddetail.maxTotal,
-              note: adddetail.note,
+      details.forEach((detail) => {
+        this.itemService.getById(detail.itemId).subscribe(
+          (response) => {
+            let object: OrderDetail = {
+              item: response,
+              quantity: detail.quantity,
+              minPrice: detail.minPrice,
+              maxPrice: detail.minPrice,
+              minTotal: detail.minTotal,
+              maxTotal: detail.maxTotal,
+              note: detail.note,
             };
 
             // this.sumQuantity += detail.quantity;
-            this.sumQuantity += Number.parseInt(adddetail.quantity.toString());
-            this.listDetail.push(detail);
-            this.details = new MatTableDataSource<OrderDetail>(this.listDetail);
+            this.sumQuantity += parseInt(detail.quantity.toString());
+            this.minTotal += parseInt(detail.minTotal.toString());
+            this.maxTotal += parseInt(detail.maxTotal.toString());
+            this.data.push(object);
+            this.tableData = new MatTableDataSource<OrderDetail>(this.data);
           },
           (err: any) => showError(err, this.toastr)
         );
@@ -112,10 +109,12 @@ export class AddOrderComponent {
 
   openDialog(itemId: string): void {
     const dialogRef = this.dialog.open(AddOrderDialogComponent, {
-      data: { quantity: this.detailQuantity, price: this.detailPrice },
+      data: { quantity: 0, price: 0 },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+
       let detail: UpdateOrderDetail = {
         itemId: itemId,
         quantity: result.quantity,

@@ -5,7 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ExportDetail } from 'src/app/models';
 import { ExportService } from 'src/app/services';
-import { showError, toStringFormatDate } from 'src/app/share/helpers';
+import {
+  showError,
+  showMessage,
+  toStringFormatDate,
+} from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-export-detail',
@@ -13,11 +17,10 @@ import { showError, toStringFormatDate } from 'src/app/share/helpers';
   styleUrls: ['./export-detail.component.css'],
 })
 export class ExportDetailComponent {
+  id!: number;
   formGroup!: FormGroup;
-  Id!: number;
   tableData = new MatTableDataSource<ExportDetail>();
-  data!: ExportDetail[];
-  displayedColumns: string[] = ['itemImage', 'itemName', 'quantity', 'forUser'];
+  displayedColumns: string[] = ['itemImage', 'itemName', 'quantity', 'note'];
 
   constructor(
     private route: ActivatedRoute,
@@ -26,15 +29,19 @@ export class ExportDetailComponent {
   ) {
     this.formGroup = new FormGroup({
       id: new FormControl(''),
+      description: new FormControl(''),
+      status: new FormControl(''),
+      forUser: new FormControl(''),
       createdDate: new FormControl(''),
       createdByUser: new FormControl(''),
-      description: new FormControl(''),
+      updatedDate: new FormControl(''),
+      updatedByUser: new FormControl(''),
     });
   }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      this.Id = params['id'];
+      this.id = params['id'];
     });
   }
 
@@ -43,17 +50,27 @@ export class ExportDetailComponent {
   }
 
   getData() {
-    this.exportService.getById(this.Id).subscribe(
+    this.exportService.getById(this.id).subscribe(
       (response) => {
-        this.data = response.details;
-        this.tableData = new MatTableDataSource<ExportDetail>(this.data);
+        this.tableData = new MatTableDataSource<ExportDetail>(response.details);
         this.formGroup.patchValue({
           id: response.id,
+          description: response.description,
+          status: response.status,
+          forUser: response.forUser.userName,
           createdDate: toStringFormatDate(response.createdDate),
           createdByUser: response.createdByUser.userName,
-          description: response.description,
+          updatedDate: toStringFormatDate(response.updatedDate),
+          updatedByUser: response.updatedByUser.userName,
         });
       },
+      (err: any) => showError(err, this.toastr)
+    );
+  }
+
+  updateStatus() {
+    this.exportService.updateStatus(this.id).subscribe(
+      (response) => showMessage(response, this.toastr),
       (err: any) => showError(err, this.toastr)
     );
   }

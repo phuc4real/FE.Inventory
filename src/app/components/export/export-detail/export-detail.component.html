@@ -1,70 +1,98 @@
 <div class="container">
-  <div class="back-link">
+  <div class="header">
+    <span>Export Detail</span>
     <a routerLink="/export">
       <mat-icon>arrow_back_ios</mat-icon>
       <span>Return to List</span>
     </a>
   </div>
-  <form class="form-group" [formGroup]="formGroup">
-    <div>
+  <div class="content">
+    <form class="form" [formGroup]="formGroup">
       <div>
-        <mat-form-field appearance="fill">
-          <mat-label>Export ID</mat-label>
-          <input matInput formControlName="id" readonly />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Created Date</mat-label>
-          <input matInput formControlName="createdDate" readonly />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Created by</mat-label>
-          <input matInput formControlName="createdByUser" readonly />
-        </mat-form-field>
+        <div>
+          <mat-form-field>
+            <mat-label>Export ID</mat-label>
+            <input matInput formControlName="id" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description" readonly />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <input matInput formControlName="status" readonly />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>For User</mat-label>
+            <input matInput formControlName="forUser" readonly />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Created Date</mat-label>
+            <input matInput formControlName="createdDate" readonly />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Created By</mat-label>
+            <input matInput formControlName="createdByUser" readonly />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Updated Date</mat-label>
+            <input matInput formControlName="updatedDate" readonly />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Updated By</mat-label>
+            <input matInput formControlName="updatedByUser" readonly />
+          </mat-form-field>
+        </div>
+        <div class="button">
+          <button
+            mat-button
+            mat-flat-button
+            color="primary"
+            (click)="updateStatus()"
+          >
+            Update Status
+          </button>
+        </div>
       </div>
-      <div>
-        <mat-form-field class="description">
-          <mat-label>Description</mat-label>
-          <input matInput formControlName="description" readonly />
-        </mat-form-field>
-      </div>
+    </form>
+
+    <div class="table">
+      <mat-table [dataSource]="tableData" class="item">
+        <ng-container matColumnDef="itemImage">
+          <mat-header-cell *matHeaderCellDef>Item Image</mat-header-cell>
+          <mat-cell *matCellDef="let detail">
+            <img
+              class="img"
+              src="{{ detail.item.imageUrl }}"
+              alt="{{ detail.item.name }}"
+            />
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="itemName">
+          <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
+          <mat-cell *matCellDef="let detail">
+            <a class="link" routerLink="/item/{{ detail.item.id }}">
+              {{ detail.item.name }}
+            </a>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="quantity">
+          <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+          <mat-cell *matCellDef="let detail">{{ detail.quantity }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="note">
+          <mat-header-cell *matHeaderCellDef>Note</mat-header-cell>
+          <mat-cell *matCellDef="let detail">{{ detail.note }}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
     </div>
-  </form>
-</div>
-<div class="container">
-  <mat-table [dataSource]="tableData" class="item">
-    <ng-container matColumnDef="itemImage">
-      <mat-header-cell *matHeaderCellDef>Item Image</mat-header-cell>
-      <mat-cell *matCellDef="let detail">
-        <img
-          class="item-img"
-          src="{{ detail.item.imageUrl }}"
-          alt="{{ detail.item.name }}"
-        />
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="itemName">
-      <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
-      <mat-cell *matCellDef="let detail">
-        <a class="item-link" routerLink="/item/{{ detail.item.id }}">
-          {{ detail.item.name }}
-        </a>
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="quantity">
-      <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
-      <mat-cell *matCellDef="let detail">{{ detail.quantity }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="forUser">
-      <mat-header-cell *matHeaderCellDef>For User</mat-header-cell>
-      <mat-cell *matCellDef="let detail">{{
-        detail.forUser ? detail.forUser.userName : "Everyone"
-      }}</mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-  </mat-table>
+  </div>
 </div>

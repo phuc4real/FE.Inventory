@@ -34,7 +34,7 @@
           >For User</mat-header-cell
         >
         <mat-cell *matCellDef="let export">{{
-          export.forUser.username
+          export.forUser.userName
         }}</mat-cell>
       </ng-container>
 
@@ -44,7 +44,12 @@
           <button mat-button routerLink="{{ export.id }}" color="primary">
             Detail
           </button>
-          <button mat-button routerLink="{{ export.id }}" color="primary">
+          <button
+            mat-button
+            (click)="updateStatus(export.id)"
+            color="primary"
+            *ngIf="export.status != 'Done'"
+          >
             Update Status
           </button>
         </mat-cell>

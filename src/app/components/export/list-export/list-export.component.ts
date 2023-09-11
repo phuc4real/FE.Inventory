@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
 import { Export } from 'src/app/models';
 import { ExportService } from 'src/app/services';
+import { showError, showMessage } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-export',
@@ -78,5 +79,15 @@ export class ListExportComponent {
           this.exports = new MatTableDataSource<Export>(this.list);
         }
       );
+  }
+
+  updateStatus(id: number) {
+    this.exportService.updateStatus(id).subscribe(
+      (response) => {
+        showMessage(response, this.toastr);
+        this.refreshData();
+      },
+      (err: any) => showError(err, this.toastr)
+    );
   }
 }

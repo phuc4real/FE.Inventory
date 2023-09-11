@@ -5,8 +5,13 @@
     <input matInput [(ngModel)]="data.quantity" />
   </mat-form-field>
   <mat-form-field>
-    <mat-label>Price</mat-label>
-    <input matInput [(ngModel)]="data.price" />
+    <mat-label>Min Price</mat-label>
+    <input matInput [(ngModel)]="data.minPrice" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Max Price</mat-label>
+    <input matInput [(ngModel)]="data.maxPrice" />
   </mat-form-field>
 </div>
 <div mat-dialog-actions>

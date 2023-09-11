@@ -1,103 +1,113 @@
 <div class="container">
-  <div class="back-link">
+  <div class="header">
+    <span>Export Detail</span>
     <a routerLink="/order">
       <mat-icon>arrow_back_ios</mat-icon>
       <span>Return to List</span>
     </a>
   </div>
-  <form class="order-form" [formGroup]="orderForm">
-    <div>
+  <div class="content">
+    <form class="form" [formGroup]="orderForm">
       <div>
-        <mat-form-field appearance="fill">
-          <mat-label>Order ID</mat-label>
-          <input matInput formControlName="id" readonly />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Order Date</mat-label>
-          <input matInput formControlName="orderDate" readonly />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Order Status</mat-label>
-          <input matInput formControlName="status" readonly />
-        </mat-form-field>
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Order ID</mat-label>
+            <input matInput formControlName="id" readonly />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Order Date</mat-label>
+            <input matInput formControlName="orderDate" readonly />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Order by</mat-label>
+            <input matInput formControlName="user" readonly />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Order Status</mat-label>
+            <input matInput formControlName="status" readonly />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Total</mat-label>
+            <input matInput formControlName="total" readonly />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Approve</mat-label>
+            <input matInput formControlName="approve" readonly />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Approve By</mat-label>
+            <input matInput formControlName="approveBy" readonly />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Complete Date</mat-label>
+            <input matInput formControlName="completeDate" readonly />
+          </mat-form-field>
+        </div>
+        <div *ngIf="status != ''" class="button-style">
+          <button
+            mat-button
+            mat-raised-button
+            color="primary"
+            (click)="updateStatus()"
+          >
+            Update Status to {{ status }}
+          </button>
+          <button
+            mat-button
+            mat-raised-button
+            color="warn"
+            (click)="cancelOrder()"
+          >
+            Cancel Order
+          </button>
+        </div>
       </div>
-      <div>
-        <mat-form-field appearance="fill">
-          <mat-label>Order Total</mat-label>
-          <input matInput formControlName="orderTotal" readonly />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Order by</mat-label>
-          <input matInput formControlName="user" readonly />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Complete Date</mat-label>
-          <input matInput formControlName="completeDate" readonly />
-        </mat-form-field>
-      </div>
-      <div *ngIf="status != ''" class="button-style">
-        <button
-          mat-button
-          mat-raised-button
-          color="primary"
-          (click)="updateStatus()"
-        >
-          Update Status to {{ status }}
-        </button>
-        <button
-          mat-button
-          mat-raised-button
-          color="warn"
-          (click)="cancelOrder()"
-        >
-          Cancel Order
-        </button>
-      </div>
-    </div>
-  </form>
-</div>
-<div class="container">
-  <mat-table [dataSource]="details" class="item">
-    <ng-container matColumnDef="itemImage">
-      <mat-header-cell *matHeaderCellDef>Item Image</mat-header-cell>
-      <mat-cell *matCellDef="let detail">
-        <img
-          class="item-img"
-          src="{{ detail.item.imageUrl }}"
-          alt="{{ detail.item.name }}"
-        />
-      </mat-cell>
-    </ng-container>
+    </form>
+    <mat-table [dataSource]="details" class="item">
+      <ng-container matColumnDef="itemImage">
+        <mat-header-cell *matHeaderCellDef>Item Image</mat-header-cell>
+        <mat-cell *matCellDef="let detail">
+          <img
+            class="img"
+            src="{{ detail.item.imageUrl }}"
+            alt="{{ detail.item.name }}"
+          />
+        </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="itemName">
-      <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
-      <mat-cell *matCellDef="let detail">
-        <a class="item-link" routerLink="/item/{{ detail.item.id }}">
-          {{ detail.item.name }}
-        </a>
-      </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="itemName">
+        <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
+        <mat-cell *matCellDef="let detail">
+          <a class="link" routerLink="/item/{{ detail.item.id }}">
+            {{ detail.item.name }}
+          </a>
+        </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="quantity">
-      <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
-      <mat-cell *matCellDef="let detail">{{ detail.quantity }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="quantity">
+        <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+        <mat-cell *matCellDef="let detail">{{ detail.quantity }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="price">
-      <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
-      <mat-cell *matCellDef="let detail">{{
-        detail.price | number : "1.0-0"
-      }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="price">
+        <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
+        <mat-cell *matCellDef="let detail">{{
+          detail.minPrice + " - " + detail.maxPrice
+        }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="total">
-      <mat-header-cell *matHeaderCellDef>Total</mat-header-cell>
-      <mat-cell *matCellDef="let detail">{{
-        detail.total | number : "1.0-0"
-      }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="total">
+        <mat-header-cell *matHeaderCellDef>Total</mat-header-cell>
+        <mat-cell *matCellDef="let detail">{{
+          detail.minTotal + " - " + detail.maxTotal
+        }}</mat-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-  </mat-table>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+  </div>
 </div>

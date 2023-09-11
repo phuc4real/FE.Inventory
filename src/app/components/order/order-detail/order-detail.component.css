@@ -1,14 +1,21 @@
 .container {
-  margin: 14px auto;
+  margin: 15px 35px 0;
+  overflow-x: hidden;
 }
 
-.container .back-link {
+.container .header {
   display: flex;
-  flex-direction: row-reverse;
   padding: 8px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.container .back-link a {
+.container .header span {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.container .header a {
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -18,40 +25,47 @@
   color: black;
 }
 
-.order-form {
+.container .content {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+
   background-color: #f4f4f4;
-  overflow: hidden;
 }
 
-.order-form mat-form-field {
-  padding: 20px;
+.form mat-form-field {
+  padding: 15px;
   width: 320px;
 }
 
-.item-img {
+.button {
+  display: flex;
+  justify-content: center;
+}
+
+.button button {
+  padding: 12px;
+}
+
+.img {
   padding: 10px;
   height: 140px;
 }
 
-.item-link {
+.link {
   text-decoration: none;
   color: black;
 }
 
 .item {
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding-top: 10px;
+  border-top: 1px solid #ccc;
   background-color: #f4f4f4;
-}
-
-.button-style {
-  display: flex;
-  justify-content: space-evenly;
 }

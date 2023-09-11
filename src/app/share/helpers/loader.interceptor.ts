@@ -12,6 +12,7 @@ import { LoaderService } from 'src/app/services/loader.service';
 export class LoaderInterceptor implements HttpInterceptor {
   private requestCount = 0;
   constructor(private loader: LoaderService) {}
+
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
