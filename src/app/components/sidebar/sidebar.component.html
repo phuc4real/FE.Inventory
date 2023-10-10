@@ -1,9 +1,5 @@
-<mat-sidenav-container
-  class="app-drawer-container"
-  fullscreen
-  hasBackdrop="true"
->
-  <mat-sidenav #sidenav mode="side" class="sidenav">
+<mat-sidenav-container class="app-drawer-container" fullscreen>
+  <mat-sidenav #sidenav mode="side" class="sidenav" opened>
     <mat-nav-list>
       <mat-list-item routerLink="/" routerLinkActive="active">
         <div class="nav-item">
@@ -13,32 +9,38 @@
       </mat-list-item>
       <mat-list-item routerLink="/item" routerLinkActive="active">
         <div class="nav-item">
-          <mat-icon class="icon-style">list</mat-icon>
-          <span>Item</span>
+          <mat-icon class="icon-style">apps</mat-icon>
+          <span>Item List</span>
         </div>
       </mat-list-item>
       <mat-list-item routerLink="/catalog" routerLinkActive="active">
         <div class="nav-item">
-          <mat-icon class="icon-style">list</mat-icon>
-          <span>Catalog</span>
+          <mat-icon class="icon-style">apps</mat-icon>
+          <span>Category List</span>
         </div>
       </mat-list-item>
       <mat-list-item routerLink="/order" routerLinkActive="active">
         <div class="nav-item">
-          <mat-icon class="icon-style">list</mat-icon>
-          <span>Order</span>
+          <mat-icon class="icon-style">apps</mat-icon>
+          <span>Order List</span>
         </div>
       </mat-list-item>
       <mat-list-item routerLink="/export" routerLinkActive="active">
         <div class="nav-item">
-          <mat-icon class="icon-style">list</mat-icon>
-          <span>Export</span>
+          <mat-icon class="icon-style">apps</mat-icon>
+          <span>Export List</span>
         </div>
       </mat-list-item>
       <mat-list-item routerLink="/ticket" routerLinkActive="active">
         <div class="nav-item">
-          <mat-icon class="icon-style">list</mat-icon>
-          <span>Ticket</span>
+          <mat-icon class="icon-style">apps</mat-icon>
+          <span>Ticket List</span>
+        </div>
+      </mat-list-item>
+      <mat-list-item routerLink="/ticket" routerLinkActive="active">
+        <div class="nav-item">
+          <mat-icon class="icon-style">apps</mat-icon>
+          <span>Item Management</span>
         </div>
       </mat-list-item>
     </mat-nav-list>

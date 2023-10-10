@@ -18,7 +18,7 @@ export class LogoutComponent implements OnInit {
     this.authService.logout().subscribe(
       (response) => {
         showMessage(response, this.toastr);
-        this.authService.removeToken();
+        this.authService.removeIdentity();
         this.router.navigate(['/login']);
       },
       (err: any) => {

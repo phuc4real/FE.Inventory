@@ -1,4 +1,4 @@
-import { Permission } from '.';
+import { Permission } from '..';
 
 export interface User {
   id: string;

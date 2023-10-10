@@ -2,7 +2,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService, UserService } from 'src/app/services';
+import { AuthService } from 'src/app/services';
 import { showError } from 'src/app/share/helpers';
 
 @Component({
@@ -15,7 +15,6 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private userService: UserService,
     private router: Router,
     private toastr: ToastrService
   ) {
@@ -36,7 +35,7 @@ export class LoginComponent {
       (response) => {
         this.router.navigate(['/dashboard']);
         this.toastr.success('Login successful!', 'Success');
-        this.authService.saveToken(response);
+        this.authService.saveIdentity(response.data);
       },
       (err: any) => showError(err, this.toastr)
     );

@@ -11,7 +11,7 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { MaterialModule } from './share/material/material.module';
-import { TokenInterceptor } from './share/helpers/token-interceptor.interceptor';
+import { IdentityInterceptor } from './share/helpers/identity.interceptor';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -94,7 +94,7 @@ import { UpdateCatalogDialogComponent } from './components/catalog/update-catalo
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
+      useClass: IdentityInterceptor,
       multi: true,
     },
     SideNavService,

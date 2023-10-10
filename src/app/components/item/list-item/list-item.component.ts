@@ -62,7 +62,7 @@ export class ListItemComponent {
           };
           return this.itemService
             .getPagination(params)
-            .pipe(catchError(() => of(null)));
+            .pipe(catchError(async (err) => showError(err, this.toastr)));
         }),
         map((dto) => {
           if (dto == null) return [];

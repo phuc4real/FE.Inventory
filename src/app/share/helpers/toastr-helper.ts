@@ -2,32 +2,29 @@ import { ToastrService } from 'ngx-toastr';
 import { ResponseMessage } from 'src/app/models';
 
 export function showError(err: any, toastr: ToastrService) {
-  console.log(err);
   switch (err.status) {
     case 400:
       show(err, toastr);
       break;
-    case 401:
-      toastr.error('Unauthorized! Please login and try again', 'Error');
-      break;
-    case 403:
-      toastr.error('Forbidden! You dont have access', 'Error');
-      break;
     case 404:
-    case 409:
-    case 422:
-      show(err, toastr);
+      toastr.error('Please try again', 'Cannot connect to servers!');
+      break;
+    case 500:
+      toastr.error('Please try again later', 'Something went wrong!');
       break;
     default:
-      toastr.error('Something went wrong! Please try again', 'Error');
+      toastr.error(
+        'Please try again or contact to support',
+        'Something went wrong!'
+      );
       break;
   }
 }
 
 export function showMessage(response: any, toastr: ToastrService) {
   console.log(response);
-  if (response.body) toastr.success(response.body.value, response.body.key);
-  else toastr.success(response.value, response.key);
+  if (response.message)
+    toastr.success(response.message.message, response.message.key);
 }
 
 function show(err: any, toastr: ToastrService) {
@@ -35,7 +32,7 @@ function show(err: any, toastr: ToastrService) {
     if (Array.isArray(err.error)) {
       err.error.forEach((e: ResponseMessage) => {
         if (e.key.includes('$.catalogId'))
-          toastr.error('Please select catalog of item', 'Catalog');
+          toastr.error('Please select category of item', 'Category');
         else toastr.error(e.value, e.key);
       });
     } else toastr.error(err.error.value, err.error.key);

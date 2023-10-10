@@ -1,27 +1,38 @@
 .app-drawer-container {
-    flex: 1;
+  flex: 1;
 }
 
-.sidenav{
-    margin-top: 60px;
-    width: 240px;
+.sidenav {
+  margin-top: 60px;
+  width: 240px;
+  background-color: rgb(240, 248, 255, 0.8);
 }
 
-.nav-item{
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-    font-size: 1.2rem;
+.nav-item {
+  display: flex;
+  align-items: center;
+  font-weight: 550;
+  font-size: 1.25rem;
 }
+
+mat-list-item {
+  border-bottom: 1px solid #3f51b5;
+}
+
 .nav-item span {
-    padding-left: 5px;
+  padding-top: 5px;
+  margin-left: 5px;
 }
 
-.sidenav-content{
-    top: 20px;
-    padding: 10px;
+.icon-style {
+  color: #5872ff;
+}
+
+.sidenav-content {
+  top: 20px;
+  padding: 10px;
 }
 
 .router-outlet-custom {
-    margin-left: 20px;
+  margin-left: 20px;
 }
