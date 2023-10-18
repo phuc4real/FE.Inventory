@@ -1,8 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Export, ExportPagination, ResponseMessage } from '../models';
 import { Observable } from 'rxjs';
+import {
+  ChartDataResponse,
+  ExportEntries,
+  ExportObject,
+  Exports,
+  ResponseMessage,
+} from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -12,20 +18,20 @@ export class ExportService {
 
   constructor(private http: HttpClient) {}
 
-  getPagination(params: any): Observable<ExportPagination> {
-    return this.http.get<ExportPagination>(`${this.apiUrl}`, { params });
+  getExports(params: any): Observable<Exports> {
+    return this.http.get<Exports>(`${this.apiUrl}`, { params });
   }
 
-  getList(): Observable<Export[]> {
-    return this.http.get<Export[]>(`${this.apiUrl}/list`);
+  getExportEntries(exportId: number): Observable<ExportEntries> {
+    return this.http.get<ExportEntries>(`${this.apiUrl}/${exportId}/entries`);
   }
 
-  getById(id: number): Observable<Export> {
-    return this.http.get<Export>(`${this.apiUrl}/${id}`);
+  getById(exportId: number): Observable<ExportObject> {
+    return this.http.get<ExportObject>(`${this.apiUrl}/${exportId}`);
   }
 
-  getCount(): Observable<ResponseMessage[]> {
-    return this.http.get<ResponseMessage[]>(`${this.apiUrl}/count-by-month`);
+  getExportChart(): Observable<ChartDataResponse> {
+    return this.http.get<ChartDataResponse>(`${this.apiUrl}/chart`);
   }
 
   updateStatus(id: number): Observable<ResponseMessage> {

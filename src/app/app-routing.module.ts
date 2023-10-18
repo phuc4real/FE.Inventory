@@ -1,24 +1,26 @@
-import { LoginComponent } from './components/auth/login/login.component';
-import { AuthGuard } from './share/guards/auth.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RegisterComponent } from './components/auth/register/register.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-import { LogoutComponent } from './components/auth/logout/logout.component';
-import { ErrorComponent } from './components/error/error.component';
-import { ListItemComponent } from './components/item/list-item/list-item.component';
-import { ItemDetailComponent } from './components/item/item-detail/item-detail.component';
-import { EditItemComponent } from './components/item/edit-item/edit-item.component';
-import { ListCatalogComponent } from './components/catalog/list-catalog/list-catalog.component';
-import { ListOrderComponent } from './components/order/list-order/list-order.component';
-import { OrderDetailComponent } from './components/order/order-detail/order-detail.component';
-import { AddOrderComponent } from './components/order/add-order/add-order.component';
-import { ListExportComponent } from './components/export/list-export/list-export.component';
-import { ExportDetailComponent } from './components/export/export-detail/export-detail.component';
-import { ListTicketComponent } from './components/ticket/list-ticket/list-ticket.component';
-import { AddTicketComponent } from './components/ticket/add-ticket/add-ticket.component';
-import { TicketDetailComponent } from './components/ticket/ticket-detail/ticket-detail.component';
+import {
+  AddOrderComponent,
+  AddTicketComponent,
+  DashboardComponent,
+  EditItemComponent,
+  ErrorComponent,
+  ExportDetailComponent,
+  ItemDetailComponent,
+  ListCatalogComponent,
+  ListExportComponent,
+  ListItemComponent,
+  ListOrderComponent,
+  ListTicketComponent,
+  LoginComponent,
+  LogoutComponent,
+  NotFoundComponent,
+  OrderDetailComponent,
+  RegisterComponent,
+  TicketDetailComponent,
+} from './components';
+import { AuthGuard } from './share/guards';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },

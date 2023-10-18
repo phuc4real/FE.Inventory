@@ -4,8 +4,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
-import { Catalog, UpdateCatalog } from 'src/app/models';
-import { CatalogService } from 'src/app/services';
+import { Categories, Category, CategoryObject } from 'src/app/models';
+import { CategoryService } from 'src/app/services';
 import { showError, showMessage } from 'src/app/share/helpers';
 import { UpdateCatalogDialogComponent } from '../update-catalog-dialog/update-catalog-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,25 +16,24 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./list-catalog.component.css'],
 })
 export class ListCatalogComponent {
-  catalogs = new MatTableDataSource<Catalog>();
+  data = new MatTableDataSource<Category>();
   displayedColumns: string[] = ['id', 'name', 'actions'];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   pageSizeOptions: number[] = [10, 20, 50, 100];
 
   searchValue: string = '';
-  listCatalog!: Catalog[];
-  totalCatalog!: number;
+  total!: number;
   constructor(
-    private catalogService: CatalogService,
+    private categoryService: CategoryService,
     public dialog: MatDialog,
     private toastr: ToastrService
   ) {}
 
   ngAfterViewInit() {
-    this.catalogs.paginator = this.paginator;
+    this.data.paginator = this.paginator;
     this.getPaginator();
-    this.catalogs.sort = this.sort;
+    this.data.sort = this.sort;
   }
 
   refreshData() {
@@ -54,30 +53,28 @@ export class ListCatalogComponent {
             sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
           };
-          return this.catalogService
-            .getPagination(params)
+          return this.categoryService
+            .getCategory(params)
             .pipe(catchError(() => of(null)));
         }),
-        map((dto) => {
-          if (dto == null) return [];
-          this.totalCatalog = dto.totalRecords;
-          return dto.data;
+        map((response) => {
+          this.total = response!.count;
+          return response!.data;
         })
       )
       .subscribe(
-        (dto) => {
-          this.listCatalog = dto;
-          this.catalogs = new MatTableDataSource<Catalog>(this.listCatalog);
+        (result) => {
+          this.data = new MatTableDataSource<Category>(result);
         },
         (error) => {
-          this.listCatalog = [];
-          this.catalogs = new MatTableDataSource<Catalog>(this.listCatalog);
+          showError(error, this.toastr);
+          this.data = new MatTableDataSource<Category>([]);
         }
       );
   }
 
   deteleCatalog(id: number) {
-    this.catalogService.delete(id).subscribe(
+    this.categoryService.delete(id).subscribe(
       (response) => {
         showMessage(response, this.toastr);
         this.paginator._changePageSize(this.paginator.pageSize);
@@ -87,7 +84,7 @@ export class ListCatalogComponent {
   }
 
   openDialog(id: number, name: string): void {
-    let title = id == 0 ? 'Add new catalog' : 'Edit catalog info';
+    let title = id == 0 ? 'Add new category' : 'Edit category info';
     const dialogRef = this.dialog.open(UpdateCatalogDialogComponent, {
       data: { name: name, title: title },
       position: { top: '16vh' },
@@ -99,12 +96,13 @@ export class ListCatalogComponent {
   }
 
   updateCatalog(id: number, catalogName: string) {
-    let data: UpdateCatalog = {
+    let data: Category = {
+      id: id,
       name: catalogName,
     };
 
     if (id != 0) {
-      this.catalogService.update(id, data).subscribe(
+      this.categoryService.update(id, data).subscribe(
         (response) => {
           showMessage(response, this.toastr);
           this.refreshData();
@@ -112,7 +110,7 @@ export class ListCatalogComponent {
         (err: any) => showError(err, this.toastr)
       );
     } else {
-      this.catalogService.create(data).subscribe(
+      this.categoryService.create(data).subscribe(
         (response) => {
           showMessage(response, this.toastr);
           this.refreshData();

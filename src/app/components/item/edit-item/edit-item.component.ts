@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UpdateItem, Catalog } from 'src/app/models';
 import {
   ItemService,
-  CatalogService,
+  // CatalogService,
   UploadImageService,
 } from 'src/app/services';
 import { showError, showMessage } from 'src/app/share/helpers';
@@ -17,7 +17,7 @@ import { showError, showMessage } from 'src/app/share/helpers';
 })
 export class EditItemComponent {
   itemForm!: FormGroup;
-  itemId!: string;
+  itemId!: number;
   img!: string;
   catalogs!: Catalog[];
   selectedValue!: number;
@@ -26,7 +26,7 @@ export class EditItemComponent {
   constructor(
     private route: ActivatedRoute,
     private itemService: ItemService,
-    private catalogService: CatalogService,
+    // private catalogService: CatalogService,
     private uploadImage: UploadImageService,
     private toastr: ToastrService,
     private router: Router
@@ -48,7 +48,7 @@ export class EditItemComponent {
     this.img =
       'http://res.cloudinary.com/dhnoew5bj/image/upload/v1688537725/No-Image-Placeholder.svg_o0smur.png';
 
-    this.getCatalog();
+    // this.getCatalog();
   }
 
   ngAfterViewInit() {
@@ -61,9 +61,9 @@ export class EditItemComponent {
             name: values.name,
             description: values.description,
             imageUrl: values.imageUrl != '' ? values.imageUrl : this.img,
-            catalogId: values.catalog.id,
+            // catalogId: values.catalog.id,
           });
-          this.selectedValue = values.catalog.id;
+          // this.selectedValue = values.catalog.id;
         },
         (err: any) => showError(err, this.toastr)
       );
@@ -74,14 +74,14 @@ export class EditItemComponent {
     }
   }
 
-  getCatalog() {
-    this.catalogService.getList().subscribe(
-      (value) => {
-        this.catalogs = value;
-      },
-      (err: any) => showError(err, this.toastr)
-    );
-  }
+  // getCatalog() {
+  //   this.catalogService.getList().subscribe(
+  //     (value) => {
+  //       this.catalogs = value;
+  //     },
+  //     (err: any) => showError(err, this.toastr)
+  //   );
+  // }
 
   onFileSelected(event: Event) {
     this.isLoading = true;

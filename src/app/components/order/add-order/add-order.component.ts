@@ -82,7 +82,7 @@ export class AddOrderComponent {
     }
   }
 
-  removeItem(id: string) {
+  removeItem(id: number) {
     let result = this.orderService.removeFromObject(id);
     this.getTableData();
     if (result) {
@@ -107,7 +107,7 @@ export class AddOrderComponent {
     this.openDialog(e.option.value.id);
   }
 
-  openDialog(itemId: string): void {
+  openDialog(itemId: number): void {
     const dialogRef = this.dialog.open(AddOrderDialogComponent, {
       data: { quantity: 0, price: 0 },
     });

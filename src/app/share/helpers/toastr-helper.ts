@@ -33,7 +33,7 @@ function show(err: any, toastr: ToastrService) {
       err.error.forEach((e: ResponseMessage) => {
         if (e.key.includes('$.catalogId'))
           toastr.error('Please select category of item', 'Category');
-        else toastr.error(e.value, e.key);
+        else toastr.error(e.message, e.key);
       });
     } else toastr.error(err.error.value, err.error.key);
   } else {

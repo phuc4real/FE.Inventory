@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, SortDirection } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
@@ -14,23 +14,24 @@ import { showError, showMessage } from 'src/app/share/helpers';
   styleUrls: ['./list-item.component.css'],
 })
 export class ListItemComponent {
-  items = new MatTableDataSource<Item>();
+  data = new MatTableDataSource<Item>();
   displayedColumns: string[] = [
+    'imageUrl',
     'code',
     'name',
-    'description',
-    'catalog',
-    'inStock',
-    'inUse',
+    'category',
+    'unit',
+    'useUnit',
     'actions',
   ];
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  sortColumn = 'code';
   pageSizeOptions: number[] = [10, 20, 50, 100];
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
   searchValue: string = '';
-  listItem!: Item[];
-  totalItem!: number;
+  total!: number;
 
   constructor(
     private itemService: ItemService,
@@ -38,9 +39,9 @@ export class ListItemComponent {
   ) {}
 
   ngAfterViewInit() {
-    this.items.paginator = this.paginator;
+    this.data.paginator = this.paginator;
     this.getPaginator();
-    this.items.sort = this.sort;
+    this.data.sort = this.sort;
   }
 
   refreshData() {
@@ -54,9 +55,9 @@ export class ListItemComponent {
         startWith({}),
         switchMap(() => {
           const params: any = {
-            pageIndex: this.paginator?.pageIndex,
-            pageSize: this.paginator?.pageSize,
-            sortField: this.sort?.active,
+            Index: this.paginator?.pageIndex,
+            Size: this.paginator?.pageSize,
+            Sort: this.sort?.active,
             sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
           };
@@ -64,25 +65,24 @@ export class ListItemComponent {
             .getPagination(params)
             .pipe(catchError(async (err) => showError(err, this.toastr)));
         }),
-        map((dto) => {
-          if (dto == null) return [];
-          this.totalItem = dto.totalRecords;
-          return dto.data;
+        map((response) => {
+          if (response == null) return [];
+          this.total = response.count;
+          return response.data;
         })
       )
       .subscribe(
-        (dto) => {
-          this.listItem = dto;
-          this.items = new MatTableDataSource<Item>(this.listItem);
+        (result) => {
+          this.data = new MatTableDataSource<Item>(result);
         },
         (error) => {
-          this.listItem = [];
-          this.items = new MatTableDataSource<Item>(this.listItem);
+          showError(error, this.toastr);
+          this.data = new MatTableDataSource<Item>([]);
         }
       );
   }
 
-  deleteItem(id: string) {
+  deleteItem(id: number) {
     this.itemService.delete(id).subscribe(
       (response) => {
         showMessage(response, this.toastr);

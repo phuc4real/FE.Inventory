@@ -101,7 +101,7 @@ export class AddTicketComponent {
     }
   }
 
-  removeItem(id: string) {
+  removeItem(id: number) {
     let result = this.ticketService.removeFromObject(id);
     this.getTableData();
     if (result) {

@@ -12,6 +12,12 @@
   border-radius: 10px;
 }
 
+mat-cell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 mat-header-cell:last-child,
 mat-cell:last-child {
   justify-content: center;
@@ -25,4 +31,16 @@ mat-paginator {
   position: absolute;
   margin-top: 20px;
   right: 2%;
+}
+
+.img {
+  display: flex;
+  padding: 8px 20px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.img img {
+  height: 70px;
+  width: 100px;
 }

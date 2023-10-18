@@ -3,7 +3,7 @@
     <input
       matInput
       [(ngModel)]="searchValue"
-      (keyup)="refreshData()"
+      (keyup.enter)="refreshData()"
       placeholder="Search"
     />
   </mat-form-field>
@@ -18,15 +18,25 @@
   </button>
   <div class="table">
     <mat-table
-      [dataSource]="items"
+      [dataSource]="data"
       matSort
       (matSortChange)="refreshData()"
-      matSortActive="updatedDate"
+      [matSortActive]="sortColumn"
       matSortDirection="desc"
     >
+      <ng-container matColumnDef="imageUrl">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Image</mat-header-cell
+        >
+        <mat-cell *matCellDef="let item">
+          <div class="img">
+            <img [src]="item.imageUrl" /></div
+        ></mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="code">
         <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Item Code</mat-header-cell
+          >Code</mat-header-cell
         >
         <mat-cell *matCellDef="let item">{{ item.code }}</mat-cell>
       </ng-container>
@@ -38,32 +48,25 @@
         <mat-cell *matCellDef="let item">{{ item.name }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="description">
+      <ng-container matColumnDef="category">
         <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Description</mat-header-cell
+          >Category</mat-header-cell
         >
-        <mat-cell *matCellDef="let item">{{ item.description }}</mat-cell>
+        <mat-cell *matCellDef="let item">{{ item.category.name }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="catalog">
+      <ng-container matColumnDef="unit">
         <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Catalog</mat-header-cell
+          >Unit</mat-header-cell
         >
-        <mat-cell *matCellDef="let item">{{ item.catalog.name }}</mat-cell>
+        <mat-cell *matCellDef="let item">{{ item.unit }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="inStock">
+      <ng-container matColumnDef="useUnit">
         <mat-header-cell *matHeaderCellDef mat-sort-header
-          >In Stock</mat-header-cell
+          >Use Unit</mat-header-cell
         >
-        <mat-cell *matCellDef="let item">{{ item.inStock ?? 0 }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="inUse">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >In Use</mat-header-cell
-        >
-        <mat-cell *matCellDef="let item">{{ item.inUse ?? 0 }}</mat-cell>
+        <mat-cell *matCellDef="let item">{{ item.useUnit }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">
@@ -99,8 +102,9 @@
   </div>
   <mat-paginator
     #paginator
-    [length]="totalItem"
+    [length]="total"
     [pageSizeOptions]="pageSizeOptions"
     showFirstLastButtons
-  ></mat-paginator>
+  >
+  </mat-paginator>
 </div>

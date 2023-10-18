@@ -11,7 +11,7 @@ import { toStringFormatDate } from 'src/app/share/helpers';
 })
 export class ItemDetailComponent {
   itemForm!: FormGroup;
-  itemId!: string;
+  itemId!: number;
   img!: string;
 
   constructor(
@@ -23,13 +23,13 @@ export class ItemDetailComponent {
       code: new FormControl(''),
       name: new FormControl(''),
       description: new FormControl(''),
-      catalogName: new FormControl(''),
-      inStock: new FormControl(''),
-      inUsing: new FormControl(''),
-      createdDate: new FormControl(''),
-      createdByUser: new FormControl(''),
-      updatedDate: new FormControl(''),
-      updatedByUser: new FormControl(''),
+      categoryId: new FormControl(''),
+      unit: new FormControl(''),
+      useUnit: new FormControl(''),
+      createdAt: new FormControl(''),
+      createdBy: new FormControl(''),
+      updatedAt: new FormControl(''),
+      updatedBy: new FormControl(''),
     });
   }
 
@@ -54,7 +54,7 @@ export class ItemDetailComponent {
           name: values.name,
           description: values.description,
           imageUrl: values.imageUrl,
-          catalogName: values.catalog.name,
+          // catalogName: values.catalog.name,
           inStock: values.inStock,
           inUsing: values.inUsing,
           createdDate: toStringFormatDate(values.createdDate),
