@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemService } from 'src/app/services';
-import { toStringFormatDate } from 'src/app/share/helpers';
+import { FormatDate } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-item-detail',
@@ -23,7 +23,7 @@ export class ItemDetailComponent {
       code: new FormControl(''),
       name: new FormControl(''),
       description: new FormControl(''),
-      categoryId: new FormControl(''),
+      category: new FormControl(''),
       unit: new FormControl(''),
       useUnit: new FormControl(''),
       createdAt: new FormControl(''),
@@ -41,26 +41,28 @@ export class ItemDetailComponent {
 
   ngAfterViewInit() {
     this.itemService.getById(this.itemId).subscribe(
-      (values) => {
-        if (values.imageUrl != '') {
-          this.img = values.imageUrl;
+      (response) => {
+        console.log(response);
+
+        if (response.data.imageUrl != '') {
+          this.img = response.data.imageUrl;
         } else {
           this.img =
             'http://res.cloudinary.com/dhnoew5bj/image/upload/v1688537725/No-Image-Placeholder.svg_o0smur.png';
         }
 
         this.itemForm.patchValue({
-          code: values.code,
-          name: values.name,
-          description: values.description,
-          imageUrl: values.imageUrl,
-          // catalogName: values.catalog.name,
-          inStock: values.inStock,
-          inUsing: values.inUsing,
-          createdDate: toStringFormatDate(values.createdDate),
-          createdByUser: values.createdByUser.userName,
-          updatedDate: toStringFormatDate(values.updatedDate),
-          updatedByUser: values.updatedByUser.userName,
+          code: response.data.code,
+          name: response.data.name,
+          description: response.data.description,
+          imageUrl: response.data.imageUrl,
+          category: response.data.category.name,
+          unit: response.data.unit,
+          useUnit: response.data.useUnit,
+          createdAt: FormatDate(response.data.createdAt),
+          createdBy: response.data.createdBy,
+          updatedAt: FormatDate(response.data.updatedAt),
+          updatedBy: response.data.updatedBy,
         });
       },
       (err: any) => {

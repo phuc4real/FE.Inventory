@@ -33,6 +33,6 @@ export class CategoryService {
   }
 
   create(data: Category): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}`, data, { observe: 'response' });
+    return this.http.post<any>(`${this.apiUrl}`, data);
   }
 }

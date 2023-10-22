@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { AuthService, SideNavService } from 'src/app/services';
 
@@ -7,8 +7,9 @@ import { AuthService, SideNavService } from 'src/app/services';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent {
   @ViewChild('sidenav') public sidenav!: MatSidenav;
+  isAuthen = false;
 
   constructor(
     private sideNavService: SideNavService,

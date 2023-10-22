@@ -9,10 +9,10 @@ export interface Order {
   isCompleted: boolean;
   completeDate: Date;
 
-  CreatedAt: Date;
-  CreatedBy: string;
-  UpdatedAt: Date;
-  UpdatedBy: string;
+  createdAt: Date;
+  createdBy: string;
+  updatedAt: Date;
+  updatedBy: string;
 }
 
 export interface OrderObject extends BaseResponse {

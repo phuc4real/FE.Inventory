@@ -50,8 +50,8 @@ export class ListCategoryComponent {
           const params: any = {
             index: this.paginator?.pageIndex,
             size: this.paginator?.pageSize,
-            sort: this.sort?.active,
-            sortDirection: this.sort?.direction,
+            sort: 'updatedAt',
+            sortDirection: 'desc',
             searchKeyword: this.searchValue,
             isInactive: false,
           };

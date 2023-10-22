@@ -62,7 +62,7 @@ export class ListItemComponent {
             searchKeyword: this.searchValue,
           };
           return this.itemService
-            .getPagination(params)
+            .getItems(params)
             .pipe(catchError(async (err) => showError(err, this.toastr)));
         }),
         map((response) => {

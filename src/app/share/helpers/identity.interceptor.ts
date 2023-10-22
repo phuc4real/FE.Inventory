@@ -7,7 +7,7 @@ import {
   HttpEvent,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, catchError, switchMap, throwError } from 'rxjs';
+import { Observable, catchError, switchMap, tap, throwError } from 'rxjs';
 
 @Injectable()
 export class IdentityInterceptor implements HttpInterceptor {
@@ -53,9 +53,17 @@ export class IdentityInterceptor implements HttpInterceptor {
       this.isRefreshing = true;
       if (this.authService.IsLogged()) {
         return this.authService.refreshToken().pipe(
-          switchMap((response) => {
+          tap((response) => {
             this.isRefreshing = false;
             this.authService.saveIdentity(response.data);
+          }),
+          switchMap((response) => {
+            request = request.clone({
+              setHeaders: {
+                Authorization: `Bearer ${response.data.accessToken}`,
+                'x-user-id': `${response.data.userId}`,
+              },
+            });
             return next.handle(request);
           }),
           catchError((error) => {

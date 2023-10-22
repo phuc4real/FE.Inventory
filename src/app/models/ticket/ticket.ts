@@ -12,10 +12,10 @@ export interface Ticket {
   isClosed: boolean;
   closeDate: Date;
 
-  CreatedAt: Date;
-  CreatedBy: string;
-  UpdatedAt: Date;
-  UpdatedBy: string;
+  createdAt: Date;
+  createdBy: string;
+  updatedAt: Date;
+  updatedBy: string;
 }
 
 export interface TicketObject extends BaseResponse {

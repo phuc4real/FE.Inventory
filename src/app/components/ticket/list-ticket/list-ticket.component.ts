@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
 import { Ticket } from 'src/app/models';
 import { TicketService } from 'src/app/services/ticket.service';
-import { toStringFormatDate } from 'src/app/share/helpers';
+import { FormatDate } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-ticket',
@@ -68,12 +68,12 @@ export class ListTicketComponent {
             searchKeyword: this.searchValue,
           };
           return this.ticketService
-            .getPagination(params)
+            .getTickets(params)
             .pipe(catchError(() => of(null)));
         }),
         map((dto) => {
           if (dto == null) return [];
-          this.totalRecords = dto.totalRecords;
+          this.totalRecords = dto.count;
           return dto.data;
         })
       )
@@ -93,6 +93,6 @@ export class ListTicketComponent {
   }
 
   dateString(date: any) {
-    return toStringFormatDate(date);
+    return FormatDate(date);
   }
 }

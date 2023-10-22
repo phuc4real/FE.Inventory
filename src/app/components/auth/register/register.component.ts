@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { showError, showMessage } from 'src/app/share/helpers';
 import { AuthService } from 'src/app/services';
+import { RegisterModel } from 'src/app/models';
 
 @Component({
   selector: 'app-register',
@@ -33,13 +34,13 @@ export class RegisterComponent {
       return;
     }
 
-    const payload = {
+    const request: RegisterModel = {
       email: this.registrationForm.value.email,
-      username: this.registrationForm.value.username,
+      userName: this.registrationForm.value.username,
       password: this.registrationForm.value.password,
     };
 
-    this.authService.register(payload).subscribe(
+    this.authService.register(request).subscribe(
       (response) => {
         showMessage(response, this.toastr);
         this.router.navigate(['/login']);

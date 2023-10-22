@@ -37,37 +37,37 @@ export class DashboardChartComponent {
     private exportService: ExportService,
     private toastr: ToastrService
   ) {
-    this.getChartData();
+    // this.getChartData();
   }
 
-  getChartData() {
-    this.orderService.getCount().subscribe(
-      (response) => {
-        this.barChartData.labels = response.map((x) => x.key);
-        let orders = {
-          data: response.map((x) => parseInt(x.value)),
-          label: 'Order',
-          backgroundColor: 'rgba(63, 39, 245, 0.8)',
-        };
+  // getChartData() {
+  //   this.orderService.getOrderChart().subscribe(
+  //     (response) => {
+  //       this.barChartData.labels = response.map((x) => x.key);
+  //       let orders = {
+  //         data: response.map((x) => parseInt(x.value)),
+  //         label: 'Order',
+  //         backgroundColor: 'rgba(63, 39, 245, 0.8)',
+  //       };
 
-        this.barChartData.datasets.push(orders);
-        this.chart?.update();
-      },
-      (err: any) => showError(err, this.toastr)
-    );
+  //       this.barChartData.datasets.push(orders);
+  //       this.chart?.update();
+  //     },
+  //     (err: any) => showError(err, this.toastr)
+  //   );
 
-    this.exportService.getCount().subscribe(
-      (response) => {
-        let exports = {
-          data: response.map((x) => parseInt(x.value)),
-          label: 'Export',
-          backgroundColor: 'rgba(245, 39, 39, 0.8)',
-        };
+  //   this.exportService.getExportChart().subscribe(
+  //     (response) => {
+  //       let exports = {
+  //         data: response.map((x) => parseInt(x.value)),
+  //         label: 'Export',
+  //         backgroundColor: 'rgba(245, 39, 39, 0.8)',
+  //       };
 
-        this.barChartData.datasets.push(exports);
-        this.chart?.update();
-      },
-      (err: any) => showError(err, this.toastr)
-    );
-  }
+  //       this.barChartData.datasets.push(exports);
+  //       this.chart?.update();
+  //     },
+  //     (err: any) => showError(err, this.toastr)
+  //   );
+  // }
 }

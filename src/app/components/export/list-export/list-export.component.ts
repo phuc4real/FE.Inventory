@@ -19,7 +19,7 @@ export class ListExportComponent {
     'id',
     'description',
     'status',
-    'forUser',
+    'exportFor',
     'actions',
   ];
 
@@ -28,7 +28,6 @@ export class ListExportComponent {
 
   pageSizeOptions: number[] = [10, 20, 50, 100];
   searchValue: string = '';
-  list!: Export[];
   totalRecords!: number;
 
   constructor(
@@ -60,23 +59,22 @@ export class ListExportComponent {
             searchKeyword: this.searchValue,
           };
           return this.exportService
-            .getPagination(params)
+            .getExports(params)
             .pipe(catchError(() => of(null)));
         }),
-        map((dto) => {
-          if (dto == null) return [];
-          this.totalRecords = dto.totalRecords;
-          return dto.data;
+        map((response) => {
+          if (response == null) return [];
+          this.totalRecords = response.count;
+          return response.data;
         })
       )
       .subscribe(
-        (dto) => {
-          this.list = dto;
-          this.exports = new MatTableDataSource<Export>(this.list);
+        (response) => {
+          this.exports = new MatTableDataSource<Export>(response);
         },
         (error: any) => {
-          this.list = [];
-          this.exports = new MatTableDataSource<Export>(this.list);
+          showError(error, this.toastr);
+          this.exports = new MatTableDataSource<Export>([]);
         }
       );
   }

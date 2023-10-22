@@ -5,18 +5,18 @@ export interface Item {
   code: string;
   name: string;
   description: string;
-  ImageUrl: string;
-  Unit: number;
-  UseUnit: number;
-  Category: Category;
+  imageUrl: string;
+  unit: number;
+  useUnit: number;
+  category: Category;
 
-  CreatedAt: Date;
-  CreatedBy: string;
-  UpdatedAt: Date;
-  UpdatedBy: string;
-  IsInactive: boolean;
-  InactiveAt: Date;
-  InactiveBy: string;
+  createdAt: Date;
+  createdBy: string;
+  updatedAt: Date;
+  updatedBy: string;
+  isInactive: boolean;
+  inactiveAt: Date;
+  inactiveBy: string;
 }
 
 export interface ItemObject extends BaseResponse {

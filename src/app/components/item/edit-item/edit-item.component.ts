@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { UpdateItem, Catalog } from 'src/app/models';
+import { Category, ItemUpdate } from 'src/app/models';
 import {
+  CategoryService,
   ItemService,
-  // CatalogService,
   UploadImageService,
 } from 'src/app/services';
 import { showError, showMessage } from 'src/app/share/helpers';
@@ -19,14 +19,14 @@ export class EditItemComponent {
   itemForm!: FormGroup;
   itemId!: number;
   img!: string;
-  catalogs!: Catalog[];
   selectedValue!: number;
   isLoading: boolean = false;
+  category!: Category[];
 
   constructor(
     private route: ActivatedRoute,
     private itemService: ItemService,
-    // private catalogService: CatalogService,
+    private categoryService: CategoryService,
     private uploadImage: UploadImageService,
     private toastr: ToastrService,
     private router: Router
@@ -36,7 +36,7 @@ export class EditItemComponent {
       name: new FormControl('', Validators.required),
       description: new FormControl(''),
       imageUrl: new FormControl(''),
-      catalogId: new FormControl('', Validators.required),
+      categoryId: new FormControl('', Validators.required),
     });
   }
 
@@ -47,23 +47,23 @@ export class EditItemComponent {
 
     this.img =
       'http://res.cloudinary.com/dhnoew5bj/image/upload/v1688537725/No-Image-Placeholder.svg_o0smur.png';
-
-    // this.getCatalog();
+    this.getCategory();
   }
 
   ngAfterViewInit() {
     if (this.itemId != null) {
       this.itemService.getById(this.itemId).subscribe(
-        (values) => {
-          if (values.imageUrl != '') this.img = values.imageUrl;
+        (response) => {
+          if (response.data.imageUrl != '') this.img = response.data.imageUrl;
           this.itemForm.patchValue({
-            code: values.code,
-            name: values.name,
-            description: values.description,
-            imageUrl: values.imageUrl != '' ? values.imageUrl : this.img,
-            // catalogId: values.catalog.id,
+            code: response.data.code,
+            name: response.data.name,
+            description: response.data.description,
+            imageUrl: this.img,
+            categoryId: response.data.category.id,
           });
-          // this.selectedValue = values.catalog.id;
+          this.category.push(response.data.category);
+          this.selectedValue = response.data.category.id;
         },
         (err: any) => showError(err, this.toastr)
       );
@@ -74,14 +74,19 @@ export class EditItemComponent {
     }
   }
 
-  // getCatalog() {
-  //   this.catalogService.getList().subscribe(
-  //     (value) => {
-  //       this.catalogs = value;
-  //     },
-  //     (err: any) => showError(err, this.toastr)
-  //   );
-  // }
+  getCategory() {
+    const params: any = {
+      index: 0,
+      size: 0,
+      isInactive: false,
+    };
+    this.categoryService.getCategories(params).subscribe(
+      (response) => {
+        this.category = response.data;
+      },
+      (err: any) => showError(err, this.toastr)
+    );
+  }
 
   onFileSelected(event: Event) {
     this.isLoading = true;
@@ -110,12 +115,12 @@ export class EditItemComponent {
   }
 
   submitItem() {
-    const data: UpdateItem = {
+    const data: ItemUpdate = {
       code: this.itemForm.value.code,
       name: this.itemForm.value.name,
       description: this.itemForm.value.description,
       imageUrl: this.itemForm.value.imageUrl,
-      catalogId: parseInt(this.itemForm.value.catalogId),
+      categoryId: parseInt(this.itemForm.value.categoryId),
     };
 
     if (this.itemId != null) {
@@ -133,7 +138,14 @@ export class EditItemComponent {
       this.itemService.create(data).subscribe(
         (response) => {
           showMessage(response, this.toastr);
-          this.router.navigate(['/' + response.headers.get('Location')]);
+          this.itemForm.patchValue({
+            code: response.data.code,
+            name: response.data.name,
+            description: response.data.description,
+            imageUrl: this.img,
+            categoryId: response.data.category.id,
+          });
+          this.selectedValue = response.data.category.id;
         },
         (err: any) => {
           showError(err, this.toastr);

@@ -17,13 +17,7 @@
     Add New
   </button>
   <div class="table">
-    <mat-table
-      [dataSource]="data"
-      matSort
-      (matSortChange)="refreshData()"
-      matSortActive="id"
-      matSortDirection="asc"
-    >
+    <mat-table [dataSource]="data" matSort (matSortChange)="refreshData()">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
         <mat-cell *matCellDef="let category">{{ category.id }}</mat-cell>

@@ -1,7 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { ResponseMessage, Ticket } from '../models';
+import {
+  ChartDataResponse,
+  ResponseMessage,
+  Ticket,
+  TicketEntries,
+  TicketObject,
+  Tickets,
+} from '../models';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,36 +19,28 @@ export class TicketService {
 
   constructor(private http: HttpClient) {}
 
-  // getPagination(params: any): Observable<TicketPagination> {
-  //   return this.http.get<TicketPagination>(`${this.apiUrl}`, { params });
-  // }
+  getTickets(params: any): Observable<Tickets> {
+    return this.http.get<Tickets>(`${this.apiUrl}`, { params });
+  }
 
-  // getList(): Observable<Ticket[]> {
-  //   return this.http.get<Ticket[]>(`${this.apiUrl}/list`);
-  // }
+  getTicketEntries(exportId: number): Observable<TicketEntries> {
+    return this.http.get<TicketEntries>(`${this.apiUrl}/${exportId}/entries`);
+  }
 
-  // getTicketCount(): Observable<TicketCount> {
-  //   return this.http.get<TicketCount>(`${this.apiUrl}/count`);
-  // }
+  getById(exportId: number): Observable<TicketObject> {
+    return this.http.get<TicketObject>(`${this.apiUrl}/${exportId}`);
+  }
 
-  // getById(id: number): Observable<TicketWithHistory> {
-  //   return this.http.get<TicketWithHistory>(`${this.apiUrl}/${id}`);
-  // }
+  getTicketChart(): Observable<ChartDataResponse> {
+    return this.http.get<ChartDataResponse>(`${this.apiUrl}/chart`);
+  }
 
-  // create(data: UpdateTickerInfo): Observable<any> {
-  //   return this.http.post<any>(`${this.apiUrl}`, data, { observe: 'response' });
-  // }
-
-  // cancel(id: number): Observable<ResponseMessage> {
-  //   return this.http.delete<ResponseMessage>(`${this.apiUrl}/${id}/cancel`);
-  // }
-
-  // updateStatus(id: number): Observable<ResponseMessage> {
-  //   return this.http.put<ResponseMessage>(
-  //     `${this.apiUrl}/${id}/update-status`,
-  //     null
-  //   );
-  // }
+  updateStatus(id: number): Observable<ResponseMessage> {
+    return this.http.put<ResponseMessage>(
+      `${this.apiUrl}/${id}/update-status`,
+      null
+    );
+  }
 
   // decide(id: number, decision: UpdateDecision): Observable<ResponseMessage> {
   //   return this.http.put<ResponseMessage>(

@@ -38,9 +38,11 @@ import {
 import { SideNavService } from './services';
 import { LoaderInterceptor, IdentityInterceptor } from './share/helpers';
 import { MaterialModule } from './share/material';
-import { AppComponent, AppRoutingModule } from '.';
+
 import { ListCategoryComponent } from './components/category/list-category/list-category.component';
 import { UpdateCategoryDialogComponent } from './components/category/update-category-dialog/update-category-dialog.component';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [

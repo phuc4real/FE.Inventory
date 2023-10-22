@@ -3,13 +3,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ExportDetail } from 'src/app/models';
+import { ExportEntry } from 'src/app/models';
 import { ExportService } from 'src/app/services';
-import {
-  showError,
-  showMessage,
-  toStringFormatDate,
-} from 'src/app/share/helpers';
+import { FormatDate, showError, showMessage } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-export-detail',
@@ -19,7 +15,7 @@ import {
 export class ExportDetailComponent {
   id!: number;
   formGroup!: FormGroup;
-  tableData = new MatTableDataSource<ExportDetail>();
+  tableData = new MatTableDataSource<ExportEntry>();
   displayedColumns: string[] = ['itemImage', 'itemName', 'quantity', 'note'];
 
   constructor(
@@ -52,16 +48,16 @@ export class ExportDetailComponent {
   getData() {
     this.exportService.getById(this.id).subscribe(
       (response) => {
-        this.tableData = new MatTableDataSource<ExportDetail>(response.details);
+        // this.tableData = new MatTableDataSource<ExportDetail>(response.data.details);
         this.formGroup.patchValue({
-          id: response.id,
-          description: response.description,
-          status: response.status,
-          forUser: response.forUser.userName,
-          createdDate: toStringFormatDate(response.createdDate),
-          createdByUser: response.createdByUser.userName,
-          updatedDate: toStringFormatDate(response.updatedDate),
-          updatedByUser: response.updatedByUser.userName,
+          id: response.data.id,
+          description: response.data.description,
+          status: response.data.status,
+          forUser: response.data.exportFor,
+          createdDate: FormatDate(response.data.createdAt),
+          createdByUser: response.data.createdBy,
+          updatedDate: FormatDate(response.data.updatedAt),
+          updatedByUser: response.data.updatedBy,
         });
       },
       (err: any) => showError(err, this.toastr)

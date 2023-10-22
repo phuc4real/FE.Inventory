@@ -47,26 +47,16 @@
           </mat-form-field>
         </div>
         <div *ngIf="status != ''" class="button-style">
-          <button
-            mat-button
-            mat-raised-button
-            color="primary"
-            (click)="updateStatus()"
-          >
+          <button mat-button mat-raised-button color="primary">
             Update Status to {{ status }}
           </button>
-          <button
-            mat-button
-            mat-raised-button
-            color="warn"
-            (click)="cancelOrder()"
-          >
+          <button mat-button mat-raised-button color="warn">
             Cancel Order
           </button>
         </div>
       </div>
     </form>
-    <mat-table [dataSource]="details" class="item">
+    <mat-table [dataSource]="[]" class="item">
       <ng-container matColumnDef="itemImage">
         <mat-header-cell *matHeaderCellDef>Item Image</mat-header-cell>
         <mat-cell *matCellDef="let detail">

@@ -52,11 +52,11 @@
           <mat-label>Modified By User</mat-label>
           <input matInput formControlName="modifiedByUser" readonly />
         </mat-form-field>
-        <mat-form-field appearance="fill" *ngIf="isClosed">
+        <mat-form-field appearance="fill">
           <mat-label>Reject Reason</mat-label>
           <input matInput formControlName="rejectReason" readonly />
         </mat-form-field>
-        <mat-form-field appearance="fill" *ngIf="isClosed">
+        <mat-form-field appearance="fill">
           <mat-label>Closed Date</mat-label>
           <input matInput formControlName="closedDate" readonly />
         </mat-form-field>
@@ -64,14 +64,7 @@
       <div class="button-style">
         <button mat-button mat-flat-button color="primary">Approve</button>
         <button mat-button mat-flat-button color="primary">Reject</button>
-        <button
-          mat-button
-          mat-flat-button
-          color="primary"
-          (click)="cancelTicket()"
-        >
-          Cancel
-        </button>
+        <button mat-button mat-flat-button color="primary">Cancel</button>
         <button mat-button mat-flat-button color="primary">
           Update Status
         </button>
@@ -80,8 +73,8 @@
   </form>
 </div>
 
-<div class="container">
-  <mat-table [dataSource]="tableData" class="item">
+<!-- <div class="container">
+  <mat-table [dataSource]="[]" class="item">
     <ng-container matColumnDef="itemName">
       <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
       <mat-cell *matCellDef="let detail">
@@ -104,4 +97,4 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
-</div>
+</div> -->

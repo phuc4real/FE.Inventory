@@ -22,21 +22,12 @@ export function showError(err: any, toastr: ToastrService) {
 }
 
 export function showMessage(response: any, toastr: ToastrService) {
-  console.log(response);
   if (response.message)
     toastr.success(response.message.message, response.message.key);
 }
 
 function show(err: any, toastr: ToastrService) {
   if (err.error) {
-    if (Array.isArray(err.error)) {
-      err.error.forEach((e: ResponseMessage) => {
-        if (e.key.includes('$.catalogId'))
-          toastr.error('Please select category of item', 'Category');
-        else toastr.error(e.message, e.key);
-      });
-    } else toastr.error(err.error.value, err.error.key);
-  } else {
-    toastr.error(err.value, err.key);
-  }
+    toastr.error(err.error.message.message, err.error.message.key);
+  } else toastr.error(err.message.message, err.message.key);
 }

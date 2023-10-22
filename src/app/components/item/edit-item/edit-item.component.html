@@ -27,32 +27,32 @@
       <div>
         <mat-form-field appearance="fill">
           <mat-label>Code</mat-label>
-          <input matInput formControlName="code" />
+          <input matInput formControlName="code" readonly />
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Name</mat-label>
           <input matInput formControlName="name" />
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>Catalog</mat-label>
-          <mat-select [(value)]="selectedValue" formControlName="catalogId">
-            <mat-option *ngFor="let catalog of catalogs" [value]="catalog.id">
-              {{ catalog.name }}
+          <mat-label>Category</mat-label>
+          <mat-select [(value)]="selectedValue" formControlName="categoryId">
+            <mat-option *ngFor="let cate of category" [value]="cate.id">
+              {{ cate.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>
         <!-- <mat-form-field appearance="fill">
-          <mat-label>Catalog</mat-label>
+          <mat-label>Category</mat-label>
           <input
             type="text"
             matInput
-            formControlName="catalogId"
+            formControlName="categoryId"
             [matAutocomplete]="auto"
-            (keyup)="getCatalog()"
+            (keyup)="getCategory()"
           />
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let catalog of catalogs" [value]="catalog.id">
-              {{ catalog.name }}
+            <mat-option *ngFor="let cate of category" [value]="cate.id">
+              {{ cate.name }}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field> -->
@@ -60,7 +60,7 @@
       <div>
         <mat-form-field id="description" appearance="fill">
           <mat-label>Description</mat-label>
-          <textarea matInput formControlName="description"></textarea>
+          <textarea matInput formControlName="description" rows="4"></textarea>
         </mat-form-field>
       </div>
       <button mat-raised-button color="primary" type="submit" class="button">

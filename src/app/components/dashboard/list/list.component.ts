@@ -27,7 +27,7 @@ export class ListComponent {
   }
 
   getData() {
-    this.ticketService.getPagination(this.params).subscribe(
+    this.ticketService.getTickets(this.params).subscribe(
       (response) => {
         this.tickets = response ? response.data : [];
       },

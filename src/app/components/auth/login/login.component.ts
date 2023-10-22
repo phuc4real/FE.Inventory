@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services';
 import { showError } from 'src/app/share/helpers';
+import { LoginModel } from 'src/app/models';
 
 @Component({
   selector: 'app-login',
@@ -29,9 +30,12 @@ export class LoginComponent {
       return;
     }
 
-    const { username, password } = this.loginForm.value;
+    const request: LoginModel = {
+      userName: this.loginForm.value.username,
+      password: this.loginForm.value.password,
+    };
 
-    this.authService.login(username, password).subscribe(
+    this.authService.login(request).subscribe(
       (response) => {
         this.router.navigate(['/dashboard']);
         this.toastr.success('Login successful!', 'Success');

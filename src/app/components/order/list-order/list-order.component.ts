@@ -6,12 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { catchError, map, of, startWith, switchMap } from 'rxjs';
 import { Order } from 'src/app/models';
 import { OrderService } from 'src/app/services';
-import {
-  isDefaultDate,
-  toStringFormatDate,
-  showError,
-  showMessage,
-} from 'src/app/share/helpers';
+import { FormatDate, IsDefaultDate, showError } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-order',
@@ -21,13 +16,15 @@ import {
 export class ListOrderComponent {
   orders = new MatTableDataSource<Order>();
   displayedColumns: string[] = [
-    'id',
+    'orderId',
     'status',
+    'description',
+    'isCompleted',
     'completeDate',
-    'createdDate',
-    'createdByUser',
-    'updatedDate',
-    'updatedByUser',
+    'createdAt',
+    'createdBy',
+    'updatedAt',
+    'updatedBy',
     'actions',
   ];
 
@@ -36,8 +33,8 @@ export class ListOrderComponent {
   pageSizeOptions: number[] = [10, 20, 50, 100];
 
   searchValue: string = '';
-  listOrder!: Order[];
   totalOrder!: number;
+
   constructor(
     private orderService: OrderService,
     private toastr: ToastrService
@@ -71,41 +68,37 @@ export class ListOrderComponent {
             searchKeyword: this.searchValue,
           };
           return this.orderService
-            .getPagination(params)
+            .getOrders(params)
             .pipe(catchError(() => of(null)));
         }),
-        map((dto) => {
-          if (dto == null) return [];
-          this.totalOrder = dto.totalRecords;
-          return dto.data;
+        map((response) => {
+          if (response == null) return [];
+          this.totalOrder = response.count;
+          return response.data;
         })
       )
       .subscribe(
-        (dto) => {
-          this.setData(dto);
+        (response) => {
+          this.orders = new MatTableDataSource<Order>(response);
         },
         (err: any) => {
-          this.setData([]);
+          showError(err, this.toastr);
+          this.orders = new MatTableDataSource<Order>([]);
         }
       );
   }
 
-  setData(orders: any) {
-    this.listOrder = orders;
-    this.orders = new MatTableDataSource<Order>(this.listOrder);
-  }
-
   dateString(date: any) {
-    return isDefaultDate(date) ? 'Not Complete' : toStringFormatDate(date);
+    return IsDefaultDate(date) ? 'Not Complete' : FormatDate(date);
   }
 
-  cancelOrder(id: number) {
-    this.orderService.cancel(id).subscribe(
-      (response) => {
-        showMessage(response, this.toastr);
-        this.paginator._changePageSize(this.paginator.pageSize);
-      },
-      (err: any) => showError(err, this.toastr)
-    );
-  }
+  // cancelOrder(id: number) {
+  //   this.orderService.cancel(id).subscribe(
+  //     (response) => {
+  //       showMessage(response, this.toastr);
+  //       this.paginator._changePageSize(this.paginator.pageSize);
+  //     },
+  //     (err: any) => showError(err, this.toastr)
+  //   );
+  // }
 }

@@ -3,14 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { OrderDetail } from 'src/app/models';
 import { OrderService } from 'src/app/services';
-import {
-  isDefaultDate,
-  toStringFormatDate,
-  showError,
-  showMessage,
-} from 'src/app/share/helpers';
+import { showError, showMessage } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-order-detail',
@@ -20,8 +14,8 @@ import {
 export class OrderDetailComponent {
   orderForm!: FormGroup;
   orderId!: number;
-  details = new MatTableDataSource<OrderDetail>();
-  listDetail!: OrderDetail[];
+  // details = new MatTableDataSource<OrderDetail>();
+  // listDetail!: OrderDetail[];
   displayedColumns: string[] = [
     'itemImage',
     'itemName',
@@ -56,50 +50,50 @@ export class OrderDetailComponent {
   }
 
   ngAfterViewInit() {
-    this.getData();
+    // this.getData();
   }
 
-  getData() {
-    this.orderService.getById(this.orderId).subscribe(
-      (values) => {
-        let orderInfo = values.history[0];
-        this.details = new MatTableDataSource<OrderDetail>(orderInfo.details);
-        let completeDateString = isDefaultDate(values.completeDate)
-          ? 'Not Complete'
-          : toStringFormatDate(values.completeDate);
-        this.orderForm.patchValue({
-          id: values.id,
-          orderDate: toStringFormatDate(values.createdDate),
-          status: orderInfo.status,
-          user: values.createdByUser.userName,
-          approve: orderInfo.decision ? orderInfo.decision.status : '',
-          approveBy: orderInfo.decision ? orderInfo.decision.byUser : '',
-          total: orderInfo.minTotal + ' - ' + orderInfo.maxTotal,
-          completeDate: completeDateString,
-        });
-      },
-      (err: any) => showError(err, this.toastr)
-    );
-  }
+  // getData() {
+  //   this.orderService.getById(this.orderId).subscribe(
+  //     (values) => {
+  //       let orderInfo = values.history[0];
+  //       this.details = new MatTableDataSource<OrderDetail>(orderInfo.details);
+  //       let completeDateString = isDefaultDate(values.completeDate)
+  //         ? 'Not Complete'
+  //         : toStringFormatDate(values.completeDate);
+  //       this.orderForm.patchValue({
+  //         id: values.id,
+  //         orderDate: toStringFormatDate(values.createdDate),
+  //         status: orderInfo.status,
+  //         user: values.createdByUser.userName,
+  //         approve: orderInfo.decision ? orderInfo.decision.status : '',
+  //         approveBy: orderInfo.decision ? orderInfo.decision.byUser : '',
+  //         total: orderInfo.minTotal + ' - ' + orderInfo.maxTotal,
+  //         completeDate: completeDateString,
+  //       });
+  //     },
+  //     (err: any) => showError(err, this.toastr)
+  //   );
+  // }
 
-  updateStatus() {
-    this.orderService.updateStatus(this.orderId).subscribe(
-      (response) => {
-        showMessage(response, this.toastr);
-        this.getData();
-      },
-      (err: any) => showError(err, this.toastr)
-    );
-  }
+  // updateStatus() {
+  //   this.orderService.updateStatus(this.orderId).subscribe(
+  //     (response) => {
+  //       showMessage(response, this.toastr);
+  //       this.getData();
+  //     },
+  //     (err: any) => showError(err, this.toastr)
+  //   );
+  // }
 
-  cancelOrder() {
-    this.orderService.cancel(this.orderId).subscribe(
-      (response) => {
-        showMessage(response, this.toastr);
-        this.status = '';
-        this.getData();
-      },
-      (err: any) => showError(err, this.toastr)
-    );
-  }
+  // cancelOrder() {
+  //   this.orderService.cancel(this.orderId).subscribe(
+  //     (response) => {
+  //       showMessage(response, this.toastr);
+  //       this.status = '';
+  //       this.getData();
+  //     },
+  //     (err: any) => showError(err, this.toastr)
+  //   );
+  // }
 }

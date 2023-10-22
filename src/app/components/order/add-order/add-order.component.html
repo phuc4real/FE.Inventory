@@ -8,14 +8,10 @@
         matInput
         [matAutocomplete]="auto"
         [(ngModel)]="searchValue"
-        (keyup)="getItems()"
       />
-      <mat-autocomplete
-        #auto="matAutocomplete"
-        (optionSelected)="selectOption($event)"
-      >
-        <mat-option *ngFor="let item of items" [value]="item">
-          {{ item.name }}
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let item of []" [value]="item">
+          {{ item }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
@@ -26,7 +22,7 @@
   </div>
 
   <div class="content">
-    <mat-table [dataSource]="tableData" class="item">
+    <mat-table [dataSource]="[]" class="item">
       <ng-container matColumnDef="itemImage">
         <mat-header-cell *matHeaderCellDef>Item Image</mat-header-cell>
         <mat-cell *matCellDef="let detail">
@@ -88,7 +84,6 @@
                         confirmButtonText: 'Remove item',
                         confirmButtonColor: '#d61313',
                     }"
-            (confirm)="removeItem(detail.item.id)"
           >
             Remove
           </button>
@@ -104,11 +99,7 @@
     </mat-table>
   </div>
   <div class="button" *ngIf="sumQuantity > 0">
-    <button mat-button mat-raised-button color="basic" (click)="clearAll()">
-      Clear All
-    </button>
-    <button mat-button color="primary" mat-raised-button (click)="addOrder()">
-      Add Order
-    </button>
+    <button mat-button mat-raised-button color="basic">Clear All</button>
+    <button mat-button color="primary" mat-raised-button>Add Order</button>
   </div>
 </div>

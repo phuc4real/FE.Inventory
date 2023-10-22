@@ -3,14 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { TicketDetail } from 'src/app/models';
 import { TicketService } from 'src/app/services/ticket.service';
-import {
-  showError,
-  showMessage,
-  toStringFormatDate,
-  toStringFormatNumber,
-} from 'src/app/share/helpers';
+import { showError } from 'src/app/share/helpers';
 @Component({
   selector: 'app-ticket-detail',
   templateUrl: './ticket-detail.component.html',
@@ -22,8 +16,8 @@ export class TicketDetailComponent {
   id!: number;
   isClosed: boolean = true;
 
-  data!: TicketDetail[];
-  tableData = new MatTableDataSource<TicketDetail>();
+  // data!: TicketDetail[];
+  // tableData = new MatTableDataSource<TicketDetail>();
   displayedColumns: string[] = ['itemName', 'quantity', 'type'];
 
   constructor(
@@ -62,7 +56,7 @@ export class TicketDetailComponent {
     this.ticketService.getById(this.id).subscribe(
       (response) => {
         // this.data = response.details;
-        this.tableData = new MatTableDataSource<TicketDetail>(this.data);
+        // this.tableData = new MatTableDataSource<TicketDetail>(this.data);
 
         console.log(response);
 
@@ -91,13 +85,13 @@ export class TicketDetailComponent {
     );
   }
 
-  cancelTicket() {
-    this.ticketService.cancel(this.id).subscribe(
-      (response) => {
-        showMessage(response, this.toastr);
-        this.router.navigate(['/ticket']);
-      },
-      (err: any) => showError(err, this.toastr)
-    );
-  }
+  // cancelTicket() {
+  //   this.ticketService.cancel(this.id).subscribe(
+  //     (response) => {
+  //       showMessage(response, this.toastr);
+  //       this.router.navigate(['/ticket']);
+  //     },
+  //     (err: any) => showError(err, this.toastr)
+  //   );
+  // }
 }
