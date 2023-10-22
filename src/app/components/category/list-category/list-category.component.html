@@ -18,7 +18,7 @@
   </button>
   <div class="table">
     <mat-table
-      [dataSource]="catalogs"
+      [dataSource]="data"
       matSort
       (matSortChange)="refreshData()"
       matSortActive="id"
@@ -26,22 +26,22 @@
     >
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-        <mat-cell *matCellDef="let catalog">{{ catalog.id }}</mat-cell>
+        <mat-cell *matCellDef="let category">{{ category.id }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Name</mat-header-cell
         >
-        <mat-cell *matCellDef="let catalog">{{ catalog.name }}</mat-cell>
+        <mat-cell *matCellDef="let category">{{ category.name }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-        <mat-cell *matCellDef="let catalog">
+        <mat-cell *matCellDef="let category">
           <button
             mat-button
-            (click)="openDialog(catalog.id, catalog.name)"
+            (click)="openDialog(category.id, category.name)"
             color="primary"
           >
             Edit
@@ -50,14 +50,14 @@
             mat-button
             color="warn"
             [swal]="{ 
-                        title: 'Delete Catalog',
+                        title: 'Delete Category',
                         icon: 'warning',
-                        text:'Delete catalog #'+catalog.id+ ' It\'s can\'t be undone ',
+                        text:'Delete Category #'+category.id+ ' It\'s can\'t be undone ',
                         showCancelButton: true,
                         confirmButtonText: 'Delete',
                         confirmButtonColor: '#d61313',
                     }"
-            (confirm)="deteleCatalog(catalog.id)"
+            (confirm)="deteleCatalog(category.id)"
           >
             Delete
           </button>
@@ -70,7 +70,7 @@
   </div>
   <mat-paginator
     #paginator
-    [length]="totalCatalog"
+    [length]="total"
     [pageSizeOptions]="pageSizeOptions"
     showFirstLastButtons
   ></mat-paginator>

@@ -8,7 +8,7 @@ import {
   ErrorComponent,
   ExportDetailComponent,
   ItemDetailComponent,
-  ListCatalogComponent,
+  ListCategoryComponent,
   ListExportComponent,
   ListItemComponent,
   ListOrderComponent,
@@ -32,47 +32,47 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthGuard],
   },
+  // {
+  //   path: 'item',
+  //   canActivate: [AuthGuard],
+  //   children: [
+  //     { path: '', component: ListItemComponent },
+  //     { path: 'add', component: EditItemComponent },
+  //     { path: ':id', component: ItemDetailComponent },
+  //     { path: 'edit/:id', component: EditItemComponent },
+  //   ],
+  // },
   {
-    path: 'item',
+    path: 'category',
     canActivate: [AuthGuard],
-    children: [
-      { path: '', component: ListItemComponent },
-      { path: 'add', component: EditItemComponent },
-      { path: ':id', component: ItemDetailComponent },
-      { path: 'edit/:id', component: EditItemComponent },
-    ],
+    children: [{ path: '', component: ListCategoryComponent }],
   },
-  {
-    path: 'catalog',
-    canActivate: [AuthGuard],
-    children: [{ path: '', component: ListCatalogComponent }],
-  },
-  {
-    path: 'order',
-    canActivate: [AuthGuard],
-    children: [
-      { path: '', component: ListOrderComponent },
-      { path: 'add', component: AddOrderComponent },
-      { path: ':id', component: OrderDetailComponent },
-    ],
-  },
-  {
-    path: 'export',
-    canActivate: [AuthGuard],
-    children: [
-      { path: '', component: ListExportComponent },
-      { path: ':id', component: ExportDetailComponent },
-    ],
-  },
-  {
-    path: 'ticket',
-    canActivate: [AuthGuard],
-    children: [
-      { path: '', component: ListTicketComponent },
-      { path: 'add', component: AddTicketComponent },
-      { path: ':id', component: TicketDetailComponent },
-    ],
-  },
+  // {
+  //   path: 'order',
+  //   canActivate: [AuthGuard],
+  //   children: [
+  //     { path: '', component: ListOrderComponent },
+  //     { path: 'add', component: AddOrderComponent },
+  //     { path: ':id', component: OrderDetailComponent },
+  //   ],
+  // },
+  // {
+  //   path: 'export',
+  //   canActivate: [AuthGuard],
+  //   children: [
+  //     { path: '', component: ListExportComponent },
+  //     { path: ':id', component: ExportDetailComponent },
+  //   ],
+  // },
+  // {
+  //   path: 'ticket',
+  //   canActivate: [AuthGuard],
+  //   children: [
+  //     { path: '', component: ListTicketComponent },
+  //     { path: 'add', component: AddTicketComponent },
+  //     { path: ':id', component: TicketDetailComponent },
+  //   ],
+  // },
   { path: 'error', component: ErrorComponent },
   { path: '**', component: NotFoundComponent },
   { path: 'notfound', component: NotFoundComponent },

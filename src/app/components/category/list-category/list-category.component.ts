@@ -1,29 +1,30 @@
 import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
-import { Categories, Category, CategoryObject } from 'src/app/models';
+import { Category } from 'src/app/models';
 import { CategoryService } from 'src/app/services';
 import { showError, showMessage } from 'src/app/share/helpers';
-import { UpdateCatalogDialogComponent } from '../update-catalog-dialog/update-catalog-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { UpdateCategoryDialogComponent } from '../..';
 
 @Component({
-  selector: 'app-list-catalog',
-  templateUrl: './list-catalog.component.html',
-  styleUrls: ['./list-catalog.component.css'],
+  selector: 'app-list-category',
+  templateUrl: './list-category.component.html',
+  styleUrls: ['./list-category.component.css'],
 })
-export class ListCatalogComponent {
-  data = new MatTableDataSource<Category>();
-  displayedColumns: string[] = ['id', 'name', 'actions'];
+export class ListCategoryComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  pageSizeOptions: number[] = [10, 20, 50, 100];
 
+  data = new MatTableDataSource<Category>();
+  displayedColumns: string[] = ['id', 'name', 'actions'];
+  pageSizeOptions: number[] = [10, 20, 50, 100];
   searchValue: string = '';
   total!: number;
+
   constructor(
     private categoryService: CategoryService,
     public dialog: MatDialog,
@@ -47,14 +48,15 @@ export class ListCatalogComponent {
         startWith({}),
         switchMap(() => {
           const params: any = {
-            pageIndex: this.paginator?.pageIndex,
-            pageSize: this.paginator?.pageSize,
-            sortField: this.sort?.active,
+            index: this.paginator?.pageIndex,
+            size: this.paginator?.pageSize,
+            sort: this.sort?.active,
             sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
+            isInactive: false,
           };
           return this.categoryService
-            .getCategory(params)
+            .getCategories(params)
             .pipe(catchError(() => of(null)));
         }),
         map((response) => {
@@ -85,20 +87,20 @@ export class ListCatalogComponent {
 
   openDialog(id: number, name: string): void {
     let title = id == 0 ? 'Add new category' : 'Edit category info';
-    const dialogRef = this.dialog.open(UpdateCatalogDialogComponent, {
+    const dialogRef = this.dialog.open(UpdateCategoryDialogComponent, {
       data: { name: name, title: title },
       position: { top: '16vh' },
     });
 
-    dialogRef.afterClosed().subscribe((catalogName) => {
-      if (catalogName) this.updateCatalog(id, catalogName);
+    dialogRef.afterClosed().subscribe((categoryName) => {
+      if (categoryName) this.updateCatalog(id, categoryName);
     });
   }
 
-  updateCatalog(id: number, catalogName: string) {
+  updateCatalog(id: number, categoryName: string) {
     let data: Category = {
       id: id,
-      name: catalogName,
+      name: categoryName,
     };
 
     if (id != 0) {

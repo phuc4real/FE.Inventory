@@ -18,7 +18,6 @@ import {
   ErrorComponent,
   ExportDetailComponent,
   ItemDetailComponent,
-  ListCatalogComponent,
   ListComponent,
   ListExportComponent,
   ListItemComponent,
@@ -35,12 +34,13 @@ import {
   TabGroupComponent,
   TicketDetailComponent,
   TicketSummaryComponent,
-  UpdateCatalogDialogComponent,
 } from './components';
 import { SideNavService } from './services';
 import { LoaderInterceptor, IdentityInterceptor } from './share/helpers';
 import { MaterialModule } from './share/material';
 import { AppComponent, AppRoutingModule } from '.';
+import { ListCategoryComponent } from './components/category/list-category/list-category.component';
+import { UpdateCategoryDialogComponent } from './components/category/update-category-dialog/update-category-dialog.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +57,6 @@ import { AppComponent, AppRoutingModule } from '.';
     ListItemComponent,
     ItemDetailComponent,
     EditItemComponent,
-    ListCatalogComponent,
     ListOrderComponent,
     OrderDetailComponent,
     AddOrderComponent,
@@ -72,7 +71,8 @@ import { AppComponent, AppRoutingModule } from '.';
     TicketDetailComponent,
     AddTicketComponent,
     AddTicketDialogComponent,
-    UpdateCatalogDialogComponent,
+    ListCategoryComponent,
+    UpdateCategoryDialogComponent,
   ],
   imports: [
     BrowserModule,

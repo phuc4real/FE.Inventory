@@ -1,14 +1,7 @@
-export interface OrderDialogData {
-  quantity: number;
-  price: number;
-}
-
-export interface TicketDialogData {
-  quantity: number;
-  type: number;
-}
-
-export interface CatalogDialogData {
+export interface DialogData {
   title: string;
   name: string;
+  quantity: number;
+  price: number;
+  type: number;
 }

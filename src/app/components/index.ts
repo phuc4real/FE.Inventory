@@ -2,8 +2,8 @@ export * from './auth/login/login.component';
 export * from './auth/logout/logout.component';
 export * from './auth/register/register.component';
 
-export * from './catalog/list-catalog/list-catalog.component';
-export * from './catalog/update-catalog-dialog/update-catalog-dialog.component';
+export * from './category/list-category/list-category.component';
+export * from './category/update-category-dialog/update-category-dialog.component';
 
 export * from './dashboard/dashboard.component';
 export * from './dashboard/dashboard-chart/dashboard-chart.component';
