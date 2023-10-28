@@ -3,7 +3,8 @@
     #sidenav
     mode="side"
     class="sidenav"
-    [opened]="isAuthenticated()"
+    opened="true"
+    *ngIf="isAuthenticated()"
   >
     <mat-nav-list>
       <mat-list-item routerLink="/" routerLinkActive="active">

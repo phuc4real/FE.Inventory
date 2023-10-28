@@ -53,7 +53,7 @@ export class AuthService {
     const refreshToken = this.getIdentity()?.refreshToken;
     return this.http.post<IdentityResponse>(`${this.apiUrl}/refresh`, null, {
       headers: {
-        RefreshToken: refreshToken!,
+        'x-token-refresh': `${refreshToken}`,
       },
     });
   }

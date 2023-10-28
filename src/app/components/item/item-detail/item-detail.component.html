@@ -26,36 +26,41 @@
       </div>
       <div>
         <mat-form-field appearance="fill">
-          <mat-label>Description</mat-label>
-          <input matInput formControlName="description" readonly />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
           <mat-label>Unit</mat-label>
           <input matInput formControlName="unit" readonly />
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>Use Unit</mat-label>
-          <input matInput formControlName="useUnit" readonly />
+          <mat-label>Created At</mat-label>
+          <input matInput readonly formControlName="createdAt" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Updated At</mat-label>
+          <input matInput readonly formControlName="updatedAt" />
         </mat-form-field>
       </div>
       <div>
         <mat-form-field appearance="fill">
-          <mat-label>Created At</mat-label>
-          <input matInput readonly formControlName="createdAt" />
+          <mat-label>Use Unit</mat-label>
+          <input matInput formControlName="useUnit" readonly />
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Created By</mat-label>
           <input matInput formControlName="createdBy" readonly />
         </mat-form-field>
         <mat-form-field appearance="fill">
-          <mat-label>Updated At</mat-label>
-          <input matInput readonly formControlName="updatedAt" />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
           <mat-label>Updated By</mat-label>
           <input matInput formControlName="updatedBy" readonly />
         </mat-form-field>
       </div>
+      <mat-form-field appearance="fill" id="description">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          readonly
+          rows="3"
+        ></textarea>
+      </mat-form-field>
     </div>
   </form>
 </div>

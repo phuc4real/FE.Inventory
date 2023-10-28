@@ -43,6 +43,7 @@ import { ListCategoryComponent } from './components/category/list-category/list-
 import { UpdateCategoryDialogComponent } from './components/category/update-category-dialog/update-category-dialog.component';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { DelayedInputModule } from './share/modules';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { AppRoutingModule } from './app-routing.module';
     UpdateCategoryDialogComponent,
   ],
   imports: [
+    DelayedInputModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

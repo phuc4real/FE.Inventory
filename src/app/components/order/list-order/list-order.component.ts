@@ -3,10 +3,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, map, of, startWith, switchMap } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs';
 import { Order } from 'src/app/models';
-import { OrderService } from 'src/app/services';
-import { FormatDate, IsDefaultDate, showError } from 'src/app/share/helpers';
+import { OrderService, UserService } from 'src/app/services';
+import { FormatDate, showError } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-order',
@@ -18,13 +18,9 @@ export class ListOrderComponent {
   displayedColumns: string[] = [
     'orderId',
     'status',
+    'create',
+    'lastUpdate',
     'description',
-    'isCompleted',
-    'completeDate',
-    'createdAt',
-    'createdBy',
-    'updatedAt',
-    'updatedBy',
     'actions',
   ];
 
@@ -37,6 +33,7 @@ export class ListOrderComponent {
 
   constructor(
     private orderService: OrderService,
+    private userServce: UserService,
     private toastr: ToastrService
   ) {}
 
@@ -61,15 +58,15 @@ export class ListOrderComponent {
         startWith({}),
         switchMap(() => {
           const params: any = {
-            pageIndex: this.paginator?.pageIndex,
-            pageSize: this.paginator?.pageSize,
-            sortField: this.sort?.active,
+            index: this.paginator?.pageIndex,
+            size: this.paginator?.pageSize,
+            sort: this.sort?.active,
             sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
           };
           return this.orderService
             .getOrders(params)
-            .pipe(catchError(() => of(null)));
+            .pipe(catchError(async (err) => showError(err, this.toastr)));
         }),
         map((response) => {
           if (response == null) return [];
@@ -88,10 +85,6 @@ export class ListOrderComponent {
       );
   }
 
-  dateString(date: any) {
-    return IsDefaultDate(date) ? 'Not Complete' : FormatDate(date);
-  }
-
   // cancelOrder(id: number) {
   //   this.orderService.cancel(id).subscribe(
   //     (response) => {
@@ -101,4 +94,25 @@ export class ListOrderComponent {
   //     (err: any) => showError(err, this.toastr)
   //   );
   // }
+
+  // getUserNameData(createdBy: string, updatedBy: string) {
+  //   if (createdBy != null) {
+  //     this.userServce.getUserInfoById(createdBy).subscribe((response) => {
+  //       this.itemForm.patchValue({
+  //         createdBy: response.data.userName,
+  //       });
+  //     });
+  //   }
+  //   if (updatedBy != null) {
+  //     this.userServce.getUserInfoById(updatedBy).subscribe((response) => {
+  //       this.itemForm.patchValue({
+  //         updatedBy: response.data.userName,
+  //       });
+  //     });
+  //   }
+  // }
+
+  formattedDate = (date: Date) => {
+    return FormatDate(date);
+  };
 }

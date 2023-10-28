@@ -33,6 +33,10 @@
   width: 320px;
 }
 
+.form mat-form-field#description {
+  width: 100%;
+}
+
 .img {
   display: flex;
   padding: 20px;

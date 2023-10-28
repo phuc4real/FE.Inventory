@@ -2,7 +2,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/services';
+import { AuthService, UserService } from 'src/app/services';
 import { showError } from 'src/app/share/helpers';
 import { LoginModel } from 'src/app/models';
 
@@ -16,6 +16,7 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private router: Router,
     private toastr: ToastrService
   ) {
@@ -40,6 +41,11 @@ export class LoginComponent {
         this.router.navigate(['/dashboard']);
         this.toastr.success('Login successful!', 'Success');
         this.authService.saveIdentity(response.data);
+        this.userService.getUserInfo().subscribe((response) => {
+          this.userService.setFullName(
+            response.data.firstName + ' ' + response.data.lastName
+          );
+        });
       },
       (err: any) => showError(err, this.toastr)
     );

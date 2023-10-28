@@ -60,6 +60,7 @@ export class IdentityInterceptor implements HttpInterceptor {
           switchMap((response) => {
             request = request.clone({
               setHeaders: {
+                'x-token-refresh': `${response.data.refreshToken}`,
                 Authorization: `Bearer ${response.data.accessToken}`,
                 'x-user-id': `${response.data.userId}`,
               },
@@ -68,6 +69,7 @@ export class IdentityInterceptor implements HttpInterceptor {
           }),
           catchError((error) => {
             this.isRefreshing = false;
+            this.authService.removeIdentity();
             return throwError(() => error);
           })
         );

@@ -4,7 +4,9 @@
       <input
         matInput
         [(ngModel)]="searchValue"
-        (keyup)="applyFilter()"
+        appDelayedInput
+        (delayedInput)="applyFilter()"
+        [delayTime]="600"
         placeholder="Search"
       />
     </mat-form-field>
@@ -20,61 +22,47 @@
   </div>
   <div class="table">
     <mat-table [dataSource]="orders" matSort (matSortChange)="matSortChange()">
-      <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-        <mat-cell *matCellDef="let order">{{ order.id }}</mat-cell>
+      <ng-container matColumnDef="orderId">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Order ID</mat-header-cell
+        >
+        <mat-cell *matCellDef="let order">{{ order.orderId }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="create">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Created At</mat-header-cell
+        >
+        <mat-cell *matCellDef="let order">{{
+          formattedDate(order.createdAt) + " By " + order.createdBy
+        }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="status">
         <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Order Status</mat-header-cell
-        >
-        <mat-cell *matCellDef="let order">{{ order.status }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="completeDate">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Complete Date</mat-header-cell
+          >Status</mat-header-cell
         >
         <mat-cell *matCellDef="let order">{{
-          dateString(order.completeDate)
+          order.completeDate == null
+            ? order.status
+            : order.status + " At " + formattedDate(order.completeDate)
         }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="createdDate">
+      <ng-container matColumnDef="lastUpdate">
         <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Created Date</mat-header-cell
+          >Last Updated</mat-header-cell
         >
         <mat-cell *matCellDef="let order">{{
-          dateString(order.createdDate)
+          formattedDate(order.updatedAt) + " By " + order.updatedBy
         }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="createdByUser">
+      <ng-container matColumnDef="description">
         <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Created By</mat-header-cell
+          >Description</mat-header-cell
         >
-        <mat-cell *matCellDef="let order">{{
-          order.createdByUser.userName
-        }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="updatedDate">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Updated Date</mat-header-cell
-        >
-        <mat-cell *matCellDef="let order">{{
-          dateString(order.updatedDate)
-        }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="updatedByUser">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Updated By</mat-header-cell
-        >
-        <mat-cell *matCellDef="let order">{{
-          order.updatedByUser.userName
-        }}</mat-cell>
+        <mat-cell *matCellDef="let order">{{ order.description }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">

@@ -3,7 +3,9 @@
     <input
       matInput
       [(ngModel)]="searchValue"
-      (keyup)="refreshData()"
+      appDelayedInput
+      (delayedInput)="refreshData()"
+      [delayTime]="600"
       placeholder="Search"
     />
   </mat-form-field>

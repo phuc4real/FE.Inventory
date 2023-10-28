@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ItemService } from 'src/app/services';
+import { ItemService, UserService } from 'src/app/services';
 import { FormatDate } from 'src/app/share/helpers';
 
 @Component({
@@ -17,6 +17,7 @@ export class ItemDetailComponent {
   constructor(
     private route: ActivatedRoute,
     private itemService: ItemService,
+    private UserService: UserService,
     private router: Router
   ) {
     this.itemForm = new FormGroup({
@@ -51,6 +52,8 @@ export class ItemDetailComponent {
             'http://res.cloudinary.com/dhnoew5bj/image/upload/v1688537725/No-Image-Placeholder.svg_o0smur.png';
         }
 
+        this.getUserNameData(response.data.createdBy, response.data.updatedBy);
+
         this.itemForm.patchValue({
           code: response.data.code,
           name: response.data.name,
@@ -60,9 +63,7 @@ export class ItemDetailComponent {
           unit: response.data.unit,
           useUnit: response.data.useUnit,
           createdAt: FormatDate(response.data.createdAt),
-          createdBy: response.data.createdBy,
           updatedAt: FormatDate(response.data.updatedAt),
-          updatedBy: response.data.updatedBy,
         });
       },
       (err: any) => {
@@ -70,5 +71,22 @@ export class ItemDetailComponent {
         console.log(err);
       }
     );
+  }
+
+  getUserNameData(createdBy: string, updatedBy: string) {
+    if (createdBy != null) {
+      this.UserService.getUserInfoById(createdBy).subscribe((response) => {
+        this.itemForm.patchValue({
+          createdBy: response.data.userName,
+        });
+      });
+    }
+    if (updatedBy != null) {
+      this.UserService.getUserInfoById(updatedBy).subscribe((response) => {
+        this.itemForm.patchValue({
+          updatedBy: response.data.userName,
+        });
+      });
+    }
   }
 }
