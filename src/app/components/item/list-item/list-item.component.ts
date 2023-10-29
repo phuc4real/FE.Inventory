@@ -55,9 +55,9 @@ export class ListItemComponent {
         startWith({}),
         switchMap(() => {
           const params: any = {
-            Index: this.paginator?.pageIndex,
-            Size: this.paginator?.pageSize,
-            Sort: this.sort?.active,
+            index: this.paginator?.pageIndex,
+            size: this.paginator?.pageSize,
+            sort: this.sort?.active,
             sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
           };

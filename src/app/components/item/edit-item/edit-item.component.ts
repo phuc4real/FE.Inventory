@@ -138,14 +138,7 @@ export class EditItemComponent {
       this.itemService.create(data).subscribe(
         (response) => {
           showMessage(response, this.toastr);
-          this.itemForm.patchValue({
-            code: response.data.code,
-            name: response.data.name,
-            description: response.data.description,
-            imageUrl: this.img,
-            categoryId: response.data.category.id,
-          });
-          this.selectedValue = response.data.category.id;
+          this.router.navigate(['/item/' + response.data.id]);
         },
         (err: any) => {
           showError(err, this.toastr);

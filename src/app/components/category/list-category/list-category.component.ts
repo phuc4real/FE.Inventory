@@ -20,7 +20,7 @@ export class ListCategoryComponent {
   @ViewChild(MatSort) sort!: MatSort;
 
   data = new MatTableDataSource<Category>();
-  displayedColumns: string[] = ['id', 'name', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
   pageSizeOptions: number[] = [10, 20, 50, 100];
   searchValue: string = '';
   total!: number;
@@ -85,26 +85,20 @@ export class ListCategoryComponent {
     );
   }
 
-  openDialog(id: number, name: string): void {
-    let title = id == 0 ? 'Add new category' : 'Edit category info';
+  openDialog(data: any): void {
     const dialogRef = this.dialog.open(UpdateCategoryDialogComponent, {
-      data: { name: name, title: title },
+      data: data,
       position: { top: '16vh' },
     });
 
-    dialogRef.afterClosed().subscribe((categoryName) => {
-      if (categoryName) this.updateCatalog(id, categoryName);
+    dialogRef.afterClosed().subscribe((response) => {
+      if (response) this.updateCatalog(response);
     });
   }
 
-  updateCatalog(id: number, categoryName: string) {
-    let data: Category = {
-      id: id,
-      name: categoryName,
-    };
-
-    if (id != 0) {
-      this.categoryService.update(id, data).subscribe(
+  updateCatalog(cate: Category) {
+    if (cate.id != 0) {
+      this.categoryService.update(cate.id, cate).subscribe(
         (response) => {
           showMessage(response, this.toastr);
           this.refreshData();
@@ -112,7 +106,7 @@ export class ListCategoryComponent {
         (err: any) => showError(err, this.toastr)
       );
     } else {
-      this.categoryService.create(data).subscribe(
+      this.categoryService.create(cate).subscribe(
         (response) => {
           showMessage(response, this.toastr);
           this.refreshData();

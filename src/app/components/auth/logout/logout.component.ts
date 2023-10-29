@@ -19,13 +19,14 @@ export class LogoutComponent implements OnInit {
     this.authService.logout().subscribe(
       (response) => {
         showMessage(response, this.toastr);
+        this.authService.removeIdentity();
+        this.userService.removeFullName();
       },
       (err: any) => {
         showError(err, this.toastr);
       }
     );
-    this.authService.removeIdentity();
-    this.userService.removeFullName();
+
     this.router.navigate(['/login']);
   }
 }

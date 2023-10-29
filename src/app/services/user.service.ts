@@ -25,14 +25,14 @@ export class UserService {
   }
 
   getFullName(): string {
-    return sessionStorage.getItem(this.storageKey) ?? '';
+    return localStorage.getItem(this.storageKey) ?? '';
   }
 
   setFullName(name: string) {
-    sessionStorage.setItem(this.storageKey, name);
+    localStorage.setItem(this.storageKey, name);
   }
 
   removeFullName() {
-    sessionStorage.removeItem(this.storageKey);
+    localStorage.removeItem(this.storageKey);
   }
 }

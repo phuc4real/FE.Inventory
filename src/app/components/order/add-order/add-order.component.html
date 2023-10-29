@@ -8,10 +8,16 @@
         matInput
         [matAutocomplete]="auto"
         [(ngModel)]="searchValue"
+        appDelayedInput
+        (delayedInput)="getItems()"
+        [delayTime]="500"
       />
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let item of []" [value]="item">
-          {{ item }}
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="selectOption($event)"
+      >
+        <mat-option *ngFor="let item of items" [value]="item">
+          {{ item.name }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
@@ -20,9 +26,14 @@
       <span>Return to List</span>
     </a>
   </div>
-
-  <div class="content">
-    <mat-table [dataSource]="[]" class="item">
+  <div class="descriptionInput">
+    <mat-form-field appearance="fill">
+      <mat-label>Description for the order</mat-label>
+      <input type="text" matInput [(ngModel)]="description" />
+    </mat-form-field>
+  </div>
+  <div class="content" *ngIf="isHasData; else elseBlock">
+    <mat-table [dataSource]="entriesDS" class="item">
       <ng-container matColumnDef="itemImage">
         <mat-header-cell *matHeaderCellDef>Item Image</mat-header-cell>
         <mat-cell *matCellDef="let detail">
@@ -47,7 +58,9 @@
       <ng-container matColumnDef="price">
         <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
         <mat-cell *matCellDef="let detail">{{
-          detail.minPrice + " - " + detail.maxPrice
+          (detail.minPrice | number : "1.0-0") +
+            " - " +
+            (detail.maxPrice | number : "1.0-0")
         }}</mat-cell>
         <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
       </ng-container>
@@ -60,14 +73,27 @@
         }}</mat-footer-cell>
       </ng-container>
 
-      <ng-container matColumnDef="total">
+      <ng-container class="" matColumnDef="total">
         <mat-header-cell *matHeaderCellDef>Total</mat-header-cell>
         <mat-cell *matCellDef="let detail">{{
-          detail.minTotal + " - " + detail.maxTotal
+          (detail.minPrice * detail.quantity | number : "1.0-0") +
+            " - " +
+            (detail.maxPrice * detail.quantity | number : "1.0-0")
         }}</mat-cell>
         <mat-footer-cell *matFooterCellDef>
-          {{ minTotal + " - " + maxTotal }}</mat-footer-cell
+          {{
+            (minTotal | number : "1.0-0") +
+              " - " +
+              (maxTotal | number : "1.0-0")
+          }}</mat-footer-cell
         >
+      </ng-container>
+      <ng-container matColumnDef="note">
+        <mat-header-cell *matHeaderCellDef>Note</mat-header-cell>
+        <mat-cell *matCellDef="let detail">
+          {{ detail.note }}
+        </mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">
@@ -79,11 +105,12 @@
             [swal]="{ 
                         title: 'Remove item',
                         icon: 'warning',
-                        text:'Remove item #'+detail.item.id,
+                        text:'Confirm remove: '+detail.item.name,
                         showCancelButton: true,
                         confirmButtonText: 'Remove item',
                         confirmButtonColor: '#d61313',
                     }"
+            (confirm)="removeItem(detail.item.id)"
           >
             Remove
           </button>
@@ -98,8 +125,18 @@
       ></mat-footer-row>
     </mat-table>
   </div>
-  <div class="button" *ngIf="sumQuantity > 0">
-    <button mat-button mat-raised-button color="basic">Clear All</button>
-    <button mat-button color="primary" mat-raised-button>Add Order</button>
+  <ng-template #elseBlock>
+    <div class="noData">
+      <h2>No data</h2>
+      <span>Please add new item to the order</span>
+    </div>
+  </ng-template>
+  <div class="button" *ngIf="isHasData">
+    <button mat-button mat-raised-button color="basic" (click)="clearAll()">
+      Clear All
+    </button>
+    <button mat-button color="primary" mat-raised-button (click)="addOrder()">
+      Add Order
+    </button>
   </div>
 </div>

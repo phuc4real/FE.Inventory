@@ -2,7 +2,13 @@ import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ItemObject, ItemUpdate, Items, ResponseMessage } from '../models';
+import {
+  ItemCompactObject,
+  ItemObject,
+  ItemUpdate,
+  Items,
+  ResponseMessage,
+} from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +24,10 @@ export class ItemService {
 
   getById(id: number): Observable<ItemObject> {
     return this.http.get<ItemObject>(`${this.apiUrl}/${id}`);
+  }
+
+  getByIdCompact(id: number): Observable<ItemCompactObject> {
+    return this.http.get<ItemCompactObject>(`${this.apiUrl}/${id}/compact`);
   }
 
   update(id: number, data: ItemUpdate): Observable<ItemUpdate> {

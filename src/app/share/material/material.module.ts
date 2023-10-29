@@ -22,6 +22,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const sharedModules = [
   CommonModule,
@@ -48,6 +49,7 @@ const sharedModules = [
   MatGridListModule,
   MatCardModule,
   MatTabsModule,
+  MatExpansionModule,
 ];
 @NgModule({
   declarations: [],

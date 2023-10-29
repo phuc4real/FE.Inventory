@@ -69,7 +69,6 @@ export class IdentityInterceptor implements HttpInterceptor {
           }),
           catchError((error) => {
             this.isRefreshing = false;
-            this.authService.removeIdentity();
             return throwError(() => error);
           })
         );

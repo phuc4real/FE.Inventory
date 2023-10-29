@@ -68,7 +68,6 @@ export class ItemDetailComponent {
       },
       (err: any) => {
         if (err.status == 404) this.router.navigate(['/notfound']);
-        console.log(err);
       }
     );
   }

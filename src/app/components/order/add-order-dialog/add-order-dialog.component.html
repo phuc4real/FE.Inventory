@@ -1,9 +1,10 @@
-<h1 mat-dialog-title>Add item to Order</h1>
+<h1 mat-dialog-title>Add item</h1>
 <div mat-dialog-content class="dialog-content">
   <mat-form-field>
     <mat-label>Quantity</mat-label>
     <input matInput [(ngModel)]="data.quantity" />
   </mat-form-field>
+
   <mat-form-field>
     <mat-label>Min Price</mat-label>
     <input matInput [(ngModel)]="data.minPrice" />
@@ -12,6 +13,11 @@
   <mat-form-field>
     <mat-label>Max Price</mat-label>
     <input matInput [(ngModel)]="data.maxPrice" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Note</mat-label>
+    <input matInput [(ngModel)]="data.note" />
   </mat-form-field>
 </div>
 <div mat-dialog-actions>

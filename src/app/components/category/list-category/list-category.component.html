@@ -6,7 +6,7 @@
       appDelayedInput
       (delayedInput)="refreshData()"
       [delayTime]="600"
-      placeholder="Search"
+      placeholder="Search by name, description"
     />
   </mat-form-field>
   <button
@@ -14,7 +14,7 @@
     class="button"
     mat-raised-button
     color="primary"
-    (click)="openDialog(0, '')"
+    (click)="openDialog({ id: 0, name: '', description: '' })"
   >
     Add New
   </button>
@@ -32,14 +32,19 @@
         <mat-cell *matCellDef="let category">{{ category.name }}</mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Description</mat-header-cell
+        >
+        <mat-cell *matCellDef="let category">{{
+          category.description
+        }}</mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
         <mat-cell *matCellDef="let category">
-          <button
-            mat-button
-            (click)="openDialog(category.id, category.name)"
-            color="primary"
-          >
+          <button mat-button (click)="openDialog(category)" color="primary">
             Edit
           </button>
           <button

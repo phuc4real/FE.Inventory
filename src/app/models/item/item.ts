@@ -8,6 +8,7 @@ export interface Item {
   imageUrl: string;
   unit: number;
   useUnit: number;
+  carregoryId: number;
   category: Category;
 
   createdAt: Date;

@@ -3,6 +3,7 @@ import { BaseResponse } from '..';
 export interface Category {
   id: number;
   name: string;
+  description: string;
 }
 
 export interface CategoryObject extends BaseResponse {

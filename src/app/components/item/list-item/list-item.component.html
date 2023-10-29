@@ -6,7 +6,7 @@
       appDelayedInput
       (delayedInput)="refreshData()"
       [delayTime]="600"
-      placeholder="Search"
+      placeholder="Search by name, code, category name"
     />
   </mat-form-field>
   <button
@@ -54,7 +54,7 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Category</mat-header-cell
         >
-        <mat-cell *matCellDef="let item">{{ item.category.name }}</mat-cell>
+        <mat-cell *matCellDef="let item">{{ item.category?.name }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="unit">

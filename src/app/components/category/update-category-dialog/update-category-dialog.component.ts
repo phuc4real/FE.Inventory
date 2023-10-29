@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { DialogData } from 'src/app/models';
+import { Category } from 'src/app/models';
 
 @Component({
   selector: 'app-update-category-dialog',
@@ -10,7 +10,7 @@ import { DialogData } from 'src/app/models';
 export class UpdateCategoryDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<UpdateCategoryDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
+    @Inject(MAT_DIALOG_DATA) public data: Category
   ) {}
 
   close(): void {

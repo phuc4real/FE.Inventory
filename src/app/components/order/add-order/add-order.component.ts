@@ -3,11 +3,16 @@ import { Component, ViewChild } from '@angular/core';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-// import { Item, OrderDetail, UpdateOrderDetail } from 'src/app/models';
 import { ItemService, OrderService } from 'src/app/services';
-import { AddOrderDialogComponent } from '../add-order-dialog/add-order-dialog.component';
 import { Router } from '@angular/router';
 import { showError, showMessage } from 'src/app/share/helpers';
+import {
+  Item,
+  OrderEntry,
+  OrderEntryUpdate,
+  OrderUpdate,
+} from 'src/app/models';
+import { AddOrderDialogComponent } from '../add-order-dialog/add-order-dialog.component';
 
 @Component({
   selector: 'app-add-order',
@@ -15,25 +20,27 @@ import { showError, showMessage } from 'src/app/share/helpers';
   styleUrls: ['./add-order.component.css'],
 })
 export class AddOrderComponent {
-  // data: OrderDetail[] = [];
-  // tableData = new MatTableDataSource<OrderDetail>();
+  entries: OrderEntry[] = [];
+  entriesDS = new MatTableDataSource<OrderEntry>();
   displayedColumns: string[] = [
     'itemImage',
     'itemName',
     'price',
     'quantity',
     'total',
+    'note',
     'actions',
   ];
 
   @ViewChild(MatAutocomplete) itemSearch!: MatAutocomplete;
 
-  // items!: Item[];
+  items!: Item[];
   searchValue = '';
-
+  description = '';
   minTotal: number = 0;
   maxTotal: number = 0;
   sumQuantity: number = 0;
+  isHasData: boolean = false;
 
   constructor(
     private orderService: OrderService,
@@ -44,107 +51,134 @@ export class AddOrderComponent {
   ) {}
 
   ngOnInit() {
-    // this.getTableData();
+    this.getTableData();
   }
 
-  // getTableData() {
-  //   let orderInfo = this.orderService.g();
-  //   let details = orderInfo?.details ?? [];
+  getTableData() {
+    //clear old data
+    this.sumQuantity = 0;
+    this.minTotal = 0;
+    this.maxTotal = 0;
+    this.entries = [];
+    this.entriesDS = new MatTableDataSource<OrderEntry>(this.entries);
 
-  //   this.sumQuantity = 0;
+    let entriesLocal = this.orderService.getEntriesData();
+    let data = entriesLocal?.data ?? [];
 
-  //   if (details.length < 1) {
-  //     this.tableData = new MatTableDataSource<OrderDetail>(this.data);
-  //   } else {
-  //     details.forEach((detail) => {
-  //       this.itemService.getById(detail.itemId).subscribe(
-  //         (response) => {
-  //           let object: OrderDetail = {
-  //             item: response,
-  //             quantity: detail.quantity,
-  //             minPrice: detail.minPrice,
-  //             maxPrice: detail.minPrice,
-  //             minTotal: detail.minTotal,
-  //             maxTotal: detail.maxTotal,
-  //             note: detail.note,
-  //           };
+    if (data.length > 0) {
+      this.isHasData = true;
+      data.forEach((entry) => {
+        console.log(entry);
 
-  //           // this.sumQuantity += detail.quantity;
-  //           this.sumQuantity += parseInt(detail.quantity.toString());
-  //           this.minTotal += parseInt(detail.minTotal.toString());
-  //           this.maxTotal += parseInt(detail.maxTotal.toString());
-  //           this.data.push(object);
-  //           this.tableData = new MatTableDataSource<OrderDetail>(this.data);
-  //         },
-  //         (err: any) => showError(err, this.toastr)
-  //       );
-  //     });
-  //   }
-  // }
+        this.itemService.getByIdCompact(entry.itemId).subscribe(
+          (response) => {
+            let object: OrderEntry = {
+              id: entry.id,
+              recordId: entry.recordId,
+              item: response.data,
+              quantity: entry.quantity,
+              minPrice: entry.minPrice,
+              maxPrice: entry.maxPrice,
+              note: entry.note,
+            };
 
-  // removeItem(id: number) {
-  //   let result = this.orderService.removeFromObject(id);
-  //   this.getTableData();
-  //   if (result) {
-  //     this.toastr.success('Remove item success', 'Success');
-  //   } else this.toastr.error('Something went wrong', 'Error');
-  // }
+            this.sumQuantity += entry.quantity * 1;
+            this.minTotal += entry.minPrice * entry.quantity;
+            this.maxTotal += entry.maxPrice * entry.quantity;
+            this.entries.push(object);
+            this.entriesDS = new MatTableDataSource<OrderEntry>(this.entries);
+          },
+          (err: any) => showError(err, this.toastr)
+        );
+      });
+    }
+  }
 
-  // getItems() {
-  //   let params: any = {
-  //     name: this.searchValue,
-  //   };
-  //   this.itemService.getList(params).subscribe(
-  //     (values) => {
-  //       this.items = values;
-  //     },
-  //     (err: any) => showError(err, this.toastr)
-  //   );
-  // }
+  removeItem(id: number) {
+    let result = this.orderService.removeEntry(id);
 
-  // selectOption(e: any) {
-  //   this.searchValue = e.option.value.name;
-  //   this.openDialog(e.option.value.id);
-  // }
+    if (result) {
+      this.toastr.success('Remove item success', 'Success');
+      this.getTableData();
+      let entryCount = this.orderService.getEntriesData()?.data.length;
+      if (entryCount == 0) this.isHasData = false;
+    } else this.toastr.error('Something went wrong', 'Error');
+  }
 
-  // openDialog(itemId: number): void {
-  //   const dialogRef = this.dialog.open(AddOrderDialogComponent, {
-  //     data: { quantity: 0, price: 0 },
-  //   });
+  getItems() {
+    const params: any = {
+      index: 0,
+      size: 0,
+      searchKeyword: this.searchValue,
+    };
+    this.itemService.getItems(params).subscribe(
+      (response) => {
+        this.items = response.data;
+      },
+      (err: any) => showError(err, this.toastr)
+    );
+  }
 
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     console.log(result);
+  selectOption(e: any) {
+    this.searchValue = e.option.value.name;
+    this.openDialog(e.option.value.id);
+  }
 
-  //     let detail: UpdateOrderDetail = {
-  //       itemId: itemId,
-  //       quantity: result.quantity,
-  //       minPrice: result.price,
-  //       maxPrice: result.price,
-  //       minTotal: result.price * result.quantity,
-  //       maxTotal: result.price * result.quantity,
-  //       note: result.note,
-  //     };
-  //     this.orderService.addToObject(detail);
-  //     this.getTableData();
-  //   });
-  // }
+  openDialog(itemId: number): void {
+    let entry: OrderEntryUpdate = {
+      id: 0,
+      recordId: 0,
+      itemId: itemId,
+      quantity: 0,
+      minPrice: 0,
+      maxPrice: 0,
+      note: '',
+    };
+    const dialogRef = this.dialog.open(AddOrderDialogComponent, {
+      data: entry,
+    });
 
-  // clearAll() {
-  //   this.orderService.removeObject();
-  //   this.getTableData();
-  // }
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
 
-  // addOrder() {
-  //   this.orderService.create().subscribe(
-  //     (response) => {
-  //       showMessage(response, this.toastr);
-  //       this.router.navigate(['/' + response.headers.get('Location')]);
-  //     },
-  //     (err: any) => {
-  //       showError(err, this.toastr);
-  //       this.router.navigate(['/order']);
-  //     }
-  //   );
-  //   this.clearAll();
-  // }
+      let entry: OrderEntryUpdate = {
+        id: 0,
+        recordId: 0,
+        itemId: itemId,
+        quantity: result.quantity,
+        minPrice: result.minPrice,
+        maxPrice: result.maxPrice,
+        note: result.note,
+      };
+
+      this.orderService.addEntry(entry);
+      this.getTableData();
+    });
+  }
+
+  clearAll() {
+    this.orderService.removeEntries();
+    this.isHasData = false;
+  }
+
+  addOrder() {
+    let order: OrderUpdate = {
+      recordId: 0,
+      description: '',
+      orderEntries: this.orderService.getEntriesData()?.data!,
+    };
+
+    this.orderService.createOrder(order).subscribe(
+      (response) => {
+        showMessage(response, this.toastr);
+        this.router.navigate(['/' + response.orderId]);
+      },
+      (err: any) => {
+        showError(err, this.toastr);
+      }
+    );
+
+    this.router.navigate(['/order']);
+    this.clearAll();
+  }
 }

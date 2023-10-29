@@ -9,6 +9,11 @@
   font-size: 1.25rem;
   line-height: 2;
 }
+.content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 
 .button-group {
   display: flex;

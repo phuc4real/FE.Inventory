@@ -7,3 +7,7 @@ export interface OrderEntryUpdate {
   maxPrice: number;
   note: string;
 }
+
+export interface OrderEntriesUpdate {
+  data: OrderEntryUpdate[];
+}

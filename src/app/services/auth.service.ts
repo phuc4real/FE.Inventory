@@ -21,7 +21,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   IsLogged(): boolean {
-    let result = sessionStorage.getItem(this.authenKey);
+    let result = localStorage.getItem(this.authenKey);
     return result != null;
   }
 
@@ -35,18 +35,18 @@ export class AuthService {
 
   saveIdentity(data: IdentityModel): void {
     let json = JSON.stringify(data);
-    sessionStorage.setItem(this.authenKey, 'true');
-    sessionStorage.setItem(this.storageKey, json);
+    localStorage.setItem(this.authenKey, 'true');
+    localStorage.setItem(this.storageKey, json);
   }
 
   getIdentity(): IdentityModel | null {
-    let json = sessionStorage.getItem(this.storageKey);
+    let json = localStorage.getItem(this.storageKey);
     return json ? (JSON.parse(json) as IdentityModel) : null;
   }
 
   removeIdentity(): void {
-    sessionStorage.removeItem(this.storageKey);
-    sessionStorage.removeItem(this.authenKey);
+    localStorage.removeItem(this.storageKey);
+    localStorage.removeItem(this.authenKey);
   }
 
   refreshToken(): Observable<IdentityResponse> {
