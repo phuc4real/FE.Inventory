@@ -39,8 +39,8 @@ export class OrderService {
     return this.http.get<ChartDataResponse>(`${this.apiUrl}/chart`);
   }
 
-  createOrder(order: OrderUpdate): Observable<Order> {
-    return this.http.post<Order>(`${this.apiUrl}`, order);
+  createOrder(order: OrderUpdate): Observable<OrderObject> {
+    return this.http.post<OrderObject>(`${this.apiUrl}`, order);
   }
 
   updateStatus(id: number): Observable<ResponseMessage> {

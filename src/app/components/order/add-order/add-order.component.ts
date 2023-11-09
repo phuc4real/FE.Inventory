@@ -68,8 +68,6 @@ export class AddOrderComponent {
     if (data.length > 0) {
       this.isHasData = true;
       data.forEach((entry) => {
-        console.log(entry);
-
         this.itemService.getByIdCompact(entry.itemId).subscribe(
           (response) => {
             let object: OrderEntry = {
@@ -156,22 +154,23 @@ export class AddOrderComponent {
     });
   }
 
-  clearAll() {
+  clearData() {
     this.orderService.removeEntries();
+    this.description = '';
     this.isHasData = false;
   }
 
   addOrder() {
     let order: OrderUpdate = {
       recordId: 0,
-      description: '',
+      description: this.description,
       orderEntries: this.orderService.getEntriesData()?.data!,
     };
 
     this.orderService.createOrder(order).subscribe(
       (response) => {
         showMessage(response, this.toastr);
-        this.router.navigate(['/' + response.orderId]);
+        this.router.navigate(['/order/' + response.data.orderId]);
       },
       (err: any) => {
         showError(err, this.toastr);
@@ -179,6 +178,6 @@ export class AddOrderComponent {
     );
 
     this.router.navigate(['/order']);
-    this.clearAll();
+    this.clearData();
   }
 }

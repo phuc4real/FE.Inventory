@@ -8,11 +8,12 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, catchError, switchMap, tap, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class IdentityInterceptor implements HttpInterceptor {
   private isRefreshing = false;
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
@@ -69,6 +70,8 @@ export class IdentityInterceptor implements HttpInterceptor {
           }),
           catchError((error) => {
             this.isRefreshing = false;
+            this.authService.removeIdentity();
+            this.router.navigate(['/login']);
             return throwError(() => error);
           })
         );

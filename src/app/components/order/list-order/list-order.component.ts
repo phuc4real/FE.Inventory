@@ -95,6 +95,12 @@ export class ListOrderComponent {
   //   );
   // }
 
+  getUserName(userId: string) {
+    this.userServce.getUserInfoById(userId).subscribe((response) => {
+      return response.data.userName;
+    });
+  }
+
   // getUserNameData(createdBy: string, updatedBy: string) {
   //   if (createdBy != null) {
   //     this.userServce.getUserInfoById(createdBy).subscribe((response) => {

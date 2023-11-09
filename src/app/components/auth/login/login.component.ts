@@ -42,9 +42,7 @@ export class LoginComponent {
         this.toastr.success('Login successful!', 'Success');
         this.authService.saveIdentity(response.data);
         this.userService.getUserInfo().subscribe((response) => {
-          this.userService.setFullName(
-            response.data.firstName + ' ' + response.data.lastName
-          );
+          this.userService.setName(response.data.userName);
         });
       },
       (err: any) => showError(err, this.toastr)

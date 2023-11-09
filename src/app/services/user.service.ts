@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, last } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { IdentityModel, UserObject, Users } from '../models';
+import { UserObject, Users } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -24,15 +24,15 @@ export class UserService {
     return this.http.get<UserObject>(`${this.apiUrl}/info/${id}`);
   }
 
-  getFullName(): string {
+  getName(): string {
     return localStorage.getItem(this.storageKey) ?? '';
   }
 
-  setFullName(name: string) {
+  setName(name: string) {
     localStorage.setItem(this.storageKey, name);
   }
 
-  removeFullName() {
+  removeName() {
     localStorage.removeItem(this.storageKey);
   }
 }

@@ -18,7 +18,7 @@ export class NavbarComponent {
   }
 
   getUserName(): string {
-    return this.userService.getFullName();
+    return this.userService.getName();
   }
 
   isAuthenticated(): boolean {

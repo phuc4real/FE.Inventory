@@ -20,7 +20,7 @@ export class LogoutComponent implements OnInit {
       (response) => {
         showMessage(response, this.toastr);
         this.authService.removeIdentity();
-        this.userService.removeFullName();
+        this.userService.removeName();
       },
       (err: any) => {
         showError(err, this.toastr);
