@@ -29,7 +29,7 @@ export class IdentityInterceptor implements HttpInterceptor {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${identity.accessToken}`,
-          'x-user-id': `${identity.userId}`,
+          'x-user-name': `${identity.userName}`,
         },
       });
     }
@@ -63,7 +63,7 @@ export class IdentityInterceptor implements HttpInterceptor {
               setHeaders: {
                 'x-token-refresh': `${response.data.refreshToken}`,
                 Authorization: `Bearer ${response.data.accessToken}`,
-                'x-user-id': `${response.data.userId}`,
+                'x-user-name': `${response.data.userName}`,
               },
             });
             return next.handle(request);

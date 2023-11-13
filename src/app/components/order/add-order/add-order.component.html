@@ -1,29 +1,32 @@
 <div class="container">
   <div class="header">
-    <mat-form-field>
-      <mat-label>Enter item name to add</mat-label>
-      <input
-        type="text"
-        aria-label="Item"
-        matInput
-        [matAutocomplete]="auto"
-        [(ngModel)]="searchValue"
-        appDelayedInput
-        (delayedInput)="getItems()"
-        [delayTime]="500"
-      />
-      <mat-autocomplete
-        #auto="matAutocomplete"
-        (optionSelected)="selectOption($event)"
-      >
-        <mat-option *ngFor="let item of items" [value]="item">
-          {{ item.name }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+    <div class="add-section">
+      <mat-icon>add_box</mat-icon>
+      <mat-form-field style="width: 100%">
+        <mat-label>Add new item by name, code</mat-label>
+        <input
+          type="text"
+          aria-label="Item"
+          matInput
+          [matAutocomplete]="auto"
+          [(ngModel)]="searchValue"
+          appDelayedInput
+          (delayedInput)="getItems()"
+          [delayTime]="500"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="selectOption($event)"
+        >
+          <mat-option *ngFor="let item of items" [value]="item">
+            {{ item.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
     <a routerLink="/order">
       <mat-icon>arrow_back_ios</mat-icon>
-      <span>Return to List</span>
+      <span>Back</span>
     </a>
   </div>
   <div class="descriptionInput">
@@ -133,10 +136,10 @@
   </ng-template>
   <div class="button" *ngIf="isHasData">
     <button mat-button mat-raised-button color="basic" (click)="clearData()">
-      Clear All
+      Clear
     </button>
     <button mat-button color="primary" mat-raised-button (click)="addOrder()">
-      Add Order
+      Order
     </button>
   </div>
 </div>

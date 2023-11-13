@@ -28,7 +28,8 @@ export class UserService {
     return localStorage.getItem(this.storageKey) ?? '';
   }
 
-  setName(name: string) {
+  setName(user: UserObject) {
+    var name = user.data.firstName + ' ' + user.data.lastName;
     localStorage.setItem(this.storageKey, name);
   }
 

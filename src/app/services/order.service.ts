@@ -43,6 +43,10 @@ export class OrderService {
     return this.http.post<OrderObject>(`${this.apiUrl}`, order);
   }
 
+  cancelOrder(id: number): Observable<ResponseMessage> {
+    return this.http.delete<ResponseMessage>(`${this.apiUrl}/${id}/cancel`);
+  }
+
   updateStatus(id: number): Observable<ResponseMessage> {
     return this.http.put<ResponseMessage>(
       `${this.apiUrl}/${id}/update-status`,

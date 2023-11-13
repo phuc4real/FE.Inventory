@@ -17,7 +17,7 @@
       color="primary"
       routerLink="add"
     >
-      Add new
+      Add New
     </button>
   </div>
   <div class="table">
@@ -29,7 +29,7 @@
         <mat-cell *matCellDef="let order">{{ order.orderId }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="create">
+      <ng-container matColumnDef="createdAt">
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Created At</mat-header-cell
         >
@@ -49,7 +49,7 @@
         }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="lastUpdate">
+      <ng-container matColumnDef="updatedAt">
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Last Updated</mat-header-cell
         >
@@ -78,11 +78,12 @@
             [swal]="{ 
                         title: 'Cancel order',
                         icon: 'warning',
-                        text:'Cancel order #'+order.id,
+                        text:'Cancel order #'+order.orderId,
                         showCancelButton: true,
                         confirmButtonText: 'Cancel order',
                         confirmButtonColor: '#d61313',
                     }"
+            (confirm)="cancelOrder(order.orderId)"
           >
             Cancel
           </button>

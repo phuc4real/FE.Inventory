@@ -67,3 +67,15 @@
   padding: 14px;
   margin: 8px;
 }
+
+.add-section {
+  display: flex;
+  width: 20%;
+}
+.add-section mat-icon {
+  font-size: 3rem;
+  margin: 5px;
+  height: 48px;
+  width: 48px;
+  overflow: visible;
+}

@@ -76,14 +76,14 @@ export class ItemDetailComponent {
     if (createdBy != null) {
       this.UserService.getUserInfoById(createdBy).subscribe((response) => {
         this.itemForm.patchValue({
-          createdBy: response.data.userName,
+          createdBy: response.data.firstName + ' ' + response.data.lastName,
         });
       });
     }
     if (updatedBy != null) {
       this.UserService.getUserInfoById(updatedBy).subscribe((response) => {
         this.itemForm.patchValue({
-          updatedBy: response.data.userName,
+          updatedBy: response.data.firstName + ' ' + response.data.lastName,
         });
       });
     }

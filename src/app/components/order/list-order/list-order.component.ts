@@ -5,8 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, map, startWith, switchMap } from 'rxjs';
 import { Order } from 'src/app/models';
-import { OrderService, UserService } from 'src/app/services';
-import { FormatDate, showError } from 'src/app/share/helpers';
+import { OrderService } from 'src/app/services';
+import { FormatDate, showError, showMessage } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-order',
@@ -18,8 +18,8 @@ export class ListOrderComponent {
   displayedColumns: string[] = [
     'orderId',
     'status',
-    'create',
-    'lastUpdate',
+    'createdAt',
+    'updatedAt',
     'description',
     'actions',
   ];
@@ -33,7 +33,6 @@ export class ListOrderComponent {
 
   constructor(
     private orderService: OrderService,
-    private userServce: UserService,
     private toastr: ToastrService
   ) {}
 
@@ -85,20 +84,14 @@ export class ListOrderComponent {
       );
   }
 
-  // cancelOrder(id: number) {
-  //   this.orderService.cancel(id).subscribe(
-  //     (response) => {
-  //       showMessage(response, this.toastr);
-  //       this.paginator._changePageSize(this.paginator.pageSize);
-  //     },
-  //     (err: any) => showError(err, this.toastr)
-  //   );
-  // }
-
-  getUserName(userId: string) {
-    this.userServce.getUserInfoById(userId).subscribe((response) => {
-      return response.data.userName;
-    });
+  cancelOrder(id: number) {
+    this.orderService.cancelOrder(id).subscribe(
+      (response) => {
+        showMessage(response, this.toastr);
+        this.paginator._changePageSize(this.paginator.pageSize);
+      },
+      (err: any) => showError(err, this.toastr)
+    );
   }
 
   // getUserNameData(createdBy: string, updatedBy: string) {
