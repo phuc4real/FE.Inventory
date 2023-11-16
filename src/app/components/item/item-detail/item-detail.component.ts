@@ -52,8 +52,6 @@ export class ItemDetailComponent {
             'http://res.cloudinary.com/dhnoew5bj/image/upload/v1688537725/No-Image-Placeholder.svg_o0smur.png';
         }
 
-        this.getUserNameData(response.data.createdBy, response.data.updatedBy);
-
         this.itemForm.patchValue({
           code: response.data.code,
           name: response.data.name,
@@ -63,29 +61,14 @@ export class ItemDetailComponent {
           unit: response.data.unit,
           useUnit: response.data.useUnit,
           createdAt: FormatDate(response.data.createdAt),
+          createdBy: response.data.createdBy,
           updatedAt: FormatDate(response.data.updatedAt),
+          updatedBy: response.data.updatedBy,
         });
       },
       (err: any) => {
         if (err.status == 404) this.router.navigate(['/notfound']);
       }
     );
-  }
-
-  getUserNameData(createdBy: string, updatedBy: string) {
-    if (createdBy != null) {
-      this.UserService.getUserInfoById(createdBy).subscribe((response) => {
-        this.itemForm.patchValue({
-          createdBy: response.data.firstName + ' ' + response.data.lastName,
-        });
-      });
-    }
-    if (updatedBy != null) {
-      this.UserService.getUserInfoById(updatedBy).subscribe((response) => {
-        this.itemForm.patchValue({
-          updatedBy: response.data.firstName + ' ' + response.data.lastName,
-        });
-      });
-    }
   }
 }
