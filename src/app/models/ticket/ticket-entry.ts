@@ -10,4 +10,5 @@ export interface TicketEntry {
 
 export interface TicketEntries extends BaseResponse {
   data: TicketEntry[];
+  description: string;
 }

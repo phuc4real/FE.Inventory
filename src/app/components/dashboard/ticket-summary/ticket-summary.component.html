@@ -5,7 +5,7 @@
         <span>Pending Ticket</span>
         <p>This month</p>
       </div>
-      <p class="card-body">{{ ticketCount.pending }}</p>
+      <p class="card-body">{{ summary.pendingTicket }}</p>
     </div>
   </mat-grid-tile>
   <mat-grid-tile colspan="1" rowspan="1">
@@ -14,7 +14,7 @@
         <span>Processing Ticket</span>
         <p>This month</p>
       </div>
-      <p class="card-body">{{ ticketCount.processing }}</p>
+      <p class="card-body">{{ summary.processingTicket }}</p>
     </div>
   </mat-grid-tile>
   <mat-grid-tile colspan="1" rowspan="1">
@@ -24,7 +24,7 @@
         <p>This month</p>
       </div>
 
-      <p class="card-body">{{ ticketCount.rejected }}</p>
+      <p class="card-body">{{ summary.rejectTicket }}</p>
     </div>
   </mat-grid-tile>
   <mat-grid-tile colspan="1" rowspan="1">
@@ -33,7 +33,7 @@
         <span>Completed Ticket</span>
         <p>This month</p>
       </div>
-      <p class="card-body">{{ ticketCount.completed }}</p>
+      <p class="card-body">{{ summary.completedTicket }}</p>
     </div>
   </mat-grid-tile>
 </mat-grid-list>

@@ -3,10 +3,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { startWith, switchMap, catchError, of, map } from 'rxjs';
-import { Ticket } from 'src/app/models';
+import { startWith, switchMap, catchError, map } from 'rxjs';
+import { TicketEntry, TicketRecord } from 'src/app/models';
 import { TicketService } from 'src/app/services/ticket.service';
-import { FormatDate } from 'src/app/share/helpers';
+import { FormatDate, showError } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-ticket',
@@ -14,16 +14,14 @@ import { FormatDate } from 'src/app/share/helpers';
   styleUrls: ['./list-ticket.component.css'],
 })
 export class ListTicketComponent {
-  dataTable = new MatTableDataSource<Ticket>();
+  dataTable = new MatTableDataSource<TicketRecord>();
   displayedColumns: string[] = [
     'id',
     'title',
-    'purpose',
+    'type',
     'description',
-    'pmStatus',
     'status',
-    'createdDate',
-    'createdByUser',
+    'create',
     'actions',
   ];
 
@@ -32,7 +30,7 @@ export class ListTicketComponent {
 
   pageSizeOptions: number[] = [10, 20, 50, 100];
   searchValue: string = '';
-  data!: Ticket[];
+  data!: TicketRecord[];
   totalRecords!: number;
 
   constructor(
@@ -61,25 +59,25 @@ export class ListTicketComponent {
         startWith({}),
         switchMap(() => {
           const params: any = {
-            pageIndex: this.paginator?.pageIndex,
-            pageSize: this.paginator?.pageSize,
-            sortField: this.sort?.active,
+            index: this.paginator?.pageIndex,
+            size: this.paginator?.pageSize,
+            sort: this.sort?.active,
             sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
           };
           return this.ticketService
             .getTickets(params)
-            .pipe(catchError(() => of(null)));
+            .pipe(catchError(async (err) => showError(err, this.toastr)));
         }),
-        map((dto) => {
-          if (dto == null) return [];
-          this.totalRecords = dto.count;
-          return dto.data;
+        map((response) => {
+          if (response == null) return [];
+          this.totalRecords = response.count;
+          return response.data;
         })
       )
       .subscribe(
-        (dto) => {
-          this.setData(dto);
+        (response) => {
+          this.setData(response);
         },
         (error: any) => {
           this.setData([]);
@@ -89,7 +87,7 @@ export class ListTicketComponent {
 
   setData(data: any) {
     this.data = data;
-    this.dataTable = new MatTableDataSource<Ticket>(this.data);
+    this.dataTable = new MatTableDataSource<TicketRecord>(this.data);
   }
 
   dateString(date: any) {

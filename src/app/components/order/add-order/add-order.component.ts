@@ -33,8 +33,6 @@ export class AddOrderComponent {
     'actions',
   ];
 
-  @ViewChild(MatAutocomplete) itemSearch!: MatAutocomplete;
-
   items!: Item[];
   searchValue = '';
   description = '';

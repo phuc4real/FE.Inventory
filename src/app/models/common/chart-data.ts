@@ -6,6 +6,5 @@ export interface ChartData {
 }
 
 export interface ChartDataResponse extends BaseResponse {
-  map(arg0: (x: any) => number): unknown;
   data: ChartData[];
 }

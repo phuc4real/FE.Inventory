@@ -7,6 +7,7 @@ import { TicketService } from 'src/app/services/ticket.service';
 import { AddTicketDialogComponent } from '../add-ticket-dialog/add-ticket-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Item, TicketEntry, TicketEntryUpdate } from 'src/app/models';
 
 @Component({
   selector: 'app-add-ticket',
@@ -14,19 +15,22 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-ticket.component.css'],
 })
 export class AddTicketComponent {
+  recordId!: number;
+  entries: TicketEntry[] = [];
+  entriesDS = new MatTableDataSource<TicketEntry>();
+  displayedColumns: string[] = [
+    'itemImage',
+    'itemName',
+    'quantity',
+    'type',
+    'note',
+    'actions',
+  ];
   formGroup!: FormGroup;
+
+  items!: Item[];
   searchValue = '';
-
-  // items!: Item[];
-
-  type: string[] = ['New', 'ChangeFrom', 'ChangeTo', 'Fix'];
-
-  detailQuantity!: number;
-  detailType!: number;
-
-  // data!: TicketDetail[];
-  // tableData = new MatTableDataSource<TicketDetail>();
-  displayedColumns: string[] = ['itemName', 'quantity', 'type', 'actions'];
+  isHasData: boolean = false;
 
   constructor(
     private ticketService: TicketService,
@@ -37,7 +41,7 @@ export class AddTicketComponent {
   ) {
     this.formGroup = new FormGroup({
       title: new FormControl(''),
-      purpose: new FormControl(''),
+      type: new FormControl(''),
       description: new FormControl(''),
     });
   }
@@ -63,9 +67,16 @@ export class AddTicketComponent {
     this.openDialog(e.option.value.id);
   }
 
-  openDialog(itemId: string): void {
+  openDialog(itemId: number): void {
+    let entry: TicketEntryUpdate = {
+      id: 0,
+      recordId: 0,
+      itemId: itemId,
+      quantity: 0,
+      note: '',
+    };
     const dialogRef = this.dialog.open(AddTicketDialogComponent, {
-      data: { quantity: this.detailQuantity, type: this.detailType },
+      data: entry,
     });
 
     dialogRef.afterClosed().subscribe((result) => {

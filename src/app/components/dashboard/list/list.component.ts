@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Ticket } from 'src/app/models';
+import { TicketRecord } from 'src/app/models';
 import { TicketService } from 'src/app/services/ticket.service';
 import { showError } from 'src/app/share/helpers';
 
@@ -10,12 +10,12 @@ import { showError } from 'src/app/share/helpers';
   styleUrls: ['./list.component.css'],
 })
 export class ListComponent {
-  tickets: Ticket[] = [];
+  tickets: TicketRecord[] = [];
 
   params: any = {
     pageIndex: 0,
     pageSize: 7,
-    sortField: 'updatedDate',
+    sortField: 'updatedAt',
     sortDirection: 'desc',
   };
 

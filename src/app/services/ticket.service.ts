@@ -4,10 +4,13 @@ import { environment } from 'src/environments/environment';
 import {
   ChartDataResponse,
   ResponseMessage,
-  Ticket,
   TicketEntries,
-  TicketObject,
-  Tickets,
+  TicketEntriesUpdate,
+  TicketEntryUpdate,
+  TicketRecordObject,
+  TicketRecords,
+  TicketSummaryObject,
+  TicketUpdate,
 } from '../models';
 import { Observable } from 'rxjs';
 
@@ -15,94 +18,74 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class TicketService {
+  storageKey = 'ticketEntries';
   private apiUrl = environment.apiUrl + '/ticket';
 
   constructor(private http: HttpClient) {}
 
-  getTickets(params: any): Observable<Tickets> {
-    return this.http.get<Tickets>(`${this.apiUrl}`, { params });
+  getTickets(params: any): Observable<TicketRecords> {
+    return this.http.get<TicketRecords>(`${this.apiUrl}`, { params });
   }
 
-  getTicketEntries(exportId: number): Observable<TicketEntries> {
-    return this.http.get<TicketEntries>(`${this.apiUrl}/${exportId}/entries`);
+  getTicketEntries(recordId: number): Observable<TicketEntries> {
+    return this.http.get<TicketEntries>(`${this.apiUrl}/${recordId}/entries`);
   }
 
-  getById(exportId: number): Observable<TicketObject> {
-    return this.http.get<TicketObject>(`${this.apiUrl}/${exportId}`);
+  getById(recordId: number): Observable<TicketRecordObject> {
+    return this.http.get<TicketRecordObject>(`${this.apiUrl}/${recordId}`);
   }
 
-  getTicketChart(): Observable<ChartDataResponse> {
-    return this.http.get<ChartDataResponse>(`${this.apiUrl}/chart`);
+  getTicketSummary(): Observable<TicketSummaryObject> {
+    return this.http.get<TicketSummaryObject>(`${this.apiUrl}/summary`);
   }
 
-  updateStatus(id: number): Observable<ResponseMessage> {
+  createTicket(ticket: TicketUpdate): Observable<TicketRecordObject> {
+    return this.http.post<TicketRecordObject>(`${this.apiUrl}`, ticket);
+  }
+
+  cancelTicket(ticketId: number): Observable<ResponseMessage> {
+    return this.http.delete<ResponseMessage>(
+      `${this.apiUrl}/${ticketId}/cancel`
+    );
+  }
+
+  updateStatus(ticketId: number): Observable<ResponseMessage> {
     return this.http.put<ResponseMessage>(
-      `${this.apiUrl}/${id}/update-status`,
+      `${this.apiUrl}/${ticketId}/update-status`,
       null
     );
   }
 
-  // decide(id: number, decision: UpdateDecision): Observable<ResponseMessage> {
-  //   return this.http.put<ResponseMessage>(
-  //     `${this.apiUrl}/${id}/decide`,
-  //     decision
-  //   );
-  // }
+  getEntriesData() {
+    let json = sessionStorage.getItem(this.storageKey);
+    return json ? (JSON.parse(json) as TicketEntriesUpdate) : null;
+  }
 
-  // leaderDecide(
-  //   id: number,
-  //   decision: UpdateDecision
-  // ): Observable<ResponseMessage> {
-  //   return this.http.put<ResponseMessage>(
-  //     `${this.apiUrl}/${id}/leader-decide`,
-  //     decision
-  //   );
-  // }
+  setEntriesData(orderEntries: TicketEntriesUpdate) {
+    sessionStorage.setItem(this.storageKey, JSON.stringify(orderEntries));
+  }
 
-  // // LocalStorage //
+  addEntry(entry: TicketEntryUpdate) {
+    let entries = this.getEntriesData();
+    if (entries == null) entries = { data: [] };
+    entries.data.push(entry);
+    this.setEntriesData(entries);
+  }
 
-  // initObject() {
-  //   let object: UpdateTickerInfo = {
-  //     purpose: 0,
-  //     title: '',
-  //     description: '',
-  //     details: [],
-  //   };
+  removeEntries() {
+    sessionStorage.setItem(this.storageKey, '');
+    // sessionStorage.removeItem(this.storageKey);
+  }
 
-  //   return object;
-  // }
+  removeEntry(itemId: number): boolean {
+    let entries = this.getEntriesData();
+    if (entries == null) return false;
 
-  // getObject() {
-  //   let json = localStorage.getItem('ticket');
-  //   return json ? (JSON.parse(json) as UpdateTickerInfo) : null;
-  // }
+    let index = entries?.data.findIndex((x) => x.itemId == itemId) ?? 0;
+    if (index < 0) return false;
 
-  // setObject(object: UpdateTickerInfo) {
-  //   localStorage.setItem('ticket', JSON.stringify(object));
-  // }
-
-  // removeObject() {
-  //   localStorage.removeItem('ticket');
-  // }
-
-  // addToObject(detail: UpdateTicketDetail) {
-  //   let object = this.getObject();
-  //   if (object == null) object = this.initObject();
-  //   object.details.push(detail);
-
-  //   this.setObject(object);
-  // }
-
-  // removeFromObject(itemId: number): boolean {
-  //   let object = this.getObject();
-  //   if (object == null) return false;
-
-  //   let index = object?.details.findIndex((x) => x.itemId == itemId) ?? 0;
-  //   if (index < 0) return false;
-
-  //   object.details.splice(index, 1);
-
-  //   this.setObject(object);
-  //   return true;
-  // }
+    entries.data.splice(index, 1);
+    this.setEntriesData(entries!);
+    return true;
+  }
 }

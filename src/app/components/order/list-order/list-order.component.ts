@@ -94,23 +94,6 @@ export class ListOrderComponent {
     );
   }
 
-  // getUserNameData(createdBy: string, updatedBy: string) {
-  //   if (createdBy != null) {
-  //     this.userServce.getUserInfoById(createdBy).subscribe((response) => {
-  //       this.itemForm.patchValue({
-  //         createdBy: response.data.userName,
-  //       });
-  //     });
-  //   }
-  //   if (updatedBy != null) {
-  //     this.userServce.getUserInfoById(updatedBy).subscribe((response) => {
-  //       this.itemForm.patchValue({
-  //         updatedBy: response.data.userName,
-  //       });
-  //     });
-  //   }
-  // }
-
   formattedDate = (date: Date) => {
     return FormatDate(date);
   };

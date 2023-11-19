@@ -5,3 +5,6 @@ export interface TicketEntryUpdate {
   quantity: number;
   note: string;
 }
+export interface TicketEntriesUpdate {
+  data: TicketEntryUpdate[];
+}

@@ -14,13 +14,12 @@
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Purpose</mat-label>
-          <mat-select matInput formControlName="purpose">
+          <mat-select matInput formControlName="type">
             <mat-option value="1">Export Item</mat-option>
             <mat-option value="2">Change Item</mat-option>
             <mat-option value="3">Fix Item</mat-option>
             <mat-option value="4">Import Item</mat-option>
           </mat-select>
-          <!-- <input matInput formControlName="purpose" /> -->
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Description</mat-label>
@@ -54,6 +53,14 @@
   </div>
 
   <mat-table [dataSource]="[]" class="item">
+    <ng-container matColumnDef="itemImage">
+      <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
+      <mat-cell *matCellDef="let detail">
+        <a class="item-link" routerLink="/item/{{ detail.item.id }}">
+          {{ detail.item.name }}
+        </a>
+      </mat-cell>
+    </ng-container>
     <ng-container matColumnDef="itemName">
       <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
       <mat-cell *matCellDef="let detail">
@@ -69,6 +76,11 @@
     </ng-container>
 
     <ng-container matColumnDef="type">
+      <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+      <mat-cell *matCellDef="let detail">{{ detail.type }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="note">
       <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
       <mat-cell *matCellDef="let detail">{{ detail.type }}</mat-cell>
     </ng-container>

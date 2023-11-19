@@ -1,6 +1,5 @@
 .container {
-  margin: 15px 35px 0;
-  overflow-x: hidden;
+  margin: 15px 35px 10px;
 }
 
 .container .header {

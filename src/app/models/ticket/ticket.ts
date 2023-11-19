@@ -1,6 +1,6 @@
-import { BaseResponse } from '..';
+import { BaseResponse, RecordHistory } from '..';
 
-export interface Ticket {
+export interface TicketRecord {
   ticketId: number;
   recordId: number;
 
@@ -18,10 +18,11 @@ export interface Ticket {
   updatedBy: string;
 }
 
-export interface TicketObject extends BaseResponse {
-  data: Ticket;
+export interface TicketRecordObject extends BaseResponse {
+  data: TicketRecord;
+  history: RecordHistory[];
 }
 
-export interface Tickets extends BaseResponse {
-  data: Ticket[];
+export interface TicketRecords extends BaseResponse {
+  data: TicketRecord[];
 }

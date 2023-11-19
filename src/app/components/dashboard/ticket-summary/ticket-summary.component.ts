@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { TicketSummary } from 'src/app/models';
 import { TicketService } from 'src/app/services/ticket.service';
 import { showError } from 'src/app/share/helpers';
 
@@ -9,11 +10,11 @@ import { showError } from 'src/app/share/helpers';
   styleUrls: ['./ticket-summary.component.css'],
 })
 export class TicketSummaryComponent {
-  ticketCount: any = {
-    pending: 0,
-    processing: 0,
-    completed: 0,
-    rejected: 0,
+  summary: TicketSummary = {
+    pendingTicket: 0,
+    processingTicket: 0,
+    completedTicket: 0,
+    rejectTicket: 0,
   };
 
   constructor(
@@ -22,9 +23,9 @@ export class TicketSummaryComponent {
   ) {}
 
   ngOnInit() {
-    this.ticketService.getTicketChart().subscribe(
+    this.ticketService.getTicketSummary().subscribe(
       (response) => {
-        this.ticketCount = response;
+        this.summary = response.data;
       },
       (err: any) => showError(err, this.toastr)
     );

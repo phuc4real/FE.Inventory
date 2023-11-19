@@ -25,6 +25,7 @@ export * from './order/order-entry-update';
 export * from './ticket/ticket';
 export * from './ticket/ticket-entry';
 export * from './ticket/ticket-update';
+export * from './ticket/ticket-summary';
 export * from './ticket/ticket-entry-update';
 
 export * from './user/permission';

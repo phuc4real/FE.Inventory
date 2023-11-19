@@ -1,16 +1,16 @@
 <div class="container">
   <div>
-    <mat-form-field class="search-field">
+    <mat-form-field class="search">
       <input
         matInput
         [(ngModel)]="searchValue"
         (keyup)="applyFilter()"
-        placeholder="Search"
+        placeholder="Search by Item name, ID, Title, Description"
       />
     </mat-form-field>
     <button
       mat-button
-      class="add-style"
+      class="button"
       mat-raised-button
       color="primary"
       routerLink="add"
@@ -18,9 +18,16 @@
       Add new
     </button>
   </div>
-  <mat-table [dataSource]="dataTable" matSort (matSortChange)="matSortChange()">
+  <mat-table
+    class="table"
+    [dataSource]="dataTable"
+    matSort
+    (matSortChange)="matSortChange()"
+  >
     <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Ticket ID</mat-header-cell
+      >
       <mat-cell *matCellDef="let x">{{ x.id }}</mat-cell>
     </ng-container>
 
@@ -29,10 +36,8 @@
       <mat-cell *matCellDef="let x">{{ x.title }}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="purpose">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Purpose</mat-header-cell
-      >
+    <ng-container matColumnDef="type">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
       <mat-cell *matCellDef="let x">{{ x.purpose }}</mat-cell>
     </ng-container>
 
@@ -42,30 +47,17 @@
       >
       <mat-cell *matCellDef="let x">{{ x.description }}</mat-cell>
     </ng-container>
-    <ng-container matColumnDef="pmStatus">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >PM Status</mat-header-cell
-      >
-      <mat-cell *matCellDef="let x">{{ x.pmStatus }}</mat-cell>
-    </ng-container>
     <ng-container matColumnDef="status">
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Status</mat-header-cell
       >
       <mat-cell *matCellDef="let x">{{ x.status }}</mat-cell>
     </ng-container>
-    <ng-container matColumnDef="createdDate">
+    <ng-container matColumnDef="create">
       <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Created Date</mat-header-cell
+        >Created At</mat-header-cell
       >
       <mat-cell *matCellDef="let x">{{ dateString(x.createdDate) }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="createdByUser">
-      <mat-header-cell *matHeaderCellDef mat-sort-header
-        >Created By User</mat-header-cell
-      >
-      <mat-cell *matCellDef="let x">{{ x.createdByUser.userName }}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actions">
