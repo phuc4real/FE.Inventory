@@ -7,7 +7,7 @@ export function DateGreaterThan(date1: Date, date2: Date): boolean {
 }
 
 export function FormatDate(date: Date): string {
-  return formatDate(date, 'dd/MM/yyyy', 'en-US');
+  return formatDate(date, 'dd/MM/yyyy hh:mm', 'en-US');
 }
 
 export function FormatNumber(number: number): string {

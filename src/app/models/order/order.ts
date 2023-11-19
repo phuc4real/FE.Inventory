@@ -1,6 +1,6 @@
-import { BaseResponse } from '..';
+import { BaseResponse, RecordHistory } from '..';
 
-export interface Order {
+export interface OrderRecord {
   orderId: number;
   recordId: number;
 
@@ -15,10 +15,11 @@ export interface Order {
   updatedBy: string;
 }
 
-export interface OrderObject extends BaseResponse {
-  data: Order;
+export interface OrderRecordObject extends BaseResponse {
+  data: OrderRecord;
+  history: RecordHistory[];
 }
 
-export interface Orders extends BaseResponse {
-  data: Order[];
+export interface OrderRecords extends BaseResponse {
+  data: OrderRecord[];
 }

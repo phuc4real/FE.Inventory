@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { OrderEntry, OrderRecord, RecordHistory } from 'src/app/models';
 import { OrderService } from 'src/app/services';
-import { showError, showMessage } from 'src/app/share/helpers';
+import { FormatDate, showError, showMessage } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-order-detail',
@@ -13,9 +14,11 @@ import { showError, showMessage } from 'src/app/share/helpers';
 })
 export class OrderDetailComponent {
   orderForm!: FormGroup;
+  recordId!: number;
   orderId!: number;
-  // details = new MatTableDataSource<OrderDetail>();
-  // listDetail!: OrderDetail[];
+  entries = new MatTableDataSource<OrderEntry>();
+  defaultRecord!: number;
+  histories: RecordHistory[] = [];
   displayedColumns: string[] = [
     'itemImage',
     'itemName',
@@ -23,10 +26,10 @@ export class OrderDetailComponent {
     'price',
     'total',
   ];
-  status: string = '';
   orderStatus: string[] = ['Pending', 'Processing', 'Done', 'Cancel'];
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private orderService: OrderService,
     private toastr: ToastrService
@@ -35,65 +38,67 @@ export class OrderDetailComponent {
       id: new FormControl(''),
       orderDate: new FormControl(''),
       status: new FormControl(''),
-      total: new FormControl(''),
-      approve: new FormControl(''),
-      approveBy: new FormControl(''),
-      user: new FormControl(''),
-      completeDate: new FormControl(''),
+      orderBy: new FormControl(''),
+      description: new FormControl(''),
     });
-  }
-
-  ngOnInit() {
     this.route.params.subscribe((params) => {
-      this.orderId = params['id'];
+      this.recordId = params['id'];
+      this.getData();
     });
   }
 
   ngAfterViewInit() {
-    // this.getData();
+    this.getData();
   }
 
-  // getData() {
-  //   this.orderService.getById(this.orderId).subscribe(
-  //     (values) => {
-  //       let orderInfo = values.history[0];
-  //       this.details = new MatTableDataSource<OrderDetail>(orderInfo.details);
-  //       let completeDateString = isDefaultDate(values.completeDate)
-  //         ? 'Not Complete'
-  //         : toStringFormatDate(values.completeDate);
-  //       this.orderForm.patchValue({
-  //         id: values.id,
-  //         orderDate: toStringFormatDate(values.createdDate),
-  //         status: orderInfo.status,
-  //         user: values.createdByUser.userName,
-  //         approve: orderInfo.decision ? orderInfo.decision.status : '',
-  //         approveBy: orderInfo.decision ? orderInfo.decision.byUser : '',
-  //         total: orderInfo.minTotal + ' - ' + orderInfo.maxTotal,
-  //         completeDate: completeDateString,
-  //       });
-  //     },
-  //     (err: any) => showError(err, this.toastr)
-  //   );
-  // }
+  getData() {
+    this.orderService.getById(this.recordId).subscribe(
+      (response) => {
+        this.histories = response.history;
+        this.defaultRecord = response.data.recordId;
+        this.orderId = response.data.orderId;
+        this.orderForm.patchValue({
+          id: response.data.orderId,
+          orderDate: FormatDate(response.data.createdAt),
+          status: response.data.status,
+          orderBy: response.data.createdBy,
+          description: response.data.description,
+        });
+      },
+      (err: any) => showError(err, this.toastr)
+    );
 
-  // updateStatus() {
-  //   this.orderService.updateStatus(this.orderId).subscribe(
-  //     (response) => {
-  //       showMessage(response, this.toastr);
-  //       this.getData();
-  //     },
-  //     (err: any) => showError(err, this.toastr)
-  //   );
-  // }
+    this.orderService.getOrderEntries(this.recordId).subscribe(
+      (response) => {
+        this.entries = new MatTableDataSource<OrderEntry>(response.data);
+      },
+      (err: any) => showError(err, this.toastr)
+    );
+  }
 
-  // cancelOrder() {
-  //   this.orderService.cancel(this.orderId).subscribe(
-  //     (response) => {
-  //       showMessage(response, this.toastr);
-  //       this.status = '';
-  //       this.getData();
-  //     },
-  //     (err: any) => showError(err, this.toastr)
-  //   );
-  // }
+  historyToString(history: RecordHistory) {
+    return `Record No. #${history.number} at ${FormatDate(
+      history.createdAt
+    )} by ${history.createdBy}`;
+  }
+
+  updateStatus() {
+    this.orderService.updateStatus(this.orderId).subscribe(
+      (response) => {
+        showMessage(response, this.toastr);
+        this.getData();
+      },
+      (err: any) => showError(err, this.toastr)
+    );
+  }
+
+  cancelOrder() {
+    this.orderService.cancelOrder(this.orderId).subscribe(
+      (response) => {
+        showMessage(response, this.toastr);
+        this.getData();
+      },
+      (err: any) => showError(err, this.toastr)
+    );
+  }
 }

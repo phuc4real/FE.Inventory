@@ -4,6 +4,7 @@ export * from './common/chart-data';
 export * from './common/dialog-data';
 export * from './common/base-response';
 export * from './common/response-message';
+export * from './common/record-history';
 
 export * from './export/export';
 export * from './export/export-entry';

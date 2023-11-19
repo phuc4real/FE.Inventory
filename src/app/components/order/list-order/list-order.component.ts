@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, map, startWith, switchMap } from 'rxjs';
-import { Order } from 'src/app/models';
+import { OrderRecord } from 'src/app/models';
 import { OrderService } from 'src/app/services';
 import { FormatDate, showError, showMessage } from 'src/app/share/helpers';
 
@@ -14,7 +14,7 @@ import { FormatDate, showError, showMessage } from 'src/app/share/helpers';
   styleUrls: ['./list-order.component.css'],
 })
 export class ListOrderComponent {
-  orders = new MatTableDataSource<Order>();
+  orders = new MatTableDataSource<OrderRecord>();
   displayedColumns: string[] = [
     'orderId',
     'status',
@@ -75,11 +75,11 @@ export class ListOrderComponent {
       )
       .subscribe(
         (response) => {
-          this.orders = new MatTableDataSource<Order>(response);
+          this.orders = new MatTableDataSource<OrderRecord>(response);
         },
         (err: any) => {
           showError(err, this.toastr);
-          this.orders = new MatTableDataSource<Order>([]);
+          this.orders = new MatTableDataSource<OrderRecord>([]);
         }
       );
   }

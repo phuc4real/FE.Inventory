@@ -4,13 +4,13 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {
   ChartDataResponse,
-  Order,
+  OrderRecord,
   OrderEntries,
   OrderEntriesUpdate,
   OrderEntryUpdate,
-  OrderObject,
+  OrderRecordObject,
   OrderUpdate,
-  Orders,
+  OrderRecords,
   ResponseMessage,
 } from '../models';
 
@@ -23,33 +23,35 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
-  getOrders(params: any): Observable<Orders> {
-    return this.http.get<Orders>(`${this.apiUrl}`, { params });
+  getOrders(params: any): Observable<OrderRecords> {
+    return this.http.get<OrderRecords>(`${this.apiUrl}`, { params });
   }
 
-  getOrderEntries(): Observable<OrderEntries> {
-    return this.http.get<OrderEntries>(`${this.apiUrl}/entries`);
+  getOrderEntries(recordId: number): Observable<OrderEntries> {
+    return this.http.get<OrderEntries>(`${this.apiUrl}/${recordId}/entry`);
   }
 
-  getById(id: number): Observable<OrderObject> {
-    return this.http.get<OrderObject>(`${this.apiUrl}/${id}`);
+  getById(recordId: number): Observable<OrderRecordObject> {
+    return this.http.get<OrderRecordObject>(`${this.apiUrl}/${recordId}`);
   }
 
   getOrderChart(): Observable<ChartDataResponse> {
     return this.http.get<ChartDataResponse>(`${this.apiUrl}/chart`);
   }
 
-  createOrder(order: OrderUpdate): Observable<OrderObject> {
-    return this.http.post<OrderObject>(`${this.apiUrl}`, order);
+  createOrder(order: OrderUpdate): Observable<OrderRecordObject> {
+    return this.http.post<OrderRecordObject>(`${this.apiUrl}`, order);
   }
 
-  cancelOrder(id: number): Observable<ResponseMessage> {
-    return this.http.delete<ResponseMessage>(`${this.apiUrl}/${id}/cancel`);
+  cancelOrder(orderId: number): Observable<ResponseMessage> {
+    return this.http.delete<ResponseMessage>(
+      `${this.apiUrl}/${orderId}/cancel`
+    );
   }
 
-  updateStatus(id: number): Observable<ResponseMessage> {
+  updateStatus(orderId: number): Observable<ResponseMessage> {
     return this.http.put<ResponseMessage>(
-      `${this.apiUrl}/${id}/update-status`,
+      `${this.apiUrl}/${orderId}/update-status`,
       null
     );
   }
@@ -71,7 +73,8 @@ export class OrderService {
   }
 
   removeEntries() {
-    sessionStorage.removeItem(this.storageKey);
+    sessionStorage.setItem(this.storageKey, '');
+    // sessionStorage.removeItem(this.storageKey);
   }
 
   removeEntry(itemId: number): boolean {

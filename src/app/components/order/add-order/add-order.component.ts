@@ -4,7 +4,7 @@ import { MatAutocomplete } from '@angular/material/autocomplete';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { ItemService, OrderService } from 'src/app/services';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { showError, showMessage } from 'src/app/share/helpers';
 import {
   Item,
@@ -20,6 +20,7 @@ import { AddOrderDialogComponent } from '../add-order-dialog/add-order-dialog.co
   styleUrls: ['./add-order.component.css'],
 })
 export class AddOrderComponent {
+  recordId!: number;
   entries: OrderEntry[] = [];
   entriesDS = new MatTableDataSource<OrderEntry>();
   displayedColumns: string[] = [
@@ -47,24 +48,33 @@ export class AddOrderComponent {
     private itemService: ItemService,
     private toastr: ToastrService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.getTableData();
+    this.setToDefault();
+    this.route.params.subscribe((params) => {
+      this.recordId = params['id'] ?? 0;
+      if (this.recordId != 0) this.setEntriesFromRecord();
+      setTimeout(() => {
+        this.getTableData();
+      }, 300);
+    });
+  }
+
+  setToDefault() {
+    this.orderService.removeEntries();
+    this.description = '';
   }
 
   getTableData() {
-    //clear old data
     this.sumQuantity = 0;
     this.minTotal = 0;
     this.maxTotal = 0;
     this.entries = [];
-    this.entriesDS = new MatTableDataSource<OrderEntry>(this.entries);
-
     let entriesLocal = this.orderService.getEntriesData();
     let data = entriesLocal?.data ?? [];
-
     if (data.length > 0) {
       this.isHasData = true;
       data.forEach((entry) => {
@@ -78,6 +88,8 @@ export class AddOrderComponent {
               minPrice: entry.minPrice,
               maxPrice: entry.maxPrice,
               note: entry.note,
+              minTotal: entry.minPrice * entry.quantity,
+              maxTotal: entry.maxPrice * entry.quantity,
             };
 
             this.sumQuantity += entry.quantity * 1;
@@ -90,6 +102,29 @@ export class AddOrderComponent {
         );
       });
     }
+  }
+
+  setEntriesFromRecord() {
+    this.orderService.getOrders;
+    this.orderService.getOrderEntries(this.recordId).subscribe(
+      (response) => {
+        this.description = response.description;
+        response.data.forEach((e) => {
+          let entry: OrderEntryUpdate = {
+            id: e.id,
+            recordId: e.recordId,
+            itemId: e.item.id,
+            quantity: e.quantity,
+            minPrice: e.minPrice,
+            maxPrice: e.maxPrice,
+            note: e.note,
+          };
+
+          this.orderService.addEntry(entry);
+        });
+      },
+      (err: any) => showError(err, this.toastr)
+    );
   }
 
   removeItem(id: number) {
@@ -137,8 +172,6 @@ export class AddOrderComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
-
       let entry: OrderEntryUpdate = {
         id: 0,
         recordId: 0,
@@ -154,6 +187,39 @@ export class AddOrderComponent {
     });
   }
 
+  editDialog(detail: any): void {
+    console.log(detail);
+
+    let entry: OrderEntryUpdate = {
+      id: detail.id,
+      recordId: detail.recordId,
+      itemId: detail.item.id,
+      quantity: detail.quantity,
+      minPrice: detail.minPrice,
+      maxPrice: detail.maxPrice,
+      note: detail.note,
+    };
+    const dialogRef = this.dialog.open(AddOrderDialogComponent, {
+      data: entry,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      let entry: OrderEntryUpdate = {
+        id: detail.id,
+        recordId: detail.recordId,
+        itemId: detail.item.id,
+        quantity: result.quantity,
+        minPrice: result.minPrice,
+        maxPrice: result.maxPrice,
+        note: result.note,
+      };
+
+      this.orderService.removeEntry(entry.itemId);
+      this.orderService.addEntry(entry);
+      this.getTableData();
+    });
+  }
+
   clearData() {
     this.orderService.removeEntries();
     this.description = '';
@@ -162,7 +228,7 @@ export class AddOrderComponent {
 
   addOrder() {
     let order: OrderUpdate = {
-      recordId: 0,
+      recordId: this.recordId,
       description: this.description,
       orderEntries: this.orderService.getEntriesData()?.data!,
     };
@@ -170,7 +236,7 @@ export class AddOrderComponent {
     this.orderService.createOrder(order).subscribe(
       (response) => {
         showMessage(response, this.toastr);
-        this.router.navigate(['/order/' + response.data.orderId]);
+        this.router.navigate(['/order/entry/' + response.data.recordId]);
       },
       (err: any) => {
         showError(err, this.toastr);

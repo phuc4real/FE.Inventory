@@ -53,7 +53,8 @@ const routes: Routes = [
     children: [
       { path: '', component: ListOrderComponent },
       { path: 'add', component: AddOrderComponent },
-      { path: ':id', component: OrderDetailComponent },
+      { path: 'entry/:id', component: OrderDetailComponent },
+      { path: 'entry/:id/edit', component: AddOrderComponent },
     ],
   },
   {

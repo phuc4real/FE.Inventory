@@ -8,8 +8,11 @@ export interface OrderEntry {
   minPrice: number;
   maxPrice: number;
   note: string;
+  minTotal: number;
+  maxTotal: number;
 }
 
 export interface OrderEntries extends BaseResponse {
   data: OrderEntry[];
+  description: string;
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Export, Order } from 'src/app/models';
+import { Export, OrderRecord } from 'src/app/models';
 import { ExportService, OrderService } from 'src/app/services';
 
 @Component({
@@ -9,7 +9,7 @@ import { ExportService, OrderService } from 'src/app/services';
   styleUrls: ['./tab-group.component.css'],
 })
 export class TabGroupComponent {
-  orders: Order[] = [];
+  orders: OrderRecord[] = [];
   exports: Export[] = [];
 
   params: any = {
