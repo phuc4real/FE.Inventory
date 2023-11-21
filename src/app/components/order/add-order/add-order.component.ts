@@ -1,6 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
 import { Component, ViewChild } from '@angular/core';
-import { MatAutocomplete } from '@angular/material/autocomplete';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { ItemService, OrderService } from 'src/app/services';
@@ -52,12 +51,14 @@ export class AddOrderComponent {
 
   ngOnInit() {
     this.setToDefault();
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe(async (params) => {
       this.recordId = params['id'] ?? 0;
-      if (this.recordId != 0) this.setEntriesFromRecord();
-      setTimeout(() => {
+      if (this.recordId != 0) {
+        await this.setEntriesFromRecord();
         this.getTableData();
-      }, 300);
+      } else {
+        this.getTableData();
+      }
     });
   }
 
@@ -102,27 +103,31 @@ export class AddOrderComponent {
     }
   }
 
-  setEntriesFromRecord() {
-    this.orderService.getOrders;
-    this.orderService.getOrderEntries(this.recordId).subscribe(
-      (response) => {
-        this.description = response.description;
-        response.data.forEach((e) => {
-          let entry: OrderEntryUpdate = {
-            id: e.id,
-            recordId: e.recordId,
-            itemId: e.item.id,
-            quantity: e.quantity,
-            minPrice: e.minPrice,
-            maxPrice: e.maxPrice,
-            note: e.note,
-          };
+  setEntriesFromRecord(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.orderService.getOrderEntries(this.recordId).subscribe(
+        (response) => {
+          this.description = response.description;
+          response.data.forEach((e) => {
+            let entry: OrderEntryUpdate = {
+              id: e.id,
+              recordId: e.recordId,
+              itemId: e.item.id,
+              quantity: e.quantity,
+              minPrice: e.minPrice,
+              maxPrice: e.maxPrice,
+              note: e.note,
+            };
 
-          this.orderService.addEntry(entry);
-        });
-      },
-      (err: any) => showError(err, this.toastr)
-    );
+            this.orderService.addEntry(entry);
+          });
+        },
+        (err: any) => showError(err, this.toastr)
+      );
+      setTimeout(() => {
+        resolve();
+      }, 600);
+    });
   }
 
   removeItem(id: number) {
@@ -170,24 +175,12 @@ export class AddOrderComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      let entry: OrderEntryUpdate = {
-        id: 0,
-        recordId: 0,
-        itemId: itemId,
-        quantity: result.quantity,
-        minPrice: result.minPrice,
-        maxPrice: result.maxPrice,
-        note: result.note,
-      };
-
-      this.orderService.addEntry(entry);
+      this.orderService.addEntry(result);
       this.getTableData();
     });
   }
 
   editDialog(detail: any): void {
-    console.log(detail);
-
     let entry: OrderEntryUpdate = {
       id: detail.id,
       recordId: detail.recordId,
@@ -202,18 +195,8 @@ export class AddOrderComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      let entry: OrderEntryUpdate = {
-        id: detail.id,
-        recordId: detail.recordId,
-        itemId: detail.item.id,
-        quantity: result.quantity,
-        minPrice: result.minPrice,
-        maxPrice: result.maxPrice,
-        note: result.note,
-      };
-
-      this.orderService.removeEntry(entry.itemId);
-      this.orderService.addEntry(entry);
+      this.orderService.removeEntry(result.itemId);
+      this.orderService.addEntry(result);
       this.getTableData();
     });
   }

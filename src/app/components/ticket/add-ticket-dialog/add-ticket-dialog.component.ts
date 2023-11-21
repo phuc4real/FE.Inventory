@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DialogData } from 'src/app/models';
+import { TicketEntryUpdate } from 'src/app/models';
 
 @Component({
   selector: 'app-add-ticket-dialog',
@@ -10,6 +10,6 @@ import { DialogData } from 'src/app/models';
 export class AddTicketDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<AddTicketDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
+    @Inject(MAT_DIALOG_DATA) public data: TicketEntryUpdate
   ) {}
 }

@@ -2,10 +2,19 @@
   <mat-grid-tile colspan="1" rowspan="1">
     <div class="card">
       <div class="card-header">
+        <span>Review Ticket</span>
+        <p>This month</p>
+      </div>
+      <p class="card-body">{{ summary.review }}</p>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile colspan="1" rowspan="1">
+    <div class="card">
+      <div class="card-header">
         <span>Pending Ticket</span>
         <p>This month</p>
       </div>
-      <p class="card-body">{{ summary.pendingTicket }}</p>
+      <p class="card-body">{{ summary.pending }}</p>
     </div>
   </mat-grid-tile>
   <mat-grid-tile colspan="1" rowspan="1">
@@ -14,26 +23,17 @@
         <span>Processing Ticket</span>
         <p>This month</p>
       </div>
-      <p class="card-body">{{ summary.processingTicket }}</p>
-    </div>
-  </mat-grid-tile>
-  <mat-grid-tile colspan="1" rowspan="1">
-    <div class="card">
-      <div class="card-header">
-        <span>Rejected Ticket</span>
-        <p>This month</p>
-      </div>
 
-      <p class="card-body">{{ summary.rejectTicket }}</p>
+      <p class="card-body">{{ summary.processing }}</p>
     </div>
   </mat-grid-tile>
   <mat-grid-tile colspan="1" rowspan="1">
     <div class="card">
       <div class="card-header">
-        <span>Completed Ticket</span>
+        <span>Done Ticket</span>
         <p>This month</p>
       </div>
-      <p class="card-body">{{ summary.completedTicket }}</p>
+      <p class="card-body">{{ summary.done }}</p>
     </div>
   </mat-grid-tile>
 </mat-grid-list>

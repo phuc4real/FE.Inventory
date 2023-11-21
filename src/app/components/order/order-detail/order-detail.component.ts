@@ -1,11 +1,18 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { OrderEntry, OrderRecord, RecordHistory } from 'src/app/models';
+import {
+  CreateCommentRequest,
+  OrderEntry,
+  OrderRecord,
+  RecordHistory,
+} from 'src/app/models';
 import { OrderService } from 'src/app/services';
 import { FormatDate, showError, showMessage } from 'src/app/share/helpers';
+import { CommentComponent } from '../../comment/comment.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-order-detail',
@@ -25,12 +32,12 @@ export class OrderDetailComponent {
     'quantity',
     'price',
     'total',
+    'note',
   ];
-  orderStatus: string[] = ['Pending', 'Processing', 'Done', 'Cancel'];
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
+    public dialog: MatDialog,
     private orderService: OrderService,
     private toastr: ToastrService
   ) {
@@ -45,10 +52,6 @@ export class OrderDetailComponent {
       this.recordId = params['id'];
       this.getData();
     });
-  }
-
-  ngAfterViewInit() {
-    this.getData();
   }
 
   getData() {
@@ -100,5 +103,27 @@ export class OrderDetailComponent {
       },
       (err: any) => showError(err, this.toastr)
     );
+  }
+
+  openDialog(): void {
+    let comment: CreateCommentRequest = {
+      recordId: this.recordId,
+      isTicketComment: false,
+      isReject: false,
+      message: '',
+    };
+    const dialogRef = this.dialog.open(CommentComponent, {
+      data: comment,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.orderService.approvalOrder(this.recordId, result).subscribe(
+        (response) => {
+          showMessage(response, this.toastr);
+          this.getData();
+        },
+        (err) => showError(err, this.toastr)
+      );
+    });
   }
 }

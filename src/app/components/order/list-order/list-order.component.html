@@ -85,6 +85,7 @@
                         text:'Cancel order #'+order.orderId,
                         showCancelButton: true,
                         confirmButtonText: 'Cancel order',
+                        cancelButtonText:'Discard',
                         confirmButtonColor: '#d61313',
                     }"
             (confirm)="cancelOrder(order.orderId)"

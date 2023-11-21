@@ -19,9 +19,14 @@
   <mat-tab label="Export">
     <mat-list role="list">
       <div *ngIf="exports.length > 0; else noData">
-        <mat-list-item role="listitem" *ngFor="let item of exports"
-          >Export <a routerLink="/export/{{ item.id }}">{{ "#" + item.id }}</a
-          >. Create at
+        <mat-list-item role="listitem" *ngFor="let export of exports">
+          <div class="item">
+            Export
+            <a routerLink="/order/{{ export.id }}">{{ "#" + export.id }}</a>
+            last update
+            {{ formattedDate(export.updatedAt) }}
+            by {{ export.updatedBy }}
+          </div>
         </mat-list-item>
       </div>
     </mat-list></mat-tab

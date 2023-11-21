@@ -44,6 +44,7 @@ import { UpdateCategoryDialogComponent } from './components/category/update-cate
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DelayedInputModule } from './share/modules';
+import { CommentComponent } from './components/comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { DelayedInputModule } from './share/modules';
     AddTicketDialogComponent,
     ListCategoryComponent,
     UpdateCategoryDialogComponent,
+    CommentComponent,
   ],
   imports: [
     DelayedInputModule,

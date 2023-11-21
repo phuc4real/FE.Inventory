@@ -5,6 +5,7 @@ export * from './common/dialog-data';
 export * from './common/base-response';
 export * from './common/response-message';
 export * from './common/record-history';
+export * from './common/comment';
 
 export * from './export/export';
 export * from './export/export-entry';
@@ -23,6 +24,7 @@ export * from './order/order-update';
 export * from './order/order-entry-update';
 
 export * from './ticket/ticket';
+export * from './ticket/ticket-type';
 export * from './ticket/ticket-entry';
 export * from './ticket/ticket-update';
 export * from './ticket/ticket-summary';

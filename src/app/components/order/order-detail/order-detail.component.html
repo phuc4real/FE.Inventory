@@ -24,6 +24,7 @@
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
+        <button mat-menu-item>Approval</button>
         <button mat-menu-item (click)="updateStatus()">Update status</button>
         <button mat-menu-item routerLink="edit">Edit</button>
         <button mat-menu-item (click)="cancelOrder()">Cancel</button>
@@ -96,6 +97,10 @@
         <mat-cell *matCellDef="let detail">{{
           detail.minTotal + " - " + detail.maxTotal
         }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="note">
+        <mat-header-cell *matHeaderCellDef>Note</mat-header-cell>
+        <mat-cell *matCellDef="let detail">{{ detail.note }}</mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

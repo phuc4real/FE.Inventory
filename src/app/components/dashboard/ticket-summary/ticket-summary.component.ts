@@ -11,10 +11,10 @@ import { showError } from 'src/app/share/helpers';
 })
 export class TicketSummaryComponent {
   summary: TicketSummary = {
-    pendingTicket: 0,
-    processingTicket: 0,
-    completedTicket: 0,
-    rejectTicket: 0,
+    review: 0,
+    pending: 0,
+    processing: 0,
+    done: 0,
   };
 
   constructor(

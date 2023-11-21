@@ -2,15 +2,20 @@
   padding: 30px;
 }
 
+.content {
+  margin-top: 15px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: nowrap;
+  align-items: stretch;
+}
+
 .chart {
-  height: 400px;
+  height: 500px;
+  width: 38%;
 }
 
-.mt {
-  margin-top: 25px;
-}
-
-.activity-list {
-  width: 80%;
-  height: 100%;
+.list {
+  width: 28%;
 }

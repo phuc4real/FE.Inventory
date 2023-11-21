@@ -1,15 +1,23 @@
-<mat-toolbar color="primary">
-  <span>Ticket Activity</span>
-</mat-toolbar>
-<mat-list role="list">
-  <div *ngIf="tickets.length > 0; else noData">
-    <mat-list-item role="listitem" *ngFor="let item of tickets"
-      >Ticket <a routerLink="/ticket/{{ item }}">{{ "#" + item }}</a>
-    </mat-list-item>
+<mat-tab-group backgroundColor="primary">
+  <mat-tab label="Ticket Activity">
+    <mat-list role="list">
+      <div *ngIf="tickets.length > 0; else noData">
+        <mat-list-item role="listitem" *ngFor="let item of tickets">
+          <div class="item">
+            Ticket
+            <a routerLink="/ticket/entry/{{ item.recordId }}">{{
+              "No. #" + item.ticketId
+            }}</a>
+            {{ item.status + " at " + formattedDate(item.updatedAt) }}
+          </div>
+        </mat-list-item>
+      </div>
+    </mat-list></mat-tab
+  >
+</mat-tab-group>
+
+<ng-template #noData>
+  <div class="noData">
+    <h4>No records</h4>
   </div>
-  <ng-template #noData>
-    <div class="noData">
-      <h4>No records</h4>
-    </div>
-  </ng-template>
-</mat-list>
+</ng-template>

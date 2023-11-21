@@ -6,34 +6,6 @@ mat-tab-group {
 mat-list-item {
   border-bottom: 1px solid;
 }
-.item {
-  animation-name: move;
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-  animation-direction: right;
-  animation-timing-function: linear;
-}
-
-@keyframes move {
-  0% {
-    margin-left: 10px;
-  }
-  20% {
-    margin-left: 0px;
-  }
-  40% {
-    margin-left: -35px;
-  }
-  60% {
-    margin-left: -70x;
-  }
-  80% {
-    margin-left: -105px;
-  }
-  100% {
-    margin-left: -140px;
-  }
-}
 
 a {
   text-decoration: none;

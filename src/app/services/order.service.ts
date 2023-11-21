@@ -11,6 +11,7 @@ import {
   OrderUpdate,
   OrderRecords,
   ResponseMessage,
+  CreateCommentRequest,
 } from '../models';
 
 @Injectable({
@@ -32,6 +33,16 @@ export class OrderService {
 
   getById(recordId: number): Observable<OrderRecordObject> {
     return this.http.get<OrderRecordObject>(`${this.apiUrl}/${recordId}`);
+  }
+
+  approvalOrder(
+    recordId: number,
+    comment: CreateCommentRequest
+  ): Observable<OrderRecordObject> {
+    return this.http.post<OrderRecordObject>(
+      `${this.apiUrl}/${recordId}/approval`,
+      comment
+    );
   }
 
   getOrderChart(): Observable<ChartDataResponse> {

@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Detail infomation</h1>
+<div mat-dialog-content class="dialog-content">
+  <mat-form-field appearance="fill">
+    <mat-label>Ticket Type</mat-label>
+    <mat-select [(ngModel)]="data.isReject">
+      <mat-option [value]="false"> Approval </mat-option>
+      <mat-option [value]="true"> Reject </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Message</mat-label>
+    <input required="true" matInput [(ngModel)]="data.message" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button
+    class="dialog-button"
+    mat-button
+    [mat-dialog-close]="data"
+    cdkFocusInitial
+  >
+    Ok
+  </button>
+</div>

@@ -34,7 +34,6 @@ export class DashboardChartComponent {
   constructor(
     private orderService: OrderService,
     private exportService: ExportService,
-    private ticketService: TicketService,
     private toastr: ToastrService
   ) {
     this.getChartData();
@@ -56,18 +55,18 @@ export class DashboardChartComponent {
       (err: any) => showError(err, this.toastr)
     );
 
-    // this.exportService.getExportChart().subscribe(
-    //   (response) => {
-    //     let exports = {
-    //       data: response.map((x) => parseInt(x.value)),
-    //       label: 'Export',
-    //       backgroundColor: 'rgba(245, 39, 39, 0.8)',
-    //     };
+    this.exportService.getExportChart().subscribe(
+      (response) => {
+        let exports = {
+          data: response.data.map((x) => x.value),
+          label: 'Export',
+          backgroundColor: 'rgba(245, 39, 39, 0.8)',
+        };
 
-    //     this.barChartData.datasets.push(exports);
-    //     this.chart?.update();
-    //   },
-    //   (err: any) => showError(err, this.toastr)
-    // );
+        this.barChartData.datasets.push(exports);
+        this.chart?.update();
+      },
+      (err: any) => showError(err, this.toastr)
+    );
   }
 }

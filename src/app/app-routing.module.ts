@@ -71,7 +71,9 @@ const routes: Routes = [
     children: [
       { path: '', component: ListTicketComponent },
       { path: 'add', component: AddTicketComponent },
-      { path: ':id', component: TicketDetailComponent },
+      { path: 'add', component: AddTicketComponent },
+      { path: 'entry/:id', component: TicketDetailComponent },
+      { path: 'entry/:id/edit', component: AddTicketComponent },
     ],
   },
   { path: 'error', component: ErrorComponent },

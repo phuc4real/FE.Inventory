@@ -1,10 +1,17 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import {
+  CreateCommentRequest,
+  RecordHistory,
+  TicketEntry,
+} from 'src/app/models';
 import { TicketService } from 'src/app/services/ticket.service';
-import { showError } from 'src/app/share/helpers';
+import { FormatDate, showError, showMessage } from 'src/app/share/helpers';
+import { CommentComponent } from '../../comment/comment.component';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-ticket-detail',
   templateUrl: './ticket-detail.component.html',
@@ -12,86 +19,119 @@ import { showError } from 'src/app/share/helpers';
 })
 export class TicketDetailComponent {
   formGroup!: FormGroup;
-
-  id!: number;
-  isClosed: boolean = true;
-
-  // data!: TicketDetail[];
-  // tableData = new MatTableDataSource<TicketDetail>();
-  displayedColumns: string[] = ['itemName', 'quantity', 'type'];
+  defaultRecord!: number;
+  histories: RecordHistory[] = [];
+  ticketId!: number;
+  recordId!: number;
+  entries = new MatTableDataSource<TicketEntry>();
+  displayedColumns: string[] = ['itemImage', 'itemName', 'quantity', 'note'];
 
   constructor(
     private route: ActivatedRoute,
+    public dialog: MatDialog,
     private ticketService: TicketService,
-    private toastr: ToastrService,
-    private router: Router
+    private toastr: ToastrService
   ) {
     this.formGroup = new FormGroup({
-      id: new FormControl(''),
+      ticketId: new FormControl(''),
       title: new FormControl(''),
-      purpose: new FormControl(''),
+      type: new FormControl(''),
       description: new FormControl(''),
-      leaderApprove: new FormControl(''),
       status: new FormControl(''),
-      rejectReason: new FormControl(''),
-      closedDate: new FormControl(''),
-      createdDate: new FormControl(''),
-      createdByUser: new FormControl(''),
-      lastModifiedDate: new FormControl(''),
-      modifiedByUser: new FormControl(''),
+      commentAt: new FormControl(''),
+      commentBy: new FormControl(''),
+      message: new FormControl(''),
+      createdAt: new FormControl(''),
+      createdBy: new FormControl(''),
+      updatedAt: new FormControl(''),
+      updatedBy: new FormControl(''),
     });
   }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      this.id = params['id'];
+      this.recordId = params['id'];
+      this.getData();
     });
   }
 
-  ngAfterViewInit() {
-    this.getData();
-  }
-
   getData() {
-    this.ticketService.getById(this.id).subscribe(
+    this.ticketService.getById(this.recordId).subscribe(
       (response) => {
-        // this.data = response.details;
-        // this.tableData = new MatTableDataSource<TicketDetail>(this.data);
+        this.histories = response.history;
+        this.defaultRecord = response.data.recordId;
+        this.ticketId = response.data.ticketId;
+        this.formGroup.patchValue({
+          ticketId: response.data.ticketId,
+          title: response.data.title,
+          type: response.data.ticketType,
+          description: response.data.description,
+          commentAt:
+            FormatDate(response.data.comment?.commentAt) ?? 'No comment',
+          status: response.data.status,
+          commentBy: response.data.comment?.commentBy ?? 'No comment',
+          message: response.data.comment?.message ?? 'No comment',
+          createdAt: FormatDate(response.data.createdAt),
+          createdBy: response.data.createdBy,
+          updatedAt: FormatDate(response.data.updatedAt),
+          updatedBy: response.data.updatedBy,
+        });
+      },
+      (err: any) => showError(err, this.toastr)
+    );
 
-        console.log(response);
-
-        // this.formGroup.patchValue({
-        //   id: response.id,
-        //   title: response.title,
-        //   purpose: response.purpose,
-        //   description: response.description,
-        //   leaderApprove: response.leaderApprove,
-        //   status: response.status,
-        //   createdDate: toStringFormatDate(response.createdDate),
-        //   createdByUser: response.createdByUser.userName,
-        //   lastModifiedDate: toStringFormatDate(response.lastModifiedDate),
-        //   modifiedByUser: response.modifiedByUser.userName,
-        // });
-
-        // if (response.isClosed) {
-        //   this.formGroup.patchValue({
-        //     rejectReason: response.rejectReason,
-        //     closedDate: toStringFormatDate(response.closedDate),
-        //   });
-        // }
-        // this.isClosed = response.isClosed;
+    this.ticketService.getTicketEntries(this.recordId).subscribe(
+      (response) => {
+        this.entries = new MatTableDataSource<TicketEntry>(response.data);
       },
       (err: any) => showError(err, this.toastr)
     );
   }
 
-  // cancelTicket() {
-  //   this.ticketService.cancel(this.id).subscribe(
-  //     (response) => {
-  //       showMessage(response, this.toastr);
-  //       this.router.navigate(['/ticket']);
-  //     },
-  //     (err: any) => showError(err, this.toastr)
-  //   );
-  // }
+  updateStatus() {
+    this.ticketService.updateStatus(this.ticketId).subscribe(
+      (response) => {
+        showMessage(response, this.toastr);
+        this.getData();
+      },
+      (err: any) => showError(err, this.toastr)
+    );
+  }
+
+  cancelTicket() {
+    this.ticketService.cancelTicket(this.ticketId).subscribe(
+      (response) => {
+        showMessage(response, this.toastr);
+        this.getData();
+      },
+      (err: any) => showError(err, this.toastr)
+    );
+  }
+
+  openDialog(): void {
+    let comment: CreateCommentRequest = {
+      recordId: this.recordId,
+      isTicketComment: true,
+      isReject: false,
+      message: '',
+    };
+    const dialogRef = this.dialog.open(CommentComponent, {
+      data: comment,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ticketService.approvalTicket(this.recordId, result).subscribe(
+        (response) => {
+          showMessage(response, this.toastr);
+          this.getData();
+        },
+        (err) => showError(err, this.toastr)
+      );
+    });
+  }
+  historyToString(history: RecordHistory) {
+    return `Record No. #${history.number} at ${FormatDate(
+      history.createdAt
+    )} by ${history.createdBy}`;
+  }
 }

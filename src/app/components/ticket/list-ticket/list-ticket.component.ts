@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, map } from 'rxjs';
-import { TicketEntry, TicketRecord } from 'src/app/models';
+import { TicketRecord } from 'src/app/models';
 import { TicketService } from 'src/app/services/ticket.service';
 import { FormatDate, showError } from 'src/app/share/helpers';
 
@@ -16,12 +16,12 @@ import { FormatDate, showError } from 'src/app/share/helpers';
 export class ListTicketComponent {
   dataTable = new MatTableDataSource<TicketRecord>();
   displayedColumns: string[] = [
-    'id',
+    'ticketId',
     'title',
-    'type',
+    'ticketType',
     'description',
     'status',
-    'create',
+    'createdAt',
     'actions',
   ];
 
@@ -77,20 +77,18 @@ export class ListTicketComponent {
       )
       .subscribe(
         (response) => {
-          this.setData(response);
+          this.data = response;
+          this.dataTable = new MatTableDataSource<TicketRecord>(this.data);
         },
         (error: any) => {
-          this.setData([]);
+          this.data = [];
+          this.dataTable = new MatTableDataSource<TicketRecord>(this.data);
+          showError(error, this.toastr);
         }
       );
   }
 
-  setData(data: any) {
-    this.data = data;
-    this.dataTable = new MatTableDataSource<TicketRecord>(this.data);
-  }
-
-  dateString(date: any) {
+  formattedDate(date: any) {
     return FormatDate(date);
   }
 }

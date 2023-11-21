@@ -15,7 +15,7 @@ export class TabGroupComponent {
 
   params: any = {
     index: 0,
-    size: 7,
+    size: 10,
     sort: 'updatedAt',
     sortDirection: 'desc',
   };
@@ -35,12 +35,12 @@ export class TabGroupComponent {
       (err: any) => showError(err, this.toastr)
     );
 
-    //   this.exportService.getPagination(this.params).subscribe(
-    //     (response) => {
-    //       this.exports = response ? response.data : [];
-    //     },
-    //     (err: any) => showError(err, this.toastr)
-    //   );
+    this.exportService.getExports(this.params).subscribe(
+      (response) => {
+        this.exports = response ? response.data : [];
+      },
+      (err: any) => showError(err, this.toastr)
+    );
   }
 
   formattedDate = (date: Date) => {

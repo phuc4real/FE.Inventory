@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
   ChartDataResponse,
+  CreateCommentRequest,
   ResponseMessage,
   TicketEntries,
   TicketEntriesUpdate,
@@ -10,6 +11,7 @@ import {
   TicketRecordObject,
   TicketRecords,
   TicketSummaryObject,
+  TicketTypeList,
   TicketUpdate,
 } from '../models';
 import { Observable } from 'rxjs';
@@ -28,11 +30,25 @@ export class TicketService {
   }
 
   getTicketEntries(recordId: number): Observable<TicketEntries> {
-    return this.http.get<TicketEntries>(`${this.apiUrl}/${recordId}/entries`);
+    return this.http.get<TicketEntries>(`${this.apiUrl}/${recordId}/entry`);
   }
 
   getById(recordId: number): Observable<TicketRecordObject> {
     return this.http.get<TicketRecordObject>(`${this.apiUrl}/${recordId}`);
+  }
+
+  approvalTicket(
+    recordId: number,
+    comment: CreateCommentRequest
+  ): Observable<TicketRecordObject> {
+    return this.http.post<TicketRecordObject>(
+      `${this.apiUrl}/${recordId}/approval`,
+      comment
+    );
+  }
+
+  getTicketType(): Observable<TicketTypeList> {
+    return this.http.get<TicketTypeList>(`${this.apiUrl}/type`);
   }
 
   getTicketSummary(): Observable<TicketSummaryObject> {
