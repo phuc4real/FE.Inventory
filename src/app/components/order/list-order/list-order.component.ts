@@ -3,12 +3,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, map, of, startWith, switchMap } from 'rxjs';
-import { Order } from 'src/app/models';
+import { catchError, map, startWith, switchMap } from 'rxjs';
+import { Operation, OrderRecord } from 'src/app/models';
 import { OrderService } from 'src/app/services';
 import {
-  isDefaultDate,
-  toStringFormatDate,
+  FormatDate,
+  getOperation,
   showError,
   showMessage,
 } from 'src/app/share/helpers';
@@ -19,15 +19,14 @@ import {
   styleUrls: ['./list-order.component.css'],
 })
 export class ListOrderComponent {
-  orders = new MatTableDataSource<Order>();
+  operation!: Operation;
+  orders = new MatTableDataSource<OrderRecord>();
   displayedColumns: string[] = [
-    'id',
+    'orderId',
     'status',
-    'completeDate',
-    'createdDate',
-    'createdByUser',
-    'updatedDate',
-    'updatedByUser',
+    'createdAt',
+    'updatedAt',
+    'description',
     'actions',
   ];
 
@@ -36,12 +35,14 @@ export class ListOrderComponent {
   pageSizeOptions: number[] = [10, 20, 50, 100];
 
   searchValue: string = '';
-  listOrder!: Order[];
   totalOrder!: number;
+
   constructor(
     private orderService: OrderService,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.operation = getOperation();
+  }
 
   ngAfterViewInit() {
     this.orders.paginator = this.paginator;
@@ -64,43 +65,35 @@ export class ListOrderComponent {
         startWith({}),
         switchMap(() => {
           const params: any = {
-            pageIndex: this.paginator?.pageIndex,
-            pageSize: this.paginator?.pageSize,
-            sortField: this.sort?.active,
+            index: this.paginator?.pageIndex,
+            size: this.paginator?.pageSize,
+            sort: this.sort?.active,
             sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
           };
           return this.orderService
-            .getPagination(params)
-            .pipe(catchError(() => of(null)));
+            .getOrders(params)
+            .pipe(catchError(async (err) => showError(err, this.toastr)));
         }),
-        map((dto) => {
-          if (dto == null) return [];
-          this.totalOrder = dto.totalRecords;
-          return dto.data;
+        map((response) => {
+          if (response == null) return [];
+          this.totalOrder = response.count;
+          return response.data;
         })
       )
       .subscribe(
-        (dto) => {
-          this.setData(dto);
+        (response) => {
+          this.orders = new MatTableDataSource<OrderRecord>(response);
         },
         (err: any) => {
-          this.setData([]);
+          showError(err, this.toastr);
+          this.orders = new MatTableDataSource<OrderRecord>([]);
         }
       );
   }
 
-  setData(orders: any) {
-    this.listOrder = orders;
-    this.orders = new MatTableDataSource<Order>(this.listOrder);
-  }
-
-  dateString(date: any) {
-    return isDefaultDate(date) ? 'Not Complete' : toStringFormatDate(date);
-  }
-
   cancelOrder(id: number) {
-    this.orderService.cancel(id).subscribe(
+    this.orderService.cancelOrder(id).subscribe(
       (response) => {
         showMessage(response, this.toastr);
         this.paginator._changePageSize(this.paginator.pageSize);
@@ -108,4 +101,8 @@ export class ListOrderComponent {
       (err: any) => showError(err, this.toastr)
     );
   }
+
+  formattedDate = (date: Date) => {
+    return FormatDate(date);
+  };
 }

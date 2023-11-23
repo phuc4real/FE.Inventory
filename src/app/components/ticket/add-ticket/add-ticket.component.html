@@ -1,47 +1,46 @@
 <div class="container">
-  <div class="back-link">
+  <div class="header">
     <a routerLink="/ticket">
       <mat-icon>arrow_back_ios</mat-icon>
       <span>Return to List</span>
     </a>
   </div>
-  <form class="form-group" [formGroup]="formGroup">
-    <div>
+  <div class="form-group">
+    <form [formGroup]="formGroup">
       <div>
-        <mat-form-field appearance="fill">
-          <mat-label>Title</mat-label>
-          <input matInput formControlName="title" />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Purpose</mat-label>
-          <mat-select matInput formControlName="purpose">
-            <mat-option value="1">Export Item</mat-option>
-            <mat-option value="2">Change Item</mat-option>
-            <mat-option value="3">Fix Item</mat-option>
-            <mat-option value="4">Import Item</mat-option>
-          </mat-select>
-          <!-- <input matInput formControlName="purpose" /> -->
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Description</mat-label>
-          <input matInput formControlName="description" />
-        </mat-form-field>
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Ticket Type</mat-label>
+            <mat-select [(value)]="defaultType" formControlName="type">
+              <mat-option *ngFor="let type of ticketTypes" [value]="type.id">
+                {{ type.description }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description" />
+          </mat-form-field>
+        </div>
       </div>
-    </div>
-  </form>
-</div>
-
-<div class="container">
-  <div class="top">
+    </form>
+  </div>
+  <div class="search">
     <mat-form-field>
-      <mat-label>Find Item</mat-label>
+      <mat-label>Add item by Name, Code and Category</mat-label>
       <input
         type="text"
         aria-label="Item"
         matInput
         [matAutocomplete]="auto"
         [(ngModel)]="searchValue"
-        (keyup)="getItems()"
+        appDelayedInput
+        (delayedInput)="getItems()"
+        [delayTime]="500"
       />
       <mat-autocomplete
         #auto="matAutocomplete"
@@ -53,34 +52,48 @@
       </mat-autocomplete>
     </mat-form-field>
   </div>
+  <div class="content" *ngIf="isHasData; else elseBlock">
+    <mat-table [dataSource]="entriesDS" class="item">
+      <ng-container matColumnDef="itemImage">
+        <mat-header-cell *matHeaderCellDef>Item Image</mat-header-cell>
+        <mat-cell *matCellDef="let detail">
+          <img
+            class="img"
+            src="{{ detail.item.imageUrl }}"
+            alt="{{ detail.item.name }}"
+          />
+        </mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="itemName">
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *matCellDef="let detail">
+          <a class="item-link" routerLink="/item/{{ detail.item.id }}">
+            {{ detail.item.name }}
+          </a>
+        </mat-cell>
+      </ng-container>
 
-  <mat-table [dataSource]="tableData" class="item">
-    <ng-container matColumnDef="itemName">
-      <mat-header-cell *matHeaderCellDef>Item Name</mat-header-cell>
-      <mat-cell *matCellDef="let detail">
-        <a class="item-link" routerLink="/item/{{ detail.item.id }}">
-          {{ detail.item.name }}
-        </a>
-      </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="quantity">
+        <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+        <mat-cell *matCellDef="let detail">{{ detail.quantity }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="quantity">
-      <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
-      <mat-cell *matCellDef="let detail">{{ detail.quantity }}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="note">
+        <mat-header-cell *matHeaderCellDef>Note</mat-header-cell>
+        <mat-cell *matCellDef="let detail">{{ detail.note }}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="type">
-      <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
-      <mat-cell *matCellDef="let detail">{{ detail.type }}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="actions">
-      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-      <mat-cell *matCellDef="let detail">
-        <button
-          mat-button
-          color="warn"
-          [swal]="{ 
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-cell *matCellDef="let detail">
+          <button mat-button color="primary" (click)="editDialog(detail)">
+            Edit
+          </button>
+          <button
+            mat-button
+            color="warn"
+            [swal]="{ 
                         title: 'Remove item',
                         icon: 'warning',
                         text:'Remove item #'+detail.item.id,
@@ -88,23 +101,30 @@
                         confirmButtonText: 'Remove item',
                         confirmButtonColor: '#d61313',
                     }"
-          (confirm)="removeItem(detail.item.id)"
-        >
-          Remove
-        </button>
-      </mat-cell>
-      <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-    </ng-container>
+            (confirm)="removeItem(detail.item.id)"
+          >
+            Remove
+          </button>
+        </mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-  </mat-table>
-</div>
-<div class="button-container" *ngIf="tableData.data.length > 0">
-  <button mat-button mat-raised-button color="basic" (click)="clearAll()">
-    Clear All
-  </button>
-  <button mat-button color="primary" mat-raised-button (click)="addTicket()">
-    Add Ticket
-  </button>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+  </div>
+  <ng-template #elseBlock>
+    <div class="noData">
+      <h2>No data</h2>
+      <span>Please add new item to the order</span>
+    </div>
+  </ng-template>
+  <div class="button" *ngIf="isHasData">
+    <button mat-button mat-raised-button color="basic" (click)="clearData()">
+      Clear
+    </button>
+    <button mat-button color="primary" mat-raised-button (click)="addTicket()">
+      {{ recordId != 0 ? "Update" : "Create" }}
+    </button>
+  </div>
 </div>

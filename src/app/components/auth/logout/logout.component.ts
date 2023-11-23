@@ -18,12 +18,11 @@ export class LogoutComponent implements OnInit {
     this.authService.logout().subscribe(
       (response) => {
         showMessage(response, this.toastr);
-        this.authService.removeIdentity();
+        localStorage.clear();
         this.router.navigate(['/login']);
       },
       (err: any) => {
         showError(err, this.toastr);
-        this.router.navigate(['/error']);
       }
     );
   }

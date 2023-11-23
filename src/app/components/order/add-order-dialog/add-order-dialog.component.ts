@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { OrderDialogData, UpdateOrderDetail } from 'src/app/models';
+import { OrderEntryUpdate } from 'src/app/models';
 
 @Component({
   selector: 'app-add-order-dialog',
@@ -10,6 +10,6 @@ import { OrderDialogData, UpdateOrderDetail } from 'src/app/models';
 export class AddOrderDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<AddOrderDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: UpdateOrderDetail
+    @Inject(MAT_DIALOG_DATA) public data: OrderEntryUpdate
   ) {}
 }

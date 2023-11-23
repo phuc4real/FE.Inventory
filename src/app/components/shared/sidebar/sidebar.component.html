@@ -1,0 +1,85 @@
+<mat-sidenav-container class="app-drawer-container" fullscreen>
+  <mat-sidenav
+    #sidenav
+    mode="side"
+    class="sidenav"
+    opened="true"
+    *ngIf="isAuthenticated()"
+  >
+    <mat-nav-list>
+      <mat-list-item
+        *ngIf="operation.dashboard.canView"
+        routerLink="/"
+        routerLinkActive="active"
+      >
+        <div class="nav-item">
+          <mat-icon class="icon-style">home</mat-icon>
+          <span>Dashboard</span>
+        </div>
+      </mat-list-item>
+      <mat-list-item
+        *ngIf="operation.item.canView"
+        routerLink="/item"
+        routerLinkActive="active"
+      >
+        <div class="nav-item">
+          <mat-icon class="icon-style">apps</mat-icon>
+          <span>Item</span>
+        </div>
+      </mat-list-item>
+      <mat-list-item
+        *ngIf="operation.category.canView"
+        routerLink="/category"
+        routerLinkActive="active"
+      >
+        <div class="nav-item">
+          <mat-icon class="icon-style">apps</mat-icon>
+          <span>Category</span>
+        </div>
+      </mat-list-item>
+      <mat-list-item
+        *ngIf="operation.order.canView"
+        routerLink="/order"
+        routerLinkActive="active"
+      >
+        <div class="nav-item">
+          <mat-icon class="icon-style">apps</mat-icon>
+          <span>Order</span>
+        </div>
+      </mat-list-item>
+      <mat-list-item
+        *ngIf="operation.export.canView"
+        routerLink="/export"
+        routerLinkActive="active"
+      >
+        <div class="nav-item">
+          <mat-icon class="icon-style">apps</mat-icon>
+          <span>Export</span>
+        </div>
+      </mat-list-item>
+      <mat-list-item
+        *ngIf="operation.ticket.canView"
+        routerLink="/ticket"
+        routerLinkActive="active"
+      >
+        <div class="nav-item">
+          <mat-icon class="icon-style">apps</mat-icon>
+          <span>Ticket</span>
+        </div>
+      </mat-list-item>
+      <mat-list-item
+        *ngIf="operation.itemHolder.canView"
+        routerLink="/item-holder"
+        routerLinkActive="active"
+      >
+        <div class="nav-item">
+          <mat-icon class="icon-style">apps</mat-icon>
+          <span>Item Holder</span>
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="sidenav-content">
+    <router-outlet class="router-outlet-custom"></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

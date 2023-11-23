@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Ticket } from 'src/app/models';
+import { TicketRecord } from 'src/app/models';
 import { TicketService } from 'src/app/services/ticket.service';
-import { showError } from 'src/app/share/helpers';
+import { FormatDate, showError } from 'src/app/share/helpers';
 
 @Component({
   selector: 'dashboard-list',
@@ -10,12 +10,12 @@ import { showError } from 'src/app/share/helpers';
   styleUrls: ['./list.component.css'],
 })
 export class ListComponent {
-  tickets: Ticket[] = [];
+  tickets: TicketRecord[] = [];
 
   params: any = {
-    pageIndex: 0,
-    pageSize: 7,
-    sortField: 'updatedDate',
+    index: 0,
+    size: 10,
+    sort: 'updatedAt',
     sortDirection: 'desc',
   };
 
@@ -27,11 +27,14 @@ export class ListComponent {
   }
 
   getData() {
-    this.ticketService.getPagination(this.params).subscribe(
+    this.ticketService.getTickets(this.params).subscribe(
       (response) => {
         this.tickets = response ? response.data : [];
       },
       (err: any) => showError(err, this.toastr)
     );
+  }
+  formattedDate(date: Date) {
+    return FormatDate(date);
   }
 }

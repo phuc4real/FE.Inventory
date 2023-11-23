@@ -10,7 +10,6 @@ export class UploadImageService {
   constructor(private http: HttpClient) {}
 
   uploadImg(img: File) {
-    console.log(img);
     const data = new FormData();
     data.append('file', img);
     data.append('upload_preset', 'ml_default');

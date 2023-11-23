@@ -1,3 +1,4 @@
+import { AuthService, UserService } from 'src/app/services';
 import { Injectable } from '@angular/core';
 import {
   HttpInterceptor,
@@ -6,13 +7,17 @@ import {
   HttpEvent,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, catchError, switchMap, throwError } from 'rxjs';
-import { AuthService } from '../../services';
+import { Observable, catchError, switchMap, tap, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class IdentityInterceptor implements HttpInterceptor {
   private isRefreshing = false;
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+    private router: Router
+  ) {}
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
@@ -28,7 +33,7 @@ export class IdentityInterceptor implements HttpInterceptor {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${identity.accessToken}`,
-          'x-user-id': `${identity.userId}`,
+          'x-user-name': `${identity.userName}`,
         },
       });
     }
@@ -42,7 +47,7 @@ export class IdentityInterceptor implements HttpInterceptor {
         ) {
           return this.handle401Error(request, next);
         }
-        console.clear();
+        // console.clear();
         return throwError(() => error);
       })
     );
@@ -53,13 +58,24 @@ export class IdentityInterceptor implements HttpInterceptor {
       this.isRefreshing = true;
       if (this.authService.IsLogged()) {
         return this.authService.refreshToken().pipe(
-          switchMap((response) => {
+          tap((response) => {
             this.isRefreshing = false;
             this.authService.saveIdentity(response.data);
+          }),
+          switchMap((response) => {
+            request = request.clone({
+              setHeaders: {
+                'x-token-refresh': `${response.data.refreshToken}`,
+                Authorization: `Bearer ${response.data.accessToken}`,
+                'x-user-name': `${response.data.userName}`,
+              },
+            });
             return next.handle(request);
           }),
           catchError((error) => {
             this.isRefreshing = false;
+            this.authService.removeIdentity();
+            this.router.navigate(['/login']);
             return throwError(() => error);
           })
         );

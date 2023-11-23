@@ -3,10 +3,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { startWith, switchMap, catchError, of, map } from 'rxjs';
-import { Ticket } from 'src/app/models';
+import { startWith, switchMap, catchError, map } from 'rxjs';
+import { Operation, TicketRecord } from 'src/app/models';
 import { TicketService } from 'src/app/services/ticket.service';
-import { toStringFormatDate } from 'src/app/share/helpers';
+import { FormatDate, getOperation, showError } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-ticket',
@@ -14,16 +14,15 @@ import { toStringFormatDate } from 'src/app/share/helpers';
   styleUrls: ['./list-ticket.component.css'],
 })
 export class ListTicketComponent {
-  dataTable = new MatTableDataSource<Ticket>();
+  operation!: Operation;
+  dataTable = new MatTableDataSource<TicketRecord>();
   displayedColumns: string[] = [
-    'id',
+    'ticketId',
     'title',
-    'purpose',
+    'ticketType',
     'description',
-    'pmStatus',
     'status',
-    'createdDate',
-    'createdByUser',
+    'createdAt',
     'actions',
   ];
 
@@ -32,13 +31,15 @@ export class ListTicketComponent {
 
   pageSizeOptions: number[] = [10, 20, 50, 100];
   searchValue: string = '';
-  data!: Ticket[];
+  data!: TicketRecord[];
   totalRecords!: number;
 
   constructor(
     private ticketService: TicketService,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.operation = getOperation();
+  }
 
   ngAfterViewInit() {
     this.dataTable.paginator = this.paginator;
@@ -61,38 +62,36 @@ export class ListTicketComponent {
         startWith({}),
         switchMap(() => {
           const params: any = {
-            pageIndex: this.paginator?.pageIndex,
-            pageSize: this.paginator?.pageSize,
-            sortField: this.sort?.active,
+            index: this.paginator?.pageIndex,
+            size: this.paginator?.pageSize,
+            sort: this.sort?.active,
             sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
           };
           return this.ticketService
-            .getPagination(params)
-            .pipe(catchError(() => of(null)));
+            .getTickets(params)
+            .pipe(catchError(async (err) => showError(err, this.toastr)));
         }),
-        map((dto) => {
-          if (dto == null) return [];
-          this.totalRecords = dto.totalRecords;
-          return dto.data;
+        map((response) => {
+          if (response == null) return [];
+          this.totalRecords = response.count;
+          return response.data;
         })
       )
       .subscribe(
-        (dto) => {
-          this.setData(dto);
+        (response) => {
+          this.data = response;
+          this.dataTable = new MatTableDataSource<TicketRecord>(this.data);
         },
         (error: any) => {
-          this.setData([]);
+          this.data = [];
+          this.dataTable = new MatTableDataSource<TicketRecord>(this.data);
+          showError(error, this.toastr);
         }
       );
   }
 
-  setData(data: any) {
-    this.data = data;
-    this.dataTable = new MatTableDataSource<Ticket>(this.data);
-  }
-
-  dateString(date: any) {
-    return toStringFormatDate(date);
+  formattedDate(date: any) {
+    return FormatDate(date);
   }
 }

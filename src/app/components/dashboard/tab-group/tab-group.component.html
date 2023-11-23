@@ -1,20 +1,32 @@
 <mat-tab-group backgroundColor="primary">
-  <mat-tab label="Export">
-    <mat-list role="list">
-      <div *ngIf="exports.length > 0; else noData">
-        <mat-list-item role="listitem" *ngFor="let item of exports"
-          >Export <a routerLink="/export/{{ item.id }}">{{ "#" + item.id }}</a
-          >. Create at {{ dateString(item.createdDate) }}</mat-list-item
-        >
-      </div>
-    </mat-list></mat-tab
-  >
   <mat-tab label="Order">
     <mat-list role="list">
       <div *ngIf="orders.length > 0; else noData">
-        <mat-list-item role="listitem" *ngFor="let item of orders">
-          Order
-          <a routerLink="/order/{{ item.id }}">{{ "#" + item.id }}</a>
+        <mat-list-item role="listitem" *ngFor="let order of orders">
+          <div class="item">
+            Order
+            <a routerLink="/order/{{ order.recordId }}">{{
+              "#" + order.orderId
+            }}</a>
+            last update
+            {{ formattedDate(order.updatedAt) }}
+            by {{ order.updatedBy }}
+          </div>
+        </mat-list-item>
+      </div>
+    </mat-list></mat-tab
+  >
+  <mat-tab label="Export">
+    <mat-list role="list">
+      <div *ngIf="exports.length > 0; else noData">
+        <mat-list-item role="listitem" *ngFor="let export of exports">
+          <div class="item">
+            Export
+            <a routerLink="/order/{{ export.id }}">{{ "#" + export.id }}</a>
+            last update
+            {{ formattedDate(export.updatedAt) }}
+            by {{ export.updatedBy }}
+          </div>
         </mat-list-item>
       </div>
     </mat-list></mat-tab

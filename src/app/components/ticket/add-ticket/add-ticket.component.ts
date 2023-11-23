@@ -2,13 +2,19 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { Item, TicketDetail } from 'src/app/models';
 import { ItemService } from 'src/app/services';
 import { TicketService } from 'src/app/services/ticket.service';
-import { showError, showMessage } from 'src/app/share/helpers';
 import { AddTicketDialogComponent } from '../add-ticket-dialog/add-ticket-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  Item,
+  TicketEntry,
+  TicketEntryUpdate,
+  TicketType,
+  TicketUpdate,
+} from 'src/app/models';
+import { showError, showMessage } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-add-ticket',
@@ -16,45 +22,137 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-ticket.component.css'],
 })
 export class AddTicketComponent {
+  recordId!: number;
+  entries: TicketEntry[] = [];
+  entriesDS = new MatTableDataSource<TicketEntry>();
+  displayedColumns: string[] = [
+    'itemImage',
+    'itemName',
+    'quantity',
+    'note',
+    'actions',
+  ];
   formGroup!: FormGroup;
-  searchValue = '';
 
   items!: Item[];
-
-  type: string[] = ['New', 'ChangeFrom', 'ChangeTo', 'Fix'];
-
-  detailQuantity!: number;
-  detailType!: number;
-
-  data!: TicketDetail[];
-  tableData = new MatTableDataSource<TicketDetail>();
-  displayedColumns: string[] = ['itemName', 'quantity', 'type', 'actions'];
+  searchValue = '';
+  isHasData: boolean = false;
+  ticketTypes!: TicketType[];
+  defaultType!: number;
 
   constructor(
     private ticketService: TicketService,
     private itemService: ItemService,
     public dialog: MatDialog,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.formGroup = new FormGroup({
       title: new FormControl(''),
-      purpose: new FormControl(''),
+      type: new FormControl(''),
       description: new FormControl(''),
     });
   }
 
-  ngAfterViewInit() {
-    this.getTableData();
+  ngOnInit() {
+    this.setToDefault();
+    this.getTicketType();
+    this.route.params.subscribe(async (params) => {
+      this.recordId = params['id'] ?? 0;
+      if (this.recordId != 0) {
+        await this.setEntriesFromRecord();
+        this.getTableData();
+      } else {
+        this.getTableData();
+      }
+    });
+  }
+
+  setToDefault() {
+    this.ticketService.removeEntries();
+    this.formGroup.value.title = '';
+    this.formGroup.value.description = '';
+  }
+
+  getTableData() {
+    this.entries = [];
+    let entriesLocal = this.ticketService.getEntriesData();
+    let data = entriesLocal?.data ?? [];
+    if (data.length > 0) {
+      this.isHasData = true;
+      data.forEach((entry) => {
+        this.itemService.getByIdCompact(entry.itemId).subscribe(
+          (response) => {
+            let object: TicketEntry = {
+              id: entry.id,
+              recordId: entry.recordId,
+              note: entry.note,
+              item: response.data,
+              quantity: entry.quantity,
+            };
+            this.entries.push(object);
+            this.entriesDS = new MatTableDataSource<TicketEntry>(this.entries);
+          },
+          (err: any) => showError(err, this.toastr)
+        );
+      });
+    }
+  }
+
+  setEntriesFromRecord(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      this.ticketService.getTicketEntries(this.recordId).subscribe(
+        (response) => {
+          response.data.forEach((e) => {
+            let entry: TicketEntryUpdate = {
+              id: e.id,
+              recordId: e.recordId,
+              itemId: e.item.id,
+              quantity: e.quantity,
+              note: e.note,
+            };
+            this.ticketService.addEntry(entry);
+          });
+        },
+        (err: any) => showError(err, this.toastr)
+      );
+      this.ticketService.getById(this.recordId).subscribe(
+        (response) => {
+          this.defaultType = response.data.ticketTypeId;
+          this.formGroup.patchValue({
+            title: response.data.title,
+            description: response.data.description,
+          });
+        },
+        (err: any) => showError(err, this.toastr)
+      );
+      setTimeout(() => {
+        resolve();
+      }, 600);
+    });
+  }
+
+  removeItem(id: number) {
+    let result = this.ticketService.removeEntry(id);
+
+    if (result) {
+      this.toastr.success('Remove item success', 'Success');
+      this.getTableData();
+      let entryCount = this.ticketService.getEntriesData()?.data.length;
+      if (entryCount == 0) this.isHasData = false;
+    } else this.toastr.error('Something went wrong', 'Error');
   }
 
   getItems() {
-    let params: any = {
-      name: this.searchValue,
+    const params: any = {
+      index: 0,
+      size: 0,
+      searchKeyword: this.searchValue,
     };
-    this.itemService.getList(params).subscribe(
-      (values) => {
-        this.items = values;
+    this.itemService.getItems(params).subscribe(
+      (response) => {
+        this.items = response.data;
       },
       (err: any) => showError(err, this.toastr)
     );
@@ -65,71 +163,83 @@ export class AddTicketComponent {
     this.openDialog(e.option.value.id);
   }
 
-  openDialog(itemId: string): void {
+  getTicketType() {
+    this.ticketService.getTicketType().subscribe(
+      (response) => {
+        this.ticketTypes = response.data;
+      },
+      (err) => showError(err, this.toastr)
+    );
+  }
+
+  openDialog(itemId: number): void {
+    let entry: TicketEntryUpdate = {
+      id: 0,
+      recordId: 0,
+      itemId: itemId,
+      quantity: 0,
+      note: '',
+    };
     const dialogRef = this.dialog.open(AddTicketDialogComponent, {
-      data: { quantity: this.detailQuantity, type: this.detailType },
+      data: entry,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      // this.ticketService.addToObject(itemId, result.quantity, result.type);
+      this.ticketService.addEntry(result);
       this.getTableData();
     });
   }
 
-  getTableData() {
-    let ticket = this.ticketService.getObject();
-    let ticketDetails = ticket?.details ?? [];
+  editDialog(detail: any): void {
+    let entry: TicketEntryUpdate = {
+      id: detail.id,
+      recordId: detail.recordId,
+      itemId: detail.item.id,
+      quantity: detail.quantity,
+      note: detail.note,
+    };
+    const dialogRef = this.dialog.open(AddTicketDialogComponent, {
+      data: entry,
+    });
 
-    this.data = [];
-    if (ticketDetails.length < 1) {
-      this.tableData = new MatTableDataSource<TicketDetail>(this.data);
-    } else {
-      ticketDetails.forEach((adddetail) => {
-        this.itemService.getById(adddetail.itemId).subscribe(
-          // (values) => {
-          //   let detail: TicketDetail = {
-          //     item: values,
-          //     quantity: adddetail.quantity,
-          //     type: this.type[adddetail.type - 1],
-          //   };
-          //   this.data.push(detail);
-          //   this.tableData = new MatTableDataSource<TicketDetail>(this.data);
-          // },
-          (err: any) => showError(err, this.toastr)
-        );
-      });
-    }
+    dialogRef.afterClosed().subscribe((result) => {
+      this.ticketService.removeEntry(result.itemId);
+      this.ticketService.addEntry(result);
+      this.getTableData();
+    });
   }
 
-  removeItem(id: string) {
-    let result = this.ticketService.removeFromObject(id);
-    this.getTableData();
-    if (result) {
-      this.toastr.success('Remove item success', 'Success');
-    } else this.toastr.error('Something went wrong', 'Error');
+  clearData() {
+    this.ticketService.removeEntries();
+    this.formGroup.patchValue({
+      title: '',
+      description: '',
+    });
+    this.formGroup.value.title = '';
+    this.formGroup.value.description = '';
+    this.isHasData = false;
   }
 
-  clearAll() {
-    this.ticketService.removeObject();
-    this.getTableData();
-  }
   addTicket() {
-    let ticket = this.ticketService.getObject();
+    let ticket: TicketUpdate = {
+      recordId: this.recordId,
+      description: this.formGroup.value.description,
+      title: this.formGroup.value.title,
+      ticketTypeId: this.formGroup.value.type,
+      ticketEntries: this.ticketService.getEntriesData()?.data!,
+    };
 
-    ticket!.title = this.formGroup.value.title;
-    ticket!.purpose = parseInt(this.formGroup.value.purpose);
-    ticket!.description = this.formGroup.value.description;
-
-    this.ticketService.create(ticket!).subscribe(
+    this.ticketService.createTicket(ticket).subscribe(
       (response) => {
         showMessage(response, this.toastr);
-        this.router.navigate(['/' + response.headers.get('Location')]);
+        this.router.navigate(['/ticket/entry/' + response.data.recordId]);
       },
       (err: any) => {
         showError(err, this.toastr);
-        this.router.navigate(['/ticket']);
       }
     );
-    this.clearAll();
+
+    this.router.navigate(['/ticket']);
+    this.clearData();
   }
 }

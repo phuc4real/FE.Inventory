@@ -24,29 +24,30 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>For User</mat-label>
-            <input matInput formControlName="forUser" readonly />
+            <input matInput formControlName="exportFor" readonly />
           </mat-form-field>
         </div>
         <div>
           <mat-form-field>
             <mat-label>Created Date</mat-label>
-            <input matInput formControlName="createdDate" readonly />
+            <input matInput formControlName="createdAt" readonly />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Created By</mat-label>
-            <input matInput formControlName="createdByUser" readonly />
+            <input matInput formControlName="createdBy" readonly />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Updated Date</mat-label>
-            <input matInput formControlName="updatedDate" readonly />
+            <input matInput formControlName="updatedAt" readonly />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Updated By</mat-label>
-            <input matInput formControlName="updatedByUser" readonly />
+            <input matInput formControlName="updatedBy" readonly />
           </mat-form-field>
         </div>
         <div class="button">
           <button
+            *ngIf="statusCheck?.canUpdateStatus"
             mat-button
             mat-flat-button
             color="primary"

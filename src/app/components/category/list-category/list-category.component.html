@@ -1,0 +1,80 @@
+<div class="container">
+  <mat-form-field class="search">
+    <input
+      matInput
+      [(ngModel)]="searchValue"
+      appDelayedInput
+      (delayedInput)="refreshData()"
+      [delayTime]="600"
+      placeholder="Search by name, description"
+    />
+  </mat-form-field>
+  <button
+    *ngIf="operation.category.canEdit"
+    mat-button
+    class="button"
+    mat-raised-button
+    color="primary"
+    (click)="openDialog({ id: 0, name: '', description: '' })"
+  >
+    Add New
+  </button>
+  <div class="table">
+    <mat-table [dataSource]="data" matSort (matSortChange)="refreshData()">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+        <mat-cell *matCellDef="let category">{{ category.id }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Name</mat-header-cell
+        >
+        <mat-cell *matCellDef="let category">{{ category.name }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Description</mat-header-cell
+        >
+        <mat-cell *matCellDef="let category">{{
+          category.description
+        }}</mat-cell>
+      </ng-container>
+
+      <ng-container *ngIf="operation.category.canEdit" matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-cell *matCellDef="let category">
+          <button mat-button (click)="openDialog(category)" color="primary">
+            Edit
+          </button>
+          <button
+            *ngIf="operation.category.canEdit"
+            mat-button
+            color="warn"
+            [swal]="{ 
+                        title: 'Delete Category',
+                        icon: 'warning',
+                        text:'Delete '+category.name+'. It\'s can\'t be undone ',
+                        showCancelButton: true,
+                        confirmButtonText: 'Delete',
+                        confirmButtonColor: '#d61313',
+                    }"
+            (confirm)="deteleCatalog(category.id)"
+          >
+            Delete
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+  </div>
+  <mat-paginator
+    #paginator
+    [length]="total"
+    [pageSizeOptions]="pageSizeOptions"
+    showFirstLastButtons
+  ></mat-paginator>
+</div>

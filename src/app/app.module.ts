@@ -5,43 +5,47 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { ToastrModule } from 'ngx-toastr';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { LoadingComponent } from './components/loading/loading.component';
-import { LoginComponent } from './components/auth/login/login.component';
-import { RegisterComponent } from './components/auth/register/register.component';
-import { MaterialModule } from './share/material/material.module';
-import { IdentityInterceptor } from './share/helpers/identity.interceptor';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { LogoutComponent } from './components/auth/logout/logout.component';
-import { ErrorComponent } from './components/error/error.component';
-import { SideNavService } from './services/side-nav.service';
-import { ItemDetailComponent } from './components/item/item-detail/item-detail.component';
-import { ListItemComponent } from './components/item/list-item/list-item.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import { EditItemComponent } from './components/item/edit-item/edit-item.component';
-import { ListCatalogComponent } from './components/catalog/list-catalog/list-catalog.component';
-import { ListOrderComponent } from './components/order/list-order/list-order.component';
-import { OrderDetailComponent } from './components/order/order-detail/order-detail.component';
-import { AddOrderComponent } from './components/order/add-order/add-order.component';
-import { AddOrderDialogComponent } from './components/order/add-order-dialog/add-order-dialog.component';
-import { ListExportComponent } from './components/export/list-export/list-export.component';
-import { ExportDetailComponent } from './components/export/export-detail/export-detail.component';
-import { LoaderInterceptor } from './share/helpers/loader.interceptor';
 import { NgChartsModule } from 'ng2-charts';
-import { DashboardChartComponent } from './components/dashboard/dashboard-chart/dashboard-chart.component';
-import { TicketSummaryComponent } from './components/dashboard/ticket-summary/ticket-summary.component';
-import { TabGroupComponent } from './components/dashboard/tab-group/tab-group.component';
-import { ListComponent } from './components/dashboard/list/list.component';
-import { ListTicketComponent } from './components/ticket/list-ticket/list-ticket.component';
-import { TicketDetailComponent } from './components/ticket/ticket-detail/ticket-detail.component';
-import { AddTicketComponent } from './components/ticket/add-ticket/add-ticket.component';
-import { AddTicketDialogComponent } from './components/ticket/add-ticket-dialog/add-ticket-dialog.component';
-import { InUseTableComponent } from './components/dashboard/in-use-table/in-use-table.component';
-import { UpdateCatalogDialogComponent } from './components/catalog/update-catalog-dialog/update-catalog-dialog.component';
+import {
+  AddOrderComponent,
+  AddOrderDialogComponent,
+  AddTicketComponent,
+  AddTicketDialogComponent,
+  DashboardChartComponent,
+  DashboardComponent,
+  EditItemComponent,
+  ErrorComponent,
+  ExportDetailComponent,
+  ItemDetailComponent,
+  ListComponent,
+  ListExportComponent,
+  ListItemComponent,
+  ListOrderComponent,
+  ListTicketComponent,
+  LoadingComponent,
+  LoginComponent,
+  LogoutComponent,
+  NavbarComponent,
+  NotFoundComponent,
+  OrderDetailComponent,
+  RegisterComponent,
+  SidebarComponent,
+  TabGroupComponent,
+  TicketDetailComponent,
+  TicketSummaryComponent,
+} from './components';
+import { SideNavService } from './services';
+import { LoaderInterceptor, IdentityInterceptor } from './share/helpers';
+import { MaterialModule } from './share/material';
+
+import { ListCategoryComponent } from './components/category/list-category/list-category.component';
+import { UpdateCategoryDialogComponent } from './components/category/update-category-dialog/update-category-dialog.component';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { DelayedInputModule } from './share/modules';
+import { CommentComponent } from './components/comment/comment.component';
+import { ItemHolderComponent } from './components/item-holder/item-holder.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +62,6 @@ import { UpdateCatalogDialogComponent } from './components/catalog/update-catalo
     ListItemComponent,
     ItemDetailComponent,
     EditItemComponent,
-    ListCatalogComponent,
     ListOrderComponent,
     OrderDetailComponent,
     AddOrderComponent,
@@ -73,10 +76,13 @@ import { UpdateCatalogDialogComponent } from './components/catalog/update-catalo
     TicketDetailComponent,
     AddTicketComponent,
     AddTicketDialogComponent,
-    InUseTableComponent,
-    UpdateCatalogDialogComponent,
+    ListCategoryComponent,
+    UpdateCategoryDialogComponent,
+    CommentComponent,
+    ItemHolderComponent,
   ],
   imports: [
+    DelayedInputModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

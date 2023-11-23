@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
-  Item,
-  UpdateItem,
-  ItemPagaination,
+  ItemCompactObject,
+  ItemHolders,
+  ItemObject,
+  ItemUpdate,
+  Items,
   ResponseMessage,
-  ItemDetail,
 } from '../models';
 
 @Injectable({
@@ -18,27 +19,31 @@ export class ItemService {
 
   constructor(private http: HttpClient) {}
 
-  getPagination(params: any): Observable<ItemPagaination> {
-    return this.http.get<ItemPagaination>(`${this.apiUrl}`, { params });
+  getItems(params: any): Observable<Items> {
+    return this.http.get<Items>(`${this.apiUrl}`, { params });
   }
 
-  getList(params: any): Observable<Item[]> {
-    return this.http.get<Item[]>(`${this.apiUrl}/list`, { params });
+  getItemHolders(params: any): Observable<ItemHolders> {
+    return this.http.get<ItemHolders>(`${this.apiUrl}/holder`, { params });
   }
 
-  getById(id: string): Observable<ItemDetail> {
-    return this.http.get<ItemDetail>(`${this.apiUrl}/${id}`);
+  getById(id: number): Observable<ItemObject> {
+    return this.http.get<ItemObject>(`${this.apiUrl}/${id}`);
   }
 
-  update(id: string, data: UpdateItem): Observable<ResponseMessage> {
-    return this.http.put<ResponseMessage>(`${this.apiUrl}/${id}`, data);
+  getByIdCompact(id: number): Observable<ItemCompactObject> {
+    return this.http.get<ItemCompactObject>(`${this.apiUrl}/${id}/compact`);
   }
 
-  delete(id: string): Observable<ResponseMessage> {
+  update(id: number, data: ItemUpdate): Observable<ItemUpdate> {
+    return this.http.put<ItemUpdate>(`${this.apiUrl}/${id}`, data);
+  }
+
+  delete(id: number): Observable<ResponseMessage> {
     return this.http.delete<ResponseMessage>(`${this.apiUrl}/${id}`);
   }
 
-  create(data: UpdateItem): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}`, data, { observe: 'response' });
+  create(data: ItemUpdate): Observable<ItemObject> {
+    return this.http.post<ItemObject>(`${this.apiUrl}`, data);
   }
 }

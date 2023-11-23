@@ -4,9 +4,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
-import { Export } from 'src/app/models';
+import { Export, Operation, StatusCheck } from 'src/app/models';
 import { ExportService } from 'src/app/services';
-import { showError, showMessage } from 'src/app/share/helpers';
+import { getOperation, showError, showMessage } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-export',
@@ -14,12 +14,14 @@ import { showError, showMessage } from 'src/app/share/helpers';
   styleUrls: ['./list-export.component.css'],
 })
 export class ListExportComponent {
+  operation!: Operation;
+
   exports = new MatTableDataSource<Export>();
   displayedColumns: string[] = [
     'id',
     'description',
     'status',
-    'forUser',
+    'exportFor',
     'actions',
   ];
 
@@ -28,13 +30,14 @@ export class ListExportComponent {
 
   pageSizeOptions: number[] = [10, 20, 50, 100];
   searchValue: string = '';
-  list!: Export[];
   totalRecords!: number;
 
   constructor(
     private exportService: ExportService,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.operation = getOperation();
+  }
 
   ngAfterViewInit() {
     this.exports.paginator = this.paginator;
@@ -53,30 +56,29 @@ export class ListExportComponent {
         startWith({}),
         switchMap(() => {
           const params: any = {
-            pageIndex: this.paginator?.pageIndex,
-            pageSize: this.paginator?.pageSize,
-            sortField: this.sort?.active,
+            index: this.paginator?.pageIndex,
+            size: this.paginator?.pageSize,
+            sort: this.sort?.active,
             sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
           };
           return this.exportService
-            .getPagination(params)
+            .getExports(params)
             .pipe(catchError(() => of(null)));
         }),
-        map((dto) => {
-          if (dto == null) return [];
-          this.totalRecords = dto.totalRecords;
-          return dto.data;
+        map((response) => {
+          if (response == null) return [];
+          this.totalRecords = response.count;
+          return response.data;
         })
       )
       .subscribe(
-        (dto) => {
-          this.list = dto;
-          this.exports = new MatTableDataSource<Export>(this.list);
+        (response) => {
+          this.exports = new MatTableDataSource<Export>(response);
         },
         (error: any) => {
-          this.list = [];
-          this.exports = new MatTableDataSource<Export>(this.list);
+          showError(error, this.toastr);
+          this.exports = new MatTableDataSource<Export>([]);
         }
       );
   }

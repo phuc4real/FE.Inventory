@@ -1,0 +1,21 @@
+<div class="wrapper">
+  <h1 mat-dialog-titlec class="title">
+    {{ data.id == 0 ? "Add new category" : "Edit category info" }}
+  </h1>
+  <div mat-dialog-content class="content">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="data.name" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput [(ngModel)]="data.description" />
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions class="button-group">
+    <button class="button" mat-button [mat-dialog-close]="data" cdkFocusInitial>
+      Ok
+    </button>
+    <button class="button" mat-button (click)="close()">Close</button>
+  </div>
+</div>

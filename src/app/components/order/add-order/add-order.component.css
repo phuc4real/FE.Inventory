@@ -1,6 +1,5 @@
 .container {
-  margin: 15px 35px 0;
-  overflow-x: hidden;
+  margin: 25px 35px 0;
 }
 
 .container .header {
@@ -29,6 +28,14 @@
   border-radius: 5px;
 }
 
+.noData {
+  margin: 10px;
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .search {
   padding: 10px;
 }
@@ -43,6 +50,13 @@
   height: 140px;
 }
 
+.descriptionInput {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
 .button {
   display: flex;
   padding: 10px;
@@ -52,4 +66,16 @@
 .button button {
   padding: 14px;
   margin: 8px;
+}
+
+.add-section {
+  display: flex;
+  width: 20%;
+}
+.add-section mat-icon {
+  font-size: 3rem;
+  margin: 5px;
+  height: 48px;
+  width: 48px;
+  overflow: visible;
 }

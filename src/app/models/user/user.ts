@@ -1,4 +1,4 @@
-import { Permission } from '..';
+import { BaseResponse, Permission } from '..';
 
 export interface User {
   id: string;
@@ -6,8 +6,13 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
+  permission: Permission;
 }
 
-export interface UserDetail extends User {
-  permission: Permission;
+export interface UserObject extends BaseResponse {
+  data: User;
+}
+
+export interface Users extends BaseResponse {
+  data: User[];
 }

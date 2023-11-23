@@ -1,6 +1,5 @@
 .container {
-  margin: 15px 35px 0;
-  overflow-x: hidden;
+  margin: 15px 35px 10px;
 }
 
 .container .header {
@@ -28,6 +27,27 @@
 .container .content {
   border: 1px solid #ccc;
   border-radius: 5px;
+  background-color: #f4f4f4;
+}
+
+.history {
+  display: flex;
+}
+
+.history mat-form-field {
+  width: 95%;
+}
+
+.history mat-icon {
+  display: inline-block;
+  height: 44%;
+  font-size: 38px;
+  width: 65px;
+  margin-right: 0px;
+}
+
+.history .mat-mdc-button {
+  height: unset;
 }
 
 .form {
@@ -36,8 +56,6 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-
-  background-color: #f4f4f4;
 }
 
 .form mat-form-field {
@@ -45,13 +63,8 @@
   width: 320px;
 }
 
-.button {
-  display: flex;
-  justify-content: center;
-}
-
-.button button {
-  padding: 12px;
+.description {
+  width: 98% !important;
 }
 
 .img {

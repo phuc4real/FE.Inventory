@@ -3,12 +3,13 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ExportDetail } from 'src/app/models';
+import { ExportEntry, StatusCheck } from 'src/app/models';
 import { ExportService } from 'src/app/services';
 import {
+  FormatDate,
+  checkStatusOperation,
   showError,
   showMessage,
-  toStringFormatDate,
 } from 'src/app/share/helpers';
 
 @Component({
@@ -17,9 +18,10 @@ import {
   styleUrls: ['./export-detail.component.css'],
 })
 export class ExportDetailComponent {
+  statusCheck!: StatusCheck;
   id!: number;
   formGroup!: FormGroup;
-  tableData = new MatTableDataSource<ExportDetail>();
+  tableData = new MatTableDataSource<ExportEntry>();
   displayedColumns: string[] = ['itemImage', 'itemName', 'quantity', 'note'];
 
   constructor(
@@ -31,11 +33,11 @@ export class ExportDetailComponent {
       id: new FormControl(''),
       description: new FormControl(''),
       status: new FormControl(''),
-      forUser: new FormControl(''),
-      createdDate: new FormControl(''),
-      createdByUser: new FormControl(''),
-      updatedDate: new FormControl(''),
-      updatedByUser: new FormControl(''),
+      exportFor: new FormControl(''),
+      createdAt: new FormControl(''),
+      createdBy: new FormControl(''),
+      updatedAt: new FormControl(''),
+      updatedBy: new FormControl(''),
     });
   }
 
@@ -52,19 +54,28 @@ export class ExportDetailComponent {
   getData() {
     this.exportService.getById(this.id).subscribe(
       (response) => {
-        this.tableData = new MatTableDataSource<ExportDetail>(response.details);
+        this.statusCheck = checkStatusOperation(response.data.status);
         this.formGroup.patchValue({
-          id: response.id,
-          description: response.description,
-          status: response.status,
-          forUser: response.forUser.userName,
-          createdDate: toStringFormatDate(response.createdDate),
-          createdByUser: response.createdByUser.userName,
-          updatedDate: toStringFormatDate(response.updatedDate),
-          updatedByUser: response.updatedByUser.userName,
+          id: response.data.id,
+          description: response.data.description,
+          status: response.data.status,
+          exportFor: response.data.exportFor,
+          createdAt: FormatDate(response.data.createdAt),
+          createdBy: response.data.createdBy,
+          updatedAt: FormatDate(response.data.updatedAt),
+          updatedBy: response.data.updatedBy,
         });
       },
       (err: any) => showError(err, this.toastr)
+    );
+
+    this.exportService.getExportEntries(this.id).subscribe(
+      (response) => {
+        console.log(response);
+
+        this.tableData = new MatTableDataSource<ExportEntry>(response.data);
+      },
+      (err) => showError(err, this.toastr)
     );
   }
 

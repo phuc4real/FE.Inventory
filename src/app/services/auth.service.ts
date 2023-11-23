@@ -2,86 +2,58 @@ import { environment } from '../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { greaterThan } from '../share/helpers/utilities-helper';
-import { ResponseMessage, IdentityModel, IdentityResponse } from '../models';
+import {
+  IdentityModel,
+  IdentityResponse,
+  LoginModel,
+  RegisterModel,
+  ResponseMessage,
+} from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = environment.apiUrl + '/identity';
-  storageKey = 'token';
-  authenKey = 'isAuthenticated';
+  storageKey = 'identity';
 
   constructor(private http: HttpClient) {}
 
-  // async IsAuthenticated(): Promise<boolean> {
-  //   const token = this.getIdentity();
-  //   if (token) {
-  //     if (greaterThan(token.expireTime, new Date())) {
-  //       return true;
-  //     } else {
-  //       let isSuccess = await this.tryRefreshToken();
-  //       return isSuccess;
-  //     }
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
   IsLogged(): boolean {
-    let result = sessionStorage.getItem(this.authenKey);
+    let result = localStorage.getItem(this.storageKey);
     return result != null;
   }
 
-  register(payload: any): Observable<ResponseMessage> {
-    return this.http.post<ResponseMessage>(`${this.apiUrl}/register`, payload);
+  register(data: RegisterModel): Observable<ResponseMessage> {
+    return this.http.post<ResponseMessage>(`${this.apiUrl}/register`, data);
   }
 
-  login(username: string, password: string): Observable<IdentityResponse> {
-    return this.http.post<IdentityResponse>(`${this.apiUrl}/login`, {
-      username,
-      password,
-    });
+  login(data: LoginModel): Observable<IdentityResponse> {
+    return this.http.post<IdentityResponse>(`${this.apiUrl}/login`, data);
   }
 
-  saveIdentity(tokenModel: IdentityModel): void {
-    let json = JSON.stringify(tokenModel);
-    sessionStorage.setItem(this.authenKey, 'true');
-    sessionStorage.setItem(this.storageKey, json);
+  saveIdentity(data: IdentityModel): void {
+    let json = JSON.stringify(data);
+    localStorage.setItem(this.storageKey, json);
   }
 
   getIdentity(): IdentityModel | null {
-    let json = sessionStorage.getItem(this.storageKey);
+    let json = localStorage.getItem(this.storageKey);
     return json ? (JSON.parse(json) as IdentityModel) : null;
   }
 
   removeIdentity(): void {
-    sessionStorage.removeItem(this.storageKey);
-    sessionStorage.removeItem(this.authenKey);
+    localStorage.removeItem(this.storageKey);
   }
 
   refreshToken(): Observable<IdentityResponse> {
     const refreshToken = this.getIdentity()?.refreshToken;
     return this.http.post<IdentityResponse>(`${this.apiUrl}/refresh`, null, {
       headers: {
-        RefreshToken: refreshToken!,
+        'x-token-refresh': `${refreshToken}`,
       },
     });
   }
-
-  // async tryRefreshToken(): Promise<boolean> {
-  //   console.log('Trying to refresh token');
-  //   try {
-  //     const response = await this.refreshToken().toPromise();
-  //     this.saveIdentity(response!.data);
-  //     console.log('Token refreshed successfully');
-  //     return true;
-  //   } catch (error: any) {
-  //     console.log(error);
-  //     return false;
-  //   }
-  // }
 
   logout(): Observable<ResponseMessage> {
     return this.http.delete<ResponseMessage>(`${this.apiUrl}/logout`);

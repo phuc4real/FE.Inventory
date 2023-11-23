@@ -2,8 +2,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/services';
-import { showError } from 'src/app/share/helpers';
+import { AuthService, SideNavService, UserService } from 'src/app/services';
+import { getOperation, setOperation, showError } from 'src/app/share/helpers';
+import { LoginModel } from 'src/app/models';
 
 @Component({
   selector: 'app-login',
@@ -12,9 +13,11 @@ import { showError } from 'src/app/share/helpers';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-
+  islogin: boolean = false;
   constructor(
     private authService: AuthService,
+    private userService: UserService,
+    private sideNavService: SideNavService,
     private router: Router,
     private toastr: ToastrService
   ) {
@@ -24,18 +27,33 @@ export class LoginComponent {
     });
   }
 
+  ngAfterViewInit() {
+    this.islogin = this.authService.IsLogged();
+    if (this.islogin) this.router.navigate(['/item']);
+  }
+
   login(): void {
     if (this.loginForm.invalid) {
       return;
     }
 
-    const { username, password } = this.loginForm.value;
+    const request: LoginModel = {
+      userName: this.loginForm.value.username,
+      password: this.loginForm.value.password,
+    };
 
-    this.authService.login(username, password).subscribe(
-      (response) => {
-        this.router.navigate(['/dashboard']);
+    this.authService.login(request).subscribe(
+      async (response) => {
         this.toastr.success('Login successful!', 'Success');
         this.authService.saveIdentity(response.data);
+        this.userService.getUserInfo().subscribe((response) => {
+          this.userService.setName(response);
+          setOperation(this.userService).then(() => {
+            this.router.navigate(['/item']);
+            this.sideNavService.toggle();
+            this.sideNavService.toggle();
+          });
+        });
       },
       (err: any) => showError(err, this.toastr)
     );

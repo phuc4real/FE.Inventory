@@ -1,12 +1,56 @@
 <div class="container">
   <div class="header">
-    <span>Export Detail</span>
+    <span>Order Detail</span>
     <a routerLink="/order">
       <mat-icon>arrow_back_ios</mat-icon>
       <span>Return to List</span>
     </a>
   </div>
   <div class="content">
+    <div class="history">
+      <mat-form-field appearance="fill">
+        <mat-label>History</mat-label>
+        <mat-select [(value)]="defaultRecord">
+          <mat-option
+            *ngFor="let history of histories"
+            [value]="history.recordId"
+            routerLink="/order/entry/{{ history.recordId }}"
+          >
+            {{ historyToString(history) }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div
+        style="display: flex"
+        *ngIf="operation.order.canEdit && !statusCheck.isClose"
+      >
+        <button mat-button [matMenuTriggerFor]="menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button *ngIf="operation.order.canApproval" mat-menu-item>
+            Approval
+          </button>
+          <button
+            *ngIf="statusCheck.canUpdateStatus"
+            mat-menu-item
+            (click)="updateStatus()"
+          >
+            Update status
+          </button>
+          <button *ngIf="statusCheck.canEdit" mat-menu-item routerLink="edit">
+            Edit
+          </button>
+          <button
+            *ngIf="statusCheck.canCancel"
+            mat-menu-item
+            (click)="cancelOrder()"
+          >
+            Cancel
+          </button>
+        </mat-menu>
+      </div>
+    </div>
     <form class="form" [formGroup]="orderForm">
       <div>
         <div>
@@ -21,7 +65,7 @@
 
           <mat-form-field appearance="fill">
             <mat-label>Order by</mat-label>
-            <input matInput formControlName="user" readonly />
+            <input matInput formControlName="orderBy" readonly />
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label>Order Status</mat-label>
@@ -29,46 +73,16 @@
           </mat-form-field>
         </div>
         <div>
-          <mat-form-field appearance="fill">
-            <mat-label>Total</mat-label>
-            <input matInput formControlName="total" readonly />
+          <mat-form-field appearance="fill" class="description">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description" readonly />
           </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Approve</mat-label>
-            <input matInput formControlName="approve" readonly />
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Approve By</mat-label>
-            <input matInput formControlName="approveBy" readonly />
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Complete Date</mat-label>
-            <input matInput formControlName="completeDate" readonly />
-          </mat-form-field>
-        </div>
-        <div *ngIf="status != ''" class="button-style">
-          <button
-            mat-button
-            mat-raised-button
-            color="primary"
-            (click)="updateStatus()"
-          >
-            Update Status to {{ status }}
-          </button>
-          <button
-            mat-button
-            mat-raised-button
-            color="warn"
-            (click)="cancelOrder()"
-          >
-            Cancel Order
-          </button>
         </div>
       </div>
     </form>
-    <mat-table [dataSource]="details" class="item">
+    <mat-table [dataSource]="entries" class="item">
       <ng-container matColumnDef="itemImage">
-        <mat-header-cell *matHeaderCellDef>Item Image</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
         <mat-cell *matCellDef="let detail">
           <img
             class="img"
@@ -104,6 +118,10 @@
         <mat-cell *matCellDef="let detail">{{
           detail.minTotal + " - " + detail.maxTotal
         }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="note">
+        <mat-header-cell *matHeaderCellDef>Note</mat-header-cell>
+        <mat-cell *matCellDef="let detail">{{ detail.note }}</mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

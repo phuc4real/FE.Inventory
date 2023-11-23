@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { ToastrService } from 'ngx-toastr';
-import { ExportService, OrderService } from 'src/app/services';
+import { ExportService, OrderService, TicketService } from 'src/app/services';
 import { showError } from 'src/app/share/helpers';
 
 @Component({
@@ -13,7 +13,6 @@ import { showError } from 'src/app/share/helpers';
 export class DashboardChartComponent {
   title = 'dashboard-chart';
   labels: string[] = [];
-  orders: any;
 
   public barChartLegend = true;
   public barChartData: ChartConfiguration<'bar'>['data'] = {
@@ -41,11 +40,11 @@ export class DashboardChartComponent {
   }
 
   getChartData() {
-    this.orderService.getCount().subscribe(
+    this.orderService.getOrderChart().subscribe(
       (response) => {
-        this.barChartData.labels = response.map((x) => x.key);
+        this.barChartData.labels = response.data.map((x) => x.month);
         let orders = {
-          data: response.map((x) => parseInt(x.value)),
+          data: response.data.map((x) => x.value),
           label: 'Order',
           backgroundColor: 'rgba(63, 39, 245, 0.8)',
         };
@@ -56,10 +55,10 @@ export class DashboardChartComponent {
       (err: any) => showError(err, this.toastr)
     );
 
-    this.exportService.getCount().subscribe(
+    this.exportService.getExportChart().subscribe(
       (response) => {
         let exports = {
-          data: response.map((x) => parseInt(x.value)),
+          data: response.data.map((x) => x.value),
           label: 'Export',
           backgroundColor: 'rgba(245, 39, 39, 0.8)',
         };

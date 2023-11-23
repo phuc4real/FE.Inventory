@@ -1,14 +1,20 @@
 .container {
-  margin: 14px auto;
+  margin: 15px 35px 10px;
 }
 
-.container .back-link {
+.container .header {
   display: flex;
-  flex-direction: row-reverse;
   padding: 8px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.container .back-link a {
+.container .header span {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.container .header a {
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -18,50 +24,61 @@
   color: black;
 }
 
-.form-group {
+.container .content {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+}
+
+.history {
+  display: flex;
+}
+
+.history mat-form-field {
+  width: 95%;
+}
+
+.history mat-icon {
+  display: inline-block;
+  height: 44%;
+  font-size: 38px;
+  width: 65px;
+  margin-right: 0px;
+}
+
+.history .mat-mdc-button {
+  height: unset;
+}
+
+.form {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f4f4f4;
-  overflow: hidden;
 }
 
-.form-group mat-form-field {
-  padding: 20px;
+.form mat-form-field {
+  padding: 15px;
   width: 320px;
 }
 
-.form-group .description {
-  width: 54.2vw;
+.description {
+  width: 98% !important;
 }
 
-.item-img {
+.img {
   padding: 10px;
   height: 140px;
 }
 
-.item-link {
+.link {
   text-decoration: none;
   color: black;
 }
 
 .item {
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding-top: 10px;
+  border-top: 1px solid #ccc;
   background-color: #f4f4f4;
-}
-
-.button-style {
-  display: flex;
-  justify-content: center;
-}
-
-.button-style button {
-  margin-left: 20px;
-  font-size: 1.15rem;
-  font-weight: 550;
 }

@@ -4,8 +4,10 @@
       <input
         matInput
         [(ngModel)]="searchValue"
-        (keyup)="refreshData()"
-        placeholder="Search"
+        appDelayedInput
+        (delayedInput)="refreshData()"
+        [delayTime]="600"
+        placeholder="Search by Item name, ID, Description"
       />
     </mat-form-field>
   </div>
@@ -29,13 +31,11 @@
         >
         <mat-cell *matCellDef="let export">{{ export.status }}</mat-cell>
       </ng-container>
-      <ng-container matColumnDef="forUser">
+      <ng-container matColumnDef="exportFor">
         <mat-header-cell *matHeaderCellDef mat-sort-header
-          >For User</mat-header-cell
+          >Export For</mat-header-cell
         >
-        <mat-cell *matCellDef="let export">{{
-          export.forUser.userName
-        }}</mat-cell>
+        <mat-cell *matCellDef="let export">{{ export.exportFor }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">
@@ -45,10 +45,10 @@
             Detail
           </button>
           <button
+            *ngIf="operation.export.canEdit && export.status != 'Done'"
             mat-button
             (click)="updateStatus(export.id)"
             color="primary"
-            *ngIf="export.status != 'Done'"
           >
             Update Status
           </button>

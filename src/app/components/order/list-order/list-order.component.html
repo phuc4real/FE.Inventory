@@ -4,98 +4,96 @@
       <input
         matInput
         [(ngModel)]="searchValue"
-        (keyup)="applyFilter()"
-        placeholder="Search"
+        appDelayedInput
+        (delayedInput)="applyFilter()"
+        [delayTime]="600"
+        placeholder="Search by order ID, item name"
       />
     </mat-form-field>
     <button
+      *ngIf="operation.order.canEdit"
       mat-button
       class="button"
       mat-raised-button
       color="primary"
       routerLink="add"
     >
-      Add new
+      Add New
     </button>
   </div>
   <div class="table">
     <mat-table [dataSource]="orders" matSort (matSortChange)="matSortChange()">
-      <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-        <mat-cell *matCellDef="let order">{{ order.id }}</mat-cell>
+      <ng-container matColumnDef="orderId">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Order ID</mat-header-cell
+        >
+        <mat-cell *matCellDef="let order">{{ order.orderId }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Created At</mat-header-cell
+        >
+        <mat-cell *matCellDef="let order">{{
+          formattedDate(order.createdAt) + " By " + order.createdBy
+        }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="status">
         <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Order Status</mat-header-cell
-        >
-        <mat-cell *matCellDef="let order">{{ order.status }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="completeDate">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Complete Date</mat-header-cell
+          >Status</mat-header-cell
         >
         <mat-cell *matCellDef="let order">{{
-          dateString(order.completeDate)
+          order.completeDate == null
+            ? order.status
+            : order.status + " At " + formattedDate(order.completeDate)
         }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="createdDate">
+      <ng-container matColumnDef="updatedAt">
         <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Created Date</mat-header-cell
+          >Last Updated</mat-header-cell
         >
         <mat-cell *matCellDef="let order">{{
-          dateString(order.createdDate)
+          formattedDate(order.updatedAt) + " By " + order.updatedBy
         }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="createdByUser">
+      <ng-container matColumnDef="description">
         <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Created By</mat-header-cell
+          >Description</mat-header-cell
         >
-        <mat-cell *matCellDef="let order">{{
-          order.createdByUser.userName
-        }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="updatedDate">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Updated Date</mat-header-cell
-        >
-        <mat-cell *matCellDef="let order">{{
-          dateString(order.updatedDate)
-        }}</mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="updatedByUser">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Updated By</mat-header-cell
-        >
-        <mat-cell *matCellDef="let order">{{
-          order.updatedByUser.userName
-        }}</mat-cell>
+        <mat-cell *matCellDef="let order">{{ order.description }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
         <mat-cell *matCellDef="let order">
-          <button mat-button routerLink="{{ order.id }}" color="primary">
+          <button
+            mat-button
+            routerLink="entry/{{ order.recordId }}"
+            color="primary"
+          >
             Detail
           </button>
           <button
-            *ngIf="order.status != 'Done' && order.status != 'Cancel'"
+            *ngIf="
+              operation.order.canEdit &&
+              order.status != 'Done' &&
+              order.status != 'Cancel by User'
+            "
             mat-button
             color="warn"
             [swal]="{ 
                         title: 'Cancel order',
                         icon: 'warning',
-                        text:'Cancel order #'+order.id,
+                        text:'Cancel order #'+order.orderId,
                         showCancelButton: true,
                         confirmButtonText: 'Cancel order',
+                        cancelButtonText:'Discard',
                         confirmButtonColor: '#d61313',
                     }"
-            (confirm)="cancelOrder(order.id)"
+            (confirm)="cancelOrder(order.orderId)"
           >
             Cancel
           </button>
