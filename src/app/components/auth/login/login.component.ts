@@ -51,7 +51,9 @@ export class LoginComponent {
           setOperation(this.userService).then(() => {
             this.router.navigate(['/item']);
             this.sideNavService.toggle();
-            this.sideNavService.toggle();
+            setTimeout(() => {
+              this.sideNavService.toggle();
+            }, 100);
           });
         });
       },
