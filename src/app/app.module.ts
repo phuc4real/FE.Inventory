@@ -45,6 +45,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DelayedInputModule } from './share/modules';
 import { CommentComponent } from './components/comment/comment.component';
+import { ItemHolderComponent } from './components/item-holder/item-holder.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { CommentComponent } from './components/comment/comment.component';
     ListCategoryComponent,
     UpdateCategoryDialogComponent,
     CommentComponent,
+    ItemHolderComponent,
   ],
   imports: [
     DelayedInputModule,

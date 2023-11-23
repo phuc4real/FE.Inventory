@@ -6,6 +6,7 @@ export * from './common/base-response';
 export * from './common/response-message';
 export * from './common/record-history';
 export * from './common/comment';
+export * from './common/status-check';
 
 export * from './export/export';
 export * from './export/export-entry';
@@ -16,6 +17,7 @@ export * from './identity/identity-model';
 
 export * from './item/item-compact';
 export * from './item/item-update';
+export * from './item/item-holder';
 export * from './item/item';
 
 export * from './order/order';
@@ -31,4 +33,5 @@ export * from './ticket/ticket-summary';
 export * from './ticket/ticket-entry-update';
 
 export * from './user/permission';
+export * from './user/operation';
 export * from './user/user';

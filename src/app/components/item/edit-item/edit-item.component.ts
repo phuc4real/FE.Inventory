@@ -96,7 +96,6 @@ export class EditItemComponent {
       const file = target.files[0];
       this.uploadImage.uploadImg(file!).subscribe(
         (response) => {
-          console.log(response);
           this.img = response.url;
           this.itemForm.patchValue({
             imageUrl: response.url,
@@ -108,7 +107,6 @@ export class EditItemComponent {
             'Upload image error, please try again!',
             'Upload error'
           );
-          console.log(error);
         }
       );
     }

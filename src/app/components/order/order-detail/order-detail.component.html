@@ -20,15 +20,36 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-button [matMenuTriggerFor]="menu">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>Approval</button>
-        <button mat-menu-item (click)="updateStatus()">Update status</button>
-        <button mat-menu-item routerLink="edit">Edit</button>
-        <button mat-menu-item (click)="cancelOrder()">Cancel</button>
-      </mat-menu>
+      <div
+        style="display: flex"
+        *ngIf="operation.order.canEdit && !statusCheck.isClose"
+      >
+        <button mat-button [matMenuTriggerFor]="menu">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button *ngIf="operation.order.canApproval" mat-menu-item>
+            Approval
+          </button>
+          <button
+            *ngIf="statusCheck.canUpdateStatus"
+            mat-menu-item
+            (click)="updateStatus()"
+          >
+            Update status
+          </button>
+          <button *ngIf="statusCheck.canEdit" mat-menu-item routerLink="edit">
+            Edit
+          </button>
+          <button
+            *ngIf="statusCheck.canCancel"
+            mat-menu-item
+            (click)="cancelOrder()"
+          >
+            Cancel
+          </button>
+        </mat-menu>
+      </div>
     </div>
     <form class="form" [formGroup]="orderForm">
       <div>

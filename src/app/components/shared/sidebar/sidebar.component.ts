@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Operation, Permission } from 'src/app/models';
 import { AuthService, SideNavService } from 'src/app/services';
+import { getOperation } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,8 +11,7 @@ import { AuthService, SideNavService } from 'src/app/services';
 })
 export class SidebarComponent {
   @ViewChild('sidenav') public sidenav!: MatSidenav;
-  isAuthen = false;
-
+  operation!: Operation;
   constructor(
     private sideNavService: SideNavService,
     private authService: AuthService
@@ -19,6 +20,7 @@ export class SidebarComponent {
   ngOnInit() {
     this.sideNavService.sideNavToggleSubject.subscribe(() => {
       //workaround
+      this.operation = getOperation();
       try {
         this.sidenav.toggle();
       } catch (ex) {}

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, last } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { UserObject, Users } from '../models';
+import { Operation, Permission, UserObject, Users } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +10,7 @@ import { UserObject, Users } from '../models';
 export class UserService {
   private apiUrl = environment.apiUrl + '/user';
   storageKey = 'user';
+
   constructor(private http: HttpClient) {}
 
   getList(params: any): Observable<Users> {
@@ -18,6 +19,10 @@ export class UserService {
 
   getUserInfo(): Observable<UserObject> {
     return this.http.get<UserObject>(`${this.apiUrl}/info`);
+  }
+
+  getUserOperation(): Observable<Operation> {
+    return this.http.get<Operation>(`${this.apiUrl}/operation`);
   }
 
   getUserInfoById(id: string): Observable<UserObject> {

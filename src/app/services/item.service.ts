@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
   ItemCompactObject,
+  ItemHolders,
   ItemObject,
   ItemUpdate,
   Items,
@@ -20,6 +21,10 @@ export class ItemService {
 
   getItems(params: any): Observable<Items> {
     return this.http.get<Items>(`${this.apiUrl}`, { params });
+  }
+
+  getItemHolders(params: any): Observable<ItemHolders> {
+    return this.http.get<ItemHolders>(`${this.apiUrl}/holder`, { params });
   }
 
   getById(id: number): Observable<ItemObject> {

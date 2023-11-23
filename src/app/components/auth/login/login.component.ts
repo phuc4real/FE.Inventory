@@ -2,8 +2,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService, UserService } from 'src/app/services';
-import { showError } from 'src/app/share/helpers';
+import { AuthService, SideNavService, UserService } from 'src/app/services';
+import { getOperation, setOperation, showError } from 'src/app/share/helpers';
 import { LoginModel } from 'src/app/models';
 
 @Component({
@@ -13,10 +13,11 @@ import { LoginModel } from 'src/app/models';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-
+  islogin: boolean = false;
   constructor(
     private authService: AuthService,
     private userService: UserService,
+    private sideNavService: SideNavService,
     private router: Router,
     private toastr: ToastrService
   ) {
@@ -24,6 +25,11 @@ export class LoginComponent {
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     });
+  }
+
+  ngAfterViewInit() {
+    this.islogin = this.authService.IsLogged();
+    if (this.islogin) this.router.navigate(['/item']);
   }
 
   login(): void {
@@ -37,12 +43,16 @@ export class LoginComponent {
     };
 
     this.authService.login(request).subscribe(
-      (response) => {
-        this.router.navigate(['/dashboard']);
+      async (response) => {
         this.toastr.success('Login successful!', 'Success');
         this.authService.saveIdentity(response.data);
         this.userService.getUserInfo().subscribe((response) => {
           this.userService.setName(response);
+          setOperation(this.userService).then(() => {
+            this.router.navigate(['/item']);
+            this.sideNavService.toggle();
+            this.sideNavService.toggle();
+          });
         });
       },
       (err: any) => showError(err, this.toastr)

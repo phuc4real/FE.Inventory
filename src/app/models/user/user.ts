@@ -6,7 +6,7 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
-  Permission: Permission;
+  permission: Permission;
 }
 
 export interface UserObject extends BaseResponse {

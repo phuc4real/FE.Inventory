@@ -5,12 +5,19 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import {
   CreateCommentRequest,
+  Operation,
   OrderEntry,
-  OrderRecord,
   RecordHistory,
+  StatusCheck,
 } from 'src/app/models';
 import { OrderService } from 'src/app/services';
-import { FormatDate, showError, showMessage } from 'src/app/share/helpers';
+import {
+  FormatDate,
+  checkStatusOperation,
+  getOperation,
+  showError,
+  showMessage,
+} from 'src/app/share/helpers';
 import { CommentComponent } from '../../comment/comment.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -20,6 +27,8 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./order-detail.component.css'],
 })
 export class OrderDetailComponent {
+  operation!: Operation;
+  statusCheck!: StatusCheck;
   orderForm!: FormGroup;
   recordId!: number;
   orderId!: number;
@@ -41,6 +50,7 @@ export class OrderDetailComponent {
     private orderService: OrderService,
     private toastr: ToastrService
   ) {
+    this.operation = getOperation();
     this.orderForm = new FormGroup({
       id: new FormControl(''),
       orderDate: new FormControl(''),
@@ -59,6 +69,7 @@ export class OrderDetailComponent {
       (response) => {
         this.histories = response.history;
         this.defaultRecord = response.data.recordId;
+        this.statusCheck = checkStatusOperation(response.data.status);
         this.orderId = response.data.orderId;
         this.orderForm.patchValue({
           id: response.data.orderId,

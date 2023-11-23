@@ -18,16 +18,11 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Promise<boolean> {
     let IsLogged = this.authService.IsLogged();
-
     if (IsLogged) {
-      if (state.url == '/login' || state.url == '/register') {
-        this.router.navigate(['/']);
-        return false;
-      }
       return true;
+    } else {
+      this.router.navigate(['/login']);
+      return false;
     }
-
-    this.router.navigate(['/login']);
-    return false;
   }
 }

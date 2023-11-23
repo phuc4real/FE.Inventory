@@ -4,9 +4,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, map } from 'rxjs';
-import { TicketRecord } from 'src/app/models';
+import { Operation, TicketRecord } from 'src/app/models';
 import { TicketService } from 'src/app/services/ticket.service';
-import { FormatDate, showError } from 'src/app/share/helpers';
+import { FormatDate, getOperation, showError } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-ticket',
@@ -14,6 +14,7 @@ import { FormatDate, showError } from 'src/app/share/helpers';
   styleUrls: ['./list-ticket.component.css'],
 })
 export class ListTicketComponent {
+  operation!: Operation;
   dataTable = new MatTableDataSource<TicketRecord>();
   displayedColumns: string[] = [
     'ticketId',
@@ -36,7 +37,9 @@ export class ListTicketComponent {
   constructor(
     private ticketService: TicketService,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.operation = getOperation();
+  }
 
   ngAfterViewInit() {
     this.dataTable.paginator = this.paginator;

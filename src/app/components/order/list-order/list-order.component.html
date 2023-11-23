@@ -11,6 +11,7 @@
       />
     </mat-form-field>
     <button
+      *ngIf="operation.order.canEdit"
       mat-button
       class="button"
       mat-raised-button
@@ -76,7 +77,11 @@
             Detail
           </button>
           <button
-            *ngIf="order.status != 'Done' && order.status != 'Cancel'"
+            *ngIf="
+              operation.order.canEdit &&
+              order.status != 'Done' &&
+              order.status != 'Cancel by User'
+            "
             mat-button
             color="warn"
             [swal]="{ 

@@ -23,7 +23,7 @@ export class ExportService {
   }
 
   getExportEntries(exportId: number): Observable<ExportEntries> {
-    return this.http.get<ExportEntries>(`${this.apiUrl}/${exportId}/entries`);
+    return this.http.get<ExportEntries>(`${this.apiUrl}/${exportId}/entry`);
   }
 
   getById(exportId: number): Observable<ExportObject> {

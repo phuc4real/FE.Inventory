@@ -4,9 +4,14 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, map, startWith, switchMap } from 'rxjs';
-import { OrderRecord } from 'src/app/models';
+import { Operation, OrderRecord } from 'src/app/models';
 import { OrderService } from 'src/app/services';
-import { FormatDate, showError, showMessage } from 'src/app/share/helpers';
+import {
+  FormatDate,
+  getOperation,
+  showError,
+  showMessage,
+} from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-order',
@@ -14,6 +19,7 @@ import { FormatDate, showError, showMessage } from 'src/app/share/helpers';
   styleUrls: ['./list-order.component.css'],
 })
 export class ListOrderComponent {
+  operation!: Operation;
   orders = new MatTableDataSource<OrderRecord>();
   displayedColumns: string[] = [
     'orderId',
@@ -34,7 +40,9 @@ export class ListOrderComponent {
   constructor(
     private orderService: OrderService,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.operation = getOperation();
+  }
 
   ngAfterViewInit() {
     this.orders.paginator = this.paginator;

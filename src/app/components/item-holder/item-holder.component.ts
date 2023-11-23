@@ -3,26 +3,26 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { startWith, switchMap, catchError, of, map } from 'rxjs';
-import { Export, Operation, StatusCheck } from 'src/app/models';
-import { ExportService } from 'src/app/services';
-import { getOperation, showError, showMessage } from 'src/app/share/helpers';
+import { startWith, switchMap, catchError, map } from 'rxjs';
+import { ItemHolder, Operation } from 'src/app/models';
+import { ItemService } from 'src/app/services';
+import { showError, FormatDate, getOperation } from 'src/app/share/helpers';
 
 @Component({
-  selector: 'app-list-export',
-  templateUrl: './list-export.component.html',
-  styleUrls: ['./list-export.component.css'],
+  selector: 'app-item-holder',
+  templateUrl: './item-holder.component.html',
+  styleUrls: ['./item-holder.component.css'],
 })
-export class ListExportComponent {
+export class ItemHolderComponent {
   operation!: Operation;
-
-  exports = new MatTableDataSource<Export>();
+  dataTable = new MatTableDataSource<ItemHolder>();
   displayedColumns: string[] = [
-    'id',
-    'description',
-    'status',
-    'exportFor',
-    'actions',
+    'itemImage',
+    'itemCode',
+    'itemName',
+    'categoryName',
+    'fullName',
+    'email',
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -30,22 +30,26 @@ export class ListExportComponent {
 
   pageSizeOptions: number[] = [10, 20, 50, 100];
   searchValue: string = '';
+  data!: ItemHolder[];
   totalRecords!: number;
 
-  constructor(
-    private exportService: ExportService,
-    private toastr: ToastrService
-  ) {
+  constructor(private itemService: ItemService, private toastr: ToastrService) {
     this.operation = getOperation();
+    if (this.operation.itemHolder.canEdit)
+      this.displayedColumns = this.displayedColumns.concat('actions');
   }
 
   ngAfterViewInit() {
-    this.exports.paginator = this.paginator;
+    this.dataTable.paginator = this.paginator;
     this.getPaginator();
-    this.exports.sort = this.sort;
+    this.dataTable.sort = this.sort;
   }
 
-  refreshData() {
+  matSortChange() {
+    this.applyFilter();
+  }
+
+  applyFilter() {
     this.paginator._changePageSize(this.paginator.pageSize);
     this.paginator.firstPage();
   }
@@ -62,9 +66,9 @@ export class ListExportComponent {
             sortDirection: this.sort?.direction,
             searchKeyword: this.searchValue,
           };
-          return this.exportService
-            .getExports(params)
-            .pipe(catchError(() => of(null)));
+          return this.itemService
+            .getItemHolders(params)
+            .pipe(catchError(async (err) => showError(err, this.toastr)));
         }),
         map((response) => {
           if (response == null) return [];
@@ -74,22 +78,18 @@ export class ListExportComponent {
       )
       .subscribe(
         (response) => {
-          this.exports = new MatTableDataSource<Export>(response);
+          this.data = response;
+          this.dataTable = new MatTableDataSource<ItemHolder>(this.data);
         },
         (error: any) => {
+          this.data = [];
+          this.dataTable = new MatTableDataSource<ItemHolder>(this.data);
           showError(error, this.toastr);
-          this.exports = new MatTableDataSource<Export>([]);
         }
       );
   }
 
-  updateStatus(id: number) {
-    this.exportService.updateStatus(id).subscribe(
-      (response) => {
-        showMessage(response, this.toastr);
-        this.refreshData();
-      },
-      (err: any) => showError(err, this.toastr)
-    );
+  formattedDate(date: any) {
+    return FormatDate(date);
   }
 }

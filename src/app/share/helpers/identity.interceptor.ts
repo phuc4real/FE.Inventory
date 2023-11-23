@@ -1,4 +1,4 @@
-import { AuthService } from 'src/app/services';
+import { AuthService, UserService } from 'src/app/services';
 import { Injectable } from '@angular/core';
 import {
   HttpInterceptor,
@@ -13,7 +13,11 @@ import { Router } from '@angular/router';
 @Injectable()
 export class IdentityInterceptor implements HttpInterceptor {
   private isRefreshing = false;
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+    private router: Router
+  ) {}
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
@@ -43,7 +47,7 @@ export class IdentityInterceptor implements HttpInterceptor {
         ) {
           return this.handle401Error(request, next);
         }
-        console.clear();
+        // console.clear();
         return throwError(() => error);
       })
     );

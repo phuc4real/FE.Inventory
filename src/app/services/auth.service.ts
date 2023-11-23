@@ -16,12 +16,11 @@ import {
 export class AuthService {
   private apiUrl = environment.apiUrl + '/identity';
   storageKey = 'identity';
-  authenKey = 'isAuthenticated';
 
   constructor(private http: HttpClient) {}
 
   IsLogged(): boolean {
-    let result = localStorage.getItem(this.authenKey);
+    let result = localStorage.getItem(this.storageKey);
     return result != null;
   }
 
@@ -35,7 +34,6 @@ export class AuthService {
 
   saveIdentity(data: IdentityModel): void {
     let json = JSON.stringify(data);
-    localStorage.setItem(this.authenKey, 'true');
     localStorage.setItem(this.storageKey, json);
   }
 
@@ -46,7 +44,6 @@ export class AuthService {
 
   removeIdentity(): void {
     localStorage.removeItem(this.storageKey);
-    localStorage.removeItem(this.authenKey);
   }
 
   refreshToken(): Observable<IdentityResponse> {

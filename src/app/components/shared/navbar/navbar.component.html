@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="openMenu()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span class="navbar-title" routerLink="/">Inventory Management</span>
+  <span class="navbar-title" routerLink="/item">Inventory Management</span>
   <span class="spacer"></span>
   <span *ngIf="isAuthenticated()">{{ getUserName() }}</span>
   <button mat-icon-button [matMenuTriggerFor]="menu">

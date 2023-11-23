@@ -10,6 +10,7 @@
     />
   </mat-form-field>
   <button
+    *ngIf="operation.item.canEdit"
     mat-button
     class="button"
     mat-raised-button
@@ -74,13 +75,19 @@
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
         <mat-cell *matCellDef="let item">
-          <button mat-button routerLink="edit/{{ item.id }}" color="primary">
+          <button
+            *ngIf="operation.item.canEdit"
+            mat-button
+            routerLink="edit/{{ item.id }}"
+            color="primary"
+          >
             Edit
           </button>
           <button mat-button routerLink="{{ item.id }}" color="primary">
             Detail
           </button>
           <button
+            *ngIf="operation.item.canEdit"
             mat-button
             color="warn"
             [swal]="{ 

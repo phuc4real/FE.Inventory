@@ -4,9 +4,9 @@ import { MatSort, SortDirection } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
-import { Item } from 'src/app/models';
+import { Item, Operation } from 'src/app/models';
 import { ItemService } from 'src/app/services';
-import { showError, showMessage } from 'src/app/share/helpers';
+import { getOperation, showError, showMessage } from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-item',
@@ -32,11 +32,11 @@ export class ListItemComponent {
 
   searchValue: string = '';
   total!: number;
+  operation!: Operation;
 
-  constructor(
-    private itemService: ItemService,
-    private toastr: ToastrService
-  ) {}
+  constructor(private itemService: ItemService, private toastr: ToastrService) {
+    this.operation = getOperation();
+  }
 
   ngAfterViewInit() {
     this.data.paginator = this.paginator;

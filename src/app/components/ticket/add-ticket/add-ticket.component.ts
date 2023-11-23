@@ -81,8 +81,6 @@ export class AddTicketComponent {
     let data = entriesLocal?.data ?? [];
     if (data.length > 0) {
       this.isHasData = true;
-      console.log(data);
-
       data.forEach((entry) => {
         this.itemService.getByIdCompact(entry.itemId).subscribe(
           (response) => {

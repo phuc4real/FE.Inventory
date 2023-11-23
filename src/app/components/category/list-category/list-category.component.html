@@ -10,6 +10,7 @@
     />
   </mat-form-field>
   <button
+    *ngIf="operation.category.canEdit"
     mat-button
     class="button"
     mat-raised-button
@@ -41,13 +42,14 @@
         }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="actions">
+      <ng-container *ngIf="operation.category.canEdit" matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
         <mat-cell *matCellDef="let category">
           <button mat-button (click)="openDialog(category)" color="primary">
             Edit
           </button>
           <button
+            *ngIf="operation.category.canEdit"
             mat-button
             color="warn"
             [swal]="{ 

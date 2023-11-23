@@ -43,8 +43,6 @@ export class ItemDetailComponent {
   ngAfterViewInit() {
     this.itemService.getById(this.itemId).subscribe(
       (response) => {
-        console.log(response);
-
         if (response.data.imageUrl != '') {
           this.img = response.data.imageUrl;
         } else {

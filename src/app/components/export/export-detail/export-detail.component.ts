@@ -3,9 +3,14 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ExportEntry } from 'src/app/models';
+import { ExportEntry, StatusCheck } from 'src/app/models';
 import { ExportService } from 'src/app/services';
-import { FormatDate, showError, showMessage } from 'src/app/share/helpers';
+import {
+  FormatDate,
+  checkStatusOperation,
+  showError,
+  showMessage,
+} from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-export-detail',
@@ -13,6 +18,7 @@ import { FormatDate, showError, showMessage } from 'src/app/share/helpers';
   styleUrls: ['./export-detail.component.css'],
 })
 export class ExportDetailComponent {
+  statusCheck!: StatusCheck;
   id!: number;
   formGroup!: FormGroup;
   tableData = new MatTableDataSource<ExportEntry>();
@@ -27,11 +33,11 @@ export class ExportDetailComponent {
       id: new FormControl(''),
       description: new FormControl(''),
       status: new FormControl(''),
-      forUser: new FormControl(''),
-      createdDate: new FormControl(''),
-      createdByUser: new FormControl(''),
-      updatedDate: new FormControl(''),
-      updatedByUser: new FormControl(''),
+      exportFor: new FormControl(''),
+      createdAt: new FormControl(''),
+      createdBy: new FormControl(''),
+      updatedAt: new FormControl(''),
+      updatedBy: new FormControl(''),
     });
   }
 
@@ -48,19 +54,28 @@ export class ExportDetailComponent {
   getData() {
     this.exportService.getById(this.id).subscribe(
       (response) => {
-        // this.tableData = new MatTableDataSource<ExportDetail>(response.data.details);
+        this.statusCheck = checkStatusOperation(response.data.status);
         this.formGroup.patchValue({
           id: response.data.id,
           description: response.data.description,
           status: response.data.status,
-          forUser: response.data.exportFor,
-          createdDate: FormatDate(response.data.createdAt),
-          createdByUser: response.data.createdBy,
-          updatedDate: FormatDate(response.data.updatedAt),
-          updatedByUser: response.data.updatedBy,
+          exportFor: response.data.exportFor,
+          createdAt: FormatDate(response.data.createdAt),
+          createdBy: response.data.createdBy,
+          updatedAt: FormatDate(response.data.updatedAt),
+          updatedBy: response.data.updatedBy,
         });
       },
       (err: any) => showError(err, this.toastr)
+    );
+
+    this.exportService.getExportEntries(this.id).subscribe(
+      (response) => {
+        console.log(response);
+
+        this.tableData = new MatTableDataSource<ExportEntry>(response.data);
+      },
+      (err) => showError(err, this.toastr)
     );
   }
 

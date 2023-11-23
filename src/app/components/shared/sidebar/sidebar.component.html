@@ -7,46 +7,74 @@
     *ngIf="isAuthenticated()"
   >
     <mat-nav-list>
-      <mat-list-item routerLink="/" routerLinkActive="active">
+      <mat-list-item
+        *ngIf="operation.dashboard.canView"
+        routerLink="/"
+        routerLinkActive="active"
+      >
         <div class="nav-item">
           <mat-icon class="icon-style">home</mat-icon>
           <span>Dashboard</span>
         </div>
       </mat-list-item>
-      <mat-list-item routerLink="/item" routerLinkActive="active">
+      <mat-list-item
+        *ngIf="operation.item.canView"
+        routerLink="/item"
+        routerLinkActive="active"
+      >
         <div class="nav-item">
           <mat-icon class="icon-style">apps</mat-icon>
           <span>Item</span>
         </div>
       </mat-list-item>
-      <mat-list-item routerLink="/category" routerLinkActive="active">
+      <mat-list-item
+        *ngIf="operation.category.canView"
+        routerLink="/category"
+        routerLinkActive="active"
+      >
         <div class="nav-item">
           <mat-icon class="icon-style">apps</mat-icon>
           <span>Category</span>
         </div>
       </mat-list-item>
-      <mat-list-item routerLink="/order" routerLinkActive="active">
+      <mat-list-item
+        *ngIf="operation.order.canView"
+        routerLink="/order"
+        routerLinkActive="active"
+      >
         <div class="nav-item">
           <mat-icon class="icon-style">apps</mat-icon>
           <span>Order</span>
         </div>
       </mat-list-item>
-      <mat-list-item routerLink="/export" routerLinkActive="active">
+      <mat-list-item
+        *ngIf="operation.export.canView"
+        routerLink="/export"
+        routerLinkActive="active"
+      >
         <div class="nav-item">
           <mat-icon class="icon-style">apps</mat-icon>
           <span>Export</span>
         </div>
       </mat-list-item>
-      <mat-list-item routerLink="/ticket" routerLinkActive="active">
+      <mat-list-item
+        *ngIf="operation.ticket.canView"
+        routerLink="/ticket"
+        routerLinkActive="active"
+      >
         <div class="nav-item">
           <mat-icon class="icon-style">apps</mat-icon>
           <span>Ticket</span>
         </div>
       </mat-list-item>
-      <mat-list-item routerLink="/ticket" routerLinkActive="active">
+      <mat-list-item
+        *ngIf="operation.itemHolder.canView"
+        routerLink="/item-holder"
+        routerLinkActive="active"
+      >
         <div class="nav-item">
           <mat-icon class="icon-style">apps</mat-icon>
-          <span>Item Management</span>
+          <span>Item Holder</span>
         </div>
       </mat-list-item>
     </mat-nav-list>

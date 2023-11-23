@@ -5,9 +5,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
-import { Category } from 'src/app/models';
+import { Category, Operation } from 'src/app/models';
 import { CategoryService } from 'src/app/services';
-import { showError, showMessage } from 'src/app/share/helpers';
+import { getOperation, showError, showMessage } from 'src/app/share/helpers';
 import { UpdateCategoryDialogComponent } from '../..';
 
 @Component({
@@ -20,16 +20,22 @@ export class ListCategoryComponent {
   @ViewChild(MatSort) sort!: MatSort;
 
   data = new MatTableDataSource<Category>();
-  displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'description'];
   pageSizeOptions: number[] = [10, 20, 50, 100];
   searchValue: string = '';
   total!: number;
-
+  operation!: Operation;
   constructor(
     private categoryService: CategoryService,
     public dialog: MatDialog,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.operation = getOperation();
+
+    if (this.operation.category.canEdit) {
+      this.displayedColumns = this.displayedColumns.concat('actions');
+    }
+  }
 
   ngAfterViewInit() {
     this.data.paginator = this.paginator;

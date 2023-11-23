@@ -23,10 +23,34 @@
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="openDialog()">Approval</button>
-        <button mat-menu-item (click)="updateStatus()">Update status</button>
-        <button mat-menu-item routerLink="edit">Edit</button>
-        <button mat-menu-item (click)="cancelTicket()">Cancel</button>
+        <div *ngIf="operation.ticket.canEdit">
+          <button
+            *ngIf="operation.ticket.canApproval"
+            mat-menu-item
+            (click)="openDialog()"
+          >
+            Approval
+          </button>
+          <button
+            *ngIf="
+              operation.ticket.canChangeStatus && statusCheck?.canUpdateStatus
+            "
+            mat-menu-item
+            (click)="updateStatus()"
+          >
+            Update status
+          </button>
+          <button *ngIf="statusCheck?.canEdit" mat-menu-item routerLink="edit">
+            Edit
+          </button>
+          <button
+            *ngIf="statusCheck?.canCancel"
+            mat-menu-item
+            (click)="cancelTicket()"
+          >
+            Cancel
+          </button>
+        </div>
       </mat-menu>
     </div>
     <form class="form" [formGroup]="formGroup">

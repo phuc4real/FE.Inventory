@@ -5,11 +5,19 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import {
   CreateCommentRequest,
+  Operation,
   RecordHistory,
+  StatusCheck,
   TicketEntry,
 } from 'src/app/models';
 import { TicketService } from 'src/app/services/ticket.service';
-import { FormatDate, showError, showMessage } from 'src/app/share/helpers';
+import {
+  FormatDate,
+  checkStatusOperation,
+  getOperation,
+  showError,
+  showMessage,
+} from 'src/app/share/helpers';
 import { CommentComponent } from '../../comment/comment.component';
 import { MatDialog } from '@angular/material/dialog';
 @Component({
@@ -18,6 +26,8 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./ticket-detail.component.css'],
 })
 export class TicketDetailComponent {
+  statusCheck!: StatusCheck;
+  operation!: Operation;
   formGroup!: FormGroup;
   defaultRecord!: number;
   histories: RecordHistory[] = [];
@@ -32,6 +42,7 @@ export class TicketDetailComponent {
     private ticketService: TicketService,
     private toastr: ToastrService
   ) {
+    this.operation = getOperation();
     this.formGroup = new FormGroup({
       ticketId: new FormControl(''),
       title: new FormControl(''),
@@ -46,9 +57,6 @@ export class TicketDetailComponent {
       updatedAt: new FormControl(''),
       updatedBy: new FormControl(''),
     });
-  }
-
-  ngOnInit() {
     this.route.params.subscribe((params) => {
       this.recordId = params['id'];
       this.getData();
@@ -61,13 +69,16 @@ export class TicketDetailComponent {
         this.histories = response.history;
         this.defaultRecord = response.data.recordId;
         this.ticketId = response.data.ticketId;
+        this.statusCheck = checkStatusOperation(response.data.status);
         this.formGroup.patchValue({
           ticketId: response.data.ticketId,
           title: response.data.title,
           type: response.data.ticketType,
           description: response.data.description,
           commentAt:
-            FormatDate(response.data.comment?.commentAt) ?? 'No comment',
+            response.data.comment != null
+              ? FormatDate(response.data.comment.commentAt)
+              : 'No comment',
           status: response.data.status,
           commentBy: response.data.comment?.commentBy ?? 'No comment',
           message: response.data.comment?.message ?? 'No comment',
@@ -129,6 +140,7 @@ export class TicketDetailComponent {
       );
     });
   }
+
   historyToString(history: RecordHistory) {
     return `Record No. #${history.number} at ${FormatDate(
       history.createdAt
