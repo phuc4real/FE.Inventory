@@ -63,12 +63,14 @@ export function checkStatusOperation(status: string) {
   ];
 
   let canUpdateStatus = ['Pending', 'Processing'];
+  let canApproval = ['In Review'];
   let closeStatus = ['Closed', 'Done', 'Cancel by User'];
   console.log(status);
 
   console.log(canEditStatus.includes(status));
 
   let statusCheck: StatusCheck = {
+    canApproval: canApproval.includes(status),
     canUpdateStatus: canUpdateStatus.includes(status),
     canCancel: canEditStatus.includes(status),
     canEdit: canEditStatus.includes(status),

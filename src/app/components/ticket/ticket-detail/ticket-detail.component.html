@@ -25,7 +25,7 @@
       <mat-menu #menu="matMenu">
         <div *ngIf="operation.ticket.canEdit">
           <button
-            *ngIf="operation.ticket.canApproval"
+            *ngIf="operation.ticket.canApproval && statusCheck.canApproval"
             mat-menu-item
             (click)="openDialog()"
           >

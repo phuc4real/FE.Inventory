@@ -28,7 +28,10 @@
           <mat-icon>menu</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button *ngIf="operation.order.canApproval" mat-menu-item>
+          <button
+            *ngIf="operation.order.canApproval && statusCheck.canApproval"
+            mat-menu-item
+          >
             Approval
           </button>
           <button
