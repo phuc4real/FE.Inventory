@@ -14,6 +14,7 @@ import { OrderService } from 'src/app/services';
 import {
   FormatDate,
   checkStatusOperation,
+  getDefaultStatus,
   getOperation,
   showError,
   showMessage,
@@ -51,6 +52,7 @@ export class OrderDetailComponent {
     private toastr: ToastrService
   ) {
     this.operation = getOperation();
+    this.statusCheck = getDefaultStatus();
     this.orderForm = new FormGroup({
       id: new FormControl(''),
       orderDate: new FormControl(''),

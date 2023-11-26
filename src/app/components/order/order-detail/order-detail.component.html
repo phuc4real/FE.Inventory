@@ -31,6 +31,7 @@
           <button
             *ngIf="operation.order.canApproval && statusCheck.canApproval"
             mat-menu-item
+            (click)="openDialog()"
           >
             Approval
           </button>

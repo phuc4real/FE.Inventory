@@ -81,7 +81,10 @@ export class ExportDetailComponent {
 
   updateStatus() {
     this.exportService.updateStatus(this.id).subscribe(
-      (response) => showMessage(response, this.toastr),
+      (response) => {
+        showMessage(response, this.toastr);
+        this.getData();
+      },
       (err: any) => showError(err, this.toastr)
     );
   }

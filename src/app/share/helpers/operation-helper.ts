@@ -65,9 +65,7 @@ export function checkStatusOperation(status: string) {
   let canUpdateStatus = ['Pending', 'Processing'];
   let canApproval = ['In Review'];
   let closeStatus = ['Closed', 'Done', 'Cancel by User'];
-  console.log(status);
-
-  console.log(canEditStatus.includes(status));
+  // console.log(status);
 
   let statusCheck: StatusCheck = {
     canApproval: canApproval.includes(status),
@@ -76,5 +74,19 @@ export function checkStatusOperation(status: string) {
     canEdit: canEditStatus.includes(status),
     isClose: closeStatus.includes(status),
   };
+  // console.log(statusCheck);
+
+  return statusCheck;
+}
+
+export function getDefaultStatus() {
+  let statusCheck: StatusCheck = {
+    canApproval: false,
+    canUpdateStatus: false,
+    canCancel: false,
+    canEdit: false,
+    isClose: false,
+  };
+
   return statusCheck;
 }
