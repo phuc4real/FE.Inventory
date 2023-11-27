@@ -4,3 +4,7 @@
   margin: 10px;
   border: 1px solid #555;
 }
+
+* {
+  font-size: 1.2rem;
+}
