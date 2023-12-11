@@ -1,8 +1,6 @@
-.container {
-  width: 400px;
-  height: 200px;
-  margin: 10px;
-  border: 1px solid #555;
+.app-wrapper {
+  margin: 0;
+  padding: 0;
 }
 
 * {

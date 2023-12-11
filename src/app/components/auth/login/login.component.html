@@ -1,33 +1,39 @@
-<form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
-  <h2>Login</h2>
-
-  <mat-form-field class="form-group">
-    <mat-label>Email</mat-label>
-    <input
-      matInput
-      type="email"
-      placeholder="Enter your email"
-      formControlName="username"
-      required
-    />
-  </mat-form-field>
-
-  <mat-form-field class="form-group">
-    <mat-label>Password</mat-label>
-    <input
-      matInput
-      type="password"
-      placeholder="Enter your password"
-      formControlName="password"
-      required
-    />
-  </mat-form-field>
-
-  <div class="form-group text-center">
-    <button mat-raised-button color="primary" type="submit">Sign In</button>
+<div class="login">
+  <div class="image">
+    <div>
+      <h1>PINVENTORY</h1>
+      <span>An inventory management system</span>
+    </div>
+    <img src="/assets/login_bg.jpeg" width="500" height="500" priority />
   </div>
+  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+    <h2>PINVENTORY</h2>
+    <img src="favicon.ico" width="128" height="128" />
+    <h4>Login to continute</h4>
+    <mat-form-field class="form-group">
+      <mat-label>Username</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Enter your username"
+        formControlName="username"
+        required
+      />
+    </mat-form-field>
 
-  <!-- <div class="form-group create-account-group">
-    <p>Don't have an account? <a routerLink="/register">Create an account</a></p>
-  </div> -->
-</form>
+    <mat-form-field class="form-group">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        type="password"
+        placeholder="Enter your password"
+        formControlName="password"
+        required
+      />
+    </mat-form-field>
+
+    <div class="form-group text-center">
+      <button mat-raised-button color="primary" type="submit">Sign In</button>
+    </div>
+  </form>
+</div>

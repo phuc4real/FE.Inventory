@@ -1,11 +1,11 @@
 .app-drawer-container {
   flex: 1;
+  background-color: #cde7f7;
 }
 
 .sidenav {
   margin-top: 60px;
   width: 240px;
-  background-color: rgb(240, 248, 255, 0.8);
 }
 
 .nav-item {
@@ -30,9 +30,20 @@ mat-list-item {
 
 .sidenav-content {
   top: 20px;
-  padding: 10px;
 }
 
 .router-outlet-custom {
   margin-left: 20px;
+}
+
+.copyright {
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.copyright span {
+  font-style: italic;
 }
