@@ -1,4 +1,5 @@
 <div class="container">
+  <h2>Ticket List</h2>
   <div>
     <mat-form-field class="search">
       <input
@@ -54,7 +55,11 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header
         >Status</mat-header-cell
       >
-      <mat-cell *matCellDef="let x">{{ x.status }}</mat-cell>
+      <mat-cell *matCellDef="let x">
+        <mat-chip [style]="getStatusColor(x.status)">
+          {{ x.status }}
+        </mat-chip>
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="createdAt">
       <mat-header-cell *matHeaderCellDef mat-sort-header

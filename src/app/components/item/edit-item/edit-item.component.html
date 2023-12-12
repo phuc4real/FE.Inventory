@@ -5,57 +5,64 @@
       <span>Return to List</span>
     </a>
   </div>
-  <form class="form" [formGroup]="itemForm" (ngSubmit)="submitItem()">
-    <div class="img">
-      <img *ngIf="!isLoading; else loadingBlock" [src]="img" />
-      <ng-template #loadingBlock>
-        <mat-spinner></mat-spinner>
-      </ng-template>
-      <input
-        type="file"
-        multiple
-        accept="image/*"
-        (change)="onFileSelected($event)"
-        #hiddenfileinput
-      />
-      <button (click)="hiddenfileinput.click()" type="button">
-        <mat-icon>cloud</mat-icon>
-        <span>Upload Image</span>
-      </button>
-    </div>
-    <div>
-      <div>
-        <mat-form-field appearance="fill">
-          <mat-label>Code</mat-label>
-          <input
-            matInput
-            formControlName="code"
-            required
-            [readonly]="itemId != null"
-          />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Name</mat-label>
-          <input matInput formControlName="name" />
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Category</mat-label>
-          <mat-select [(value)]="selectedValue" formControlName="categoryId">
-            <mat-option *ngFor="let cate of category" [value]="cate.id">
-              {{ cate.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+  <div>
+    <h2>{{ itemId != null ? "Edit item" : "Add new item" }}</h2>
+    <form class="form" [formGroup]="itemForm" (ngSubmit)="submitItem()">
+      <div class="img">
+        <img *ngIf="!isLoading; else loadingBlock" [src]="img" />
+        <ng-template #loadingBlock>
+          <mat-spinner></mat-spinner>
+        </ng-template>
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          #hiddenfileinput
+        />
+        <button (click)="hiddenfileinput.click()" type="button">
+          <mat-icon>cloud</mat-icon>
+          <span>Upload Image</span>
+        </button>
       </div>
       <div>
-        <mat-form-field id="description" appearance="fill">
-          <mat-label>Description</mat-label>
-          <textarea matInput formControlName="description" rows="4"></textarea>
-        </mat-form-field>
+        <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Code</mat-label>
+            <input
+              matInput
+              formControlName="code"
+              required
+              [readonly]="itemId != null"
+            />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Category</mat-label>
+            <mat-select [(value)]="selectedValue" formControlName="categoryId">
+              <mat-option *ngFor="let cate of category" [value]="cate.id">
+                {{ cate.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field id="description" appearance="fill">
+            <mat-label>Description</mat-label>
+            <textarea
+              matInput
+              formControlName="description"
+              rows="4"
+            ></textarea>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" type="submit" class="button">
+          Submit
+        </button>
       </div>
-      <button mat-raised-button color="primary" type="submit" class="button">
-        Submit
-      </button>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>
