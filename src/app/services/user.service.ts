@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, last } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Operation, Permission, UserObject, Users } from '../models';
+import { Operation, Permission, User, UserObject, Users } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -30,12 +30,24 @@ export class UserService {
   }
 
   getName(): string {
-    return localStorage.getItem(this.storageKey) ?? '';
+    let json = localStorage.getItem(this.storageKey);
+    let result = json ? (JSON.parse(json) as User) : null;
+    if (result == null) return '';
+    else return result.firstName + ' ' + result.lastName;
   }
 
-  setName(user: UserObject) {
-    var name = user.data.firstName + ' ' + user.data.lastName;
-    localStorage.setItem(this.storageKey, name);
+  getRole(): string {
+    let json = localStorage.getItem(this.storageKey);
+    let result = json ? (JSON.parse(json) as User) : null;
+    if (result != null) {
+      if (result.permission.isAdmin) return 'Admin';
+      if (result.permission.isSuperAdmin) return 'Super Admin';
+    }
+    return '';
+  }
+
+  setUserInfo(user: UserObject) {
+    localStorage.setItem(this.storageKey, JSON.stringify(user.data));
   }
 
   removeName() {

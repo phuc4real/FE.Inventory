@@ -6,7 +6,12 @@ import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, map } from 'rxjs';
 import { Operation, TicketRecord } from 'src/app/models';
 import { TicketService } from 'src/app/services/ticket.service';
-import { FormatDate, getOperation, showError } from 'src/app/share/helpers';
+import {
+  FormatDate,
+  StatusColor,
+  getOperation,
+  showError,
+} from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-ticket',
@@ -89,6 +94,10 @@ export class ListTicketComponent {
           showError(error, this.toastr);
         }
       );
+  }
+
+  getStatusColor(status: string) {
+    return StatusColor(status);
   }
 
   formattedDate(date: any) {

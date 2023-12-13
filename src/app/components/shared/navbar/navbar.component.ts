@@ -21,6 +21,10 @@ export class NavbarComponent {
     return this.userService.getName();
   }
 
+  getRole(): string {
+    return this.userService.getRole();
+  }
+
   isAuthenticated(): boolean {
     return this.authService.IsLogged();
   }

@@ -2,9 +2,14 @@
   <button mat-icon-button (click)="openMenu()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span class="navbar-title" routerLink="/item">Inventory Management</span>
+  <span *ngIf="isAuthenticated()" class="navbar-title" routerLink="/item"
+    >Pinventory</span
+  >
   <span class="spacer"></span>
-  <span *ngIf="isAuthenticated()">{{ getUserName() }}</span>
+  <div class="userInfo">
+    <span *ngIf="isAuthenticated()">{{ getUserName() }}</span>
+    <p *ngIf="isAuthenticated()">{{ "View as: " + getRole() }}</p>
+  </div>
   <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>account_circle</mat-icon>
   </button>

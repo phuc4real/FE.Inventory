@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService, SideNavService, UserService } from 'src/app/services';
-import { getOperation, setOperation, showError } from 'src/app/share/helpers';
+import { setOperation, showError } from 'src/app/share/helpers';
 import { LoginModel } from 'src/app/models';
 
 @Component({
@@ -47,13 +47,13 @@ export class LoginComponent {
         this.toastr.success('Login successful!', 'Success');
         this.authService.saveIdentity(response.data);
         this.userService.getUserInfo().subscribe((response) => {
-          this.userService.setName(response);
+          this.userService.setUserInfo(response);
           setOperation(this.userService).then(() => {
             this.router.navigate(['/item']);
             this.sideNavService.toggle();
             setTimeout(() => {
               this.sideNavService.toggle();
-            }, 100);
+            }, 150);
           });
         });
       },

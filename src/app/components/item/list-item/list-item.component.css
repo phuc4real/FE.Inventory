@@ -23,10 +23,6 @@ mat-cell:last-child {
   justify-content: center;
 }
 
-mat-paginator {
-  margin-bottom: 90px;
-}
-
 .button {
   position: absolute;
   margin-top: 20px;

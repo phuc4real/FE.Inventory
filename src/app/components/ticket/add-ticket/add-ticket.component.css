@@ -1,14 +1,18 @@
 .container {
-  margin: 25px 35px 0;
+  margin: 35px 30px 0;
 }
 
-.header {
+.container .header {
   display: flex;
-  flex-direction: row-reverse;
-  padding: 8px;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
-.header a {
+.container .header mat-form-field {
+  width: 20%;
+}
+
+.container .header a {
   display: flex;
   align-items: center;
   text-decoration: none;

@@ -1,17 +1,40 @@
+.login {
+  margin-top: 4%;
+  margin-bottom: auto;
+  display: flex;
+}
+
+.image {
+  margin-top: 4%;
+  margin-left: 20%;
+}
+
+.image h1 {
+  font-size: 4rem;
+  margin: 0;
+  letter-spacing: 6px;
+  text-shadow: 2px 2px 2px blue;
+}
+
+.image span {
+  font-style: italic;
+}
+
+.image img {
+  height: 480px;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 300px;
-  margin: 5% auto;
-  padding: 20px;
-  border: 1px solid #ccc;
+  width: 350px;
+  margin: 4% auto 0 auto;
+  padding: 25px;
   border-radius: 5px;
   background-color: #f4f4f4;
-  overflow: hidden;
 }
 
-/* Rest of the CSS code remains the same */
 h2 {
   text-align: center;
   margin-bottom: 20px;

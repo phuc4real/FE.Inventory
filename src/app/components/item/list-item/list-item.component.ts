@@ -25,7 +25,7 @@ export class ListItemComponent {
     'actions',
   ];
   sortColumn = 'code';
-  pageSizeOptions: number[] = [10, 20, 50, 100];
+  pageSizeOptions: number[] = [10, 15, 20, 25];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;

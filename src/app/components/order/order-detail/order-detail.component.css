@@ -1,10 +1,9 @@
 .container {
-  margin: 15px 35px 10px;
+  margin: 35px 30px 0;
 }
 
 .container .header {
   display: flex;
-  padding: 8px;
   justify-content: space-between;
   align-items: center;
 }
@@ -18,7 +17,6 @@
   display: flex;
   align-items: center;
   text-decoration: none;
-  padding: 10px;
   font-size: 1.2rem;
   font-weight: 450;
   color: black;
@@ -35,7 +33,7 @@
 }
 
 .history mat-form-field {
-  width: 95%;
+  width: 100%;
 }
 
 .history mat-icon {

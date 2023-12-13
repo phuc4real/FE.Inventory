@@ -6,7 +6,12 @@ import { ToastrService } from 'ngx-toastr';
 import { startWith, switchMap, catchError, of, map } from 'rxjs';
 import { Export, Operation, StatusCheck } from 'src/app/models';
 import { ExportService } from 'src/app/services';
-import { getOperation, showError, showMessage } from 'src/app/share/helpers';
+import {
+  StatusColor,
+  getOperation,
+  showError,
+  showMessage,
+} from 'src/app/share/helpers';
 
 @Component({
   selector: 'app-list-export',
@@ -81,6 +86,9 @@ export class ListExportComponent {
           this.exports = new MatTableDataSource<Export>([]);
         }
       );
+  }
+  getStatusColor(status: string) {
+    return StatusColor(status);
   }
 
   updateStatus(id: number) {

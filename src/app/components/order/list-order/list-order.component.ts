@@ -8,6 +8,7 @@ import { Operation, OrderRecord } from 'src/app/models';
 import { OrderService } from 'src/app/services';
 import {
   FormatDate,
+  StatusColor,
   getOperation,
   showError,
   showMessage,
@@ -100,6 +101,10 @@ export class ListOrderComponent {
       },
       (err: any) => showError(err, this.toastr)
     );
+  }
+
+  getStatusColor(status: string) {
+    return StatusColor(status);
   }
 
   formattedDate = (date: Date) => {

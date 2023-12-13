@@ -7,7 +7,7 @@ export interface OrderRecord {
   status: string;
   description: string;
   isCompleted: boolean;
-  completeDate: Date;
+  completedDate: Date;
 
   createdAt: Date;
   createdBy: string;
