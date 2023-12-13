@@ -46,13 +46,7 @@
         >
         <mat-cell *matCellDef="let order">
           <mat-chip [style]="getStatusColor(order.status)">
-            {{
-              order.status +
-                " At " +
-                (order.isCompleted
-                  ? formattedDate(order.completedDate)
-                  : formattedDate(order.updatedAt))
-            }}
+            {{ order.status }}
           </mat-chip></mat-cell
         >
       </ng-container>

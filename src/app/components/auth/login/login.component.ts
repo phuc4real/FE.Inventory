@@ -47,7 +47,7 @@ export class LoginComponent {
         this.toastr.success('Login successful!', 'Success');
         this.authService.saveIdentity(response.data);
         this.userService.getUserInfo().subscribe((response) => {
-          this.userService.setName(response);
+          this.userService.setUserInfo(response);
           setOperation(this.userService).then(() => {
             this.router.navigate(['/item']);
             this.sideNavService.toggle();

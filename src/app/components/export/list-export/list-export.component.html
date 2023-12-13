@@ -30,7 +30,11 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Status</mat-header-cell
         >
-        <mat-cell *matCellDef="let export">{{ export.status }}</mat-cell>
+        <mat-cell *matCellDef="let export"
+          ><mat-chip [style]="getStatusColor(export.status)">
+            {{ export.status }}
+          </mat-chip></mat-cell
+        >
       </ng-container>
       <ng-container matColumnDef="exportFor">
         <mat-header-cell *matHeaderCellDef mat-sort-header
