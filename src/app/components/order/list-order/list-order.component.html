@@ -44,11 +44,17 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Status</mat-header-cell
         >
-        <mat-cell *matCellDef="let order">{{
-          order.completeDate == null
-            ? order.status
-            : order.status + " At " + formattedDate(order.completeDate)
-        }}</mat-cell>
+        <mat-cell *matCellDef="let order">
+          <mat-chip [style]="getStatusColor(order.status)">
+            {{
+              order.status +
+                " At " +
+                (order.isCompleted
+                  ? formattedDate(order.completedDate)
+                  : formattedDate(order.updatedAt))
+            }}
+          </mat-chip></mat-cell
+        >
       </ng-container>
 
       <ng-container matColumnDef="updatedAt">
