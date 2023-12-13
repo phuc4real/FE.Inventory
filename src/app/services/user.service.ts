@@ -43,7 +43,7 @@ export class UserService {
       if (result.permission.isAdmin) return 'Admin';
       if (result.permission.isSuperAdmin) return 'Super Admin';
     }
-    return '';
+    return 'User';
   }
 
   setUserInfo(user: UserObject) {
